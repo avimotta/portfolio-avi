@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avi Motta — UX Artist</title>
+<meta name="description" content="Portfolio of Avi Motta, UX Artist. Interface design, visual identity and digital products.">
+<meta name="theme-color" content="#D4DCFF">
+<link rel="icon" href="data:,">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:wght@400..900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<main class="page">
+
+  <!-- ══════════ FONDOS (bandas de color) ══════════
+       Secuencia de color base del original. El hero tiene alfa decreciente en
+       su base, por eso la lavanda empieza en 560 y se ve a través de la foto. -->
+  <div class="band" style="--by:560;  --bh:1680; --bg:#D4DCFF" aria-hidden="true"></div>
+  <div class="band" style="--by:2240; --bh:1100; --bg:#FFF2DE" aria-hidden="true"></div>
+  <div class="band" style="--by:3340; --bh:1549; --bg:#D4DCFF" aria-hidden="true"></div>
+  <div class="band" style="--by:4889; --bh:913;  --bg:#495D94" aria-hidden="true"></div>
+
+  <!-- ══════════ DEGRADADOS DE TRANSICIÓN ══════════
+       En el original son 5 SVG con viewBox 1302×456 (o 1280×355) escalados con
+       preserveAspectRatio="xMidYMid meet": el degradado NO ocupa la caja entera,
+       queda letterboxeado y centrado verticalmente. De ahí --gy (offset) y --gh
+       (alto dibujado). Los valores son los stops exactos del SVG original. -->
+  <div class="grad" aria-hidden="true" style="--x:-2;  --by:1065; --w:1026; --bh:355; --gy:35.2;  --gh:284.6;
+       --g:linear-gradient(180deg,#D4DCFF 72.6%,#D4DCFF00 100%)"></div>
+
+  <div class="grad" aria-hidden="true" style="--x:-2;  --by:1945; --w:1036; --bh:375; --gy:43.9;  --gh:287.3;
+       --g:linear-gradient(180deg,#FFF2DE00 0%,#FFF2DE00 4.85%,#FFF2DE 54.6%,#FFF2DE 100%)"></div>
+
+  <div class="grad" aria-hidden="true" style="--x:-14; --by:2940; --w:1059; --bh:456; --gy:42.5;  --gh:371;
+       --g:linear-gradient(180deg,#FFF2DE 0.96%,#D4DCFF 89.9%)"></div>
+
+  <div class="grad" aria-hidden="true" style="--x:-21; --by:3566; --w:1066; --bh:834; --gy:230.3; --gh:373.4;
+       --g:linear-gradient(180deg,#D4DCFF 70.19%,#D4DCFF00 100%)"></div>
+
+  <div class="grad" aria-hidden="true" style="--x:-14; --by:4480; --w:1066; --bh:456; --gy:41.3;  --gh:373.4;
+       --g:linear-gradient(180deg,#D4DCFF00 0%,#D4DCFF 42.3%)"></div>
+
+  <!-- ══════════ HERO ══════════ -->
+  <section class="sec s-hero" aria-labelledby="hero-title">
+    <div class="w hero-stage" style="--x:-2;--y:-390;--w:1030;--h:1270">
+      <img class="hero-photo" src="assets/img/hero.png" alt="Portrait of Avi Motta" width="1118" height="1379" fetchpriority="high">
+      <div class="hero-copy">
+        <h1 class="t-hero" id="hero-title">Avi<br>Motta</h1>
+        <p class="t-role">UX Artist</p>
+      </div>
+    </div>
+
+    <span class="dot dot--1" aria-hidden="true"></span>
+    <span class="dot dot--2" aria-hidden="true"></span>
+    <span class="dot dot--3" aria-hidden="true"></span>
+  </section>
+
+  <!-- ══════════ ABOUT ══════════ -->
+  <section class="sec s-about" aria-labelledby="about-title">
+    <h2 class="t h-section" id="about-title" style="--x:425;--y:800;--w:174">About me</h2>
+
+    <div class="t about-copy reveal" style="--x:174;--y:900;--w:676">
+      <p>I’m a UX Artist focused on creating meaningful user experiences, going beyond “just a page.”</p>
+      <p>I have advanced knowledge of tools such as Adobe Illustrator, Adobe Photoshop, Adobe Premiere, and Figma, which I use as my primary design toolkit.</p>
+      <p>I’m also deeply interested in art and music, which strongly influence my creative approach.</p>
+      <p>Keep scrolling and find my works!</p>
+    </div>
+  </section>
+
+  <!-- ══════════ PROYECTO 1 — UNIVERSITY STREAMING ══════════ -->
+  <section class="sec s-project s-p1" aria-labelledby="p1-title">
+    <img class="w bleed" src="assets/img/streaming-bleed.png" alt="" aria-hidden="true"
+         style="--x:-32;--y:1274;--w:1133;--h:866" width="915" height="699">
+
+    <h2 class="t h-section" id="p1-title" style="--x:237;--y:1120;--w:549">Web page for University’s streaming</h2>
+
+    <!-- Mockup 1: ventana de navegador sobre base de laptop -->
+    <a class="w device device--a" href="https://www.behance.net/gallery/251283847/Landing-Page-for-university-streaming"
+       target="_blank" rel="noopener noreferrer" style="--x:35;--y:1220;--w:728;--h:426"
+       aria-label="View the University streaming project on Behance">
+      <img class="device-shot" src="assets/img/streaming-screen-1.png" alt="Landing page for a university streaming platform, desktop view" width="1098" height="693">
+      <img class="device-frame" src="assets/svg/frame-browser.svg" alt="" aria-hidden="true">
+      <img class="device-base" src="assets/svg/base-728.svg" alt="" aria-hidden="true">
+    </a>
+
+    <p class="w hint" style="--x:775;--y:1320;--w:182;--h:80"><span>click the screens</span></p>
+    <p class="w hint" style="--x:728;--y:1340;--w:182;--h:80"><span>and see!</span></p>
+    <img class="w arrow" src="assets/img/arrow.png" alt="" aria-hidden="true"
+         style="--x:685;--y:1347;--w:91;--h:33" width="180" height="65">
+
+    <!-- Mockup 2: pantalla de laptop -->
+    <a class="w device device--b" href="https://www.behance.net/gallery/251283847/Landing-Page-for-university-streaming"
+       target="_blank" rel="noopener noreferrer" style="--x:206;--y:1586;--w:775;--h:454"
+       aria-label="View the University streaming project on Behance">
+      <img class="device-shot" src="assets/img/streaming-screen-2.png" alt="University streaming platform, laptop view" width="1095" height="690">
+      <img class="device-frame" src="assets/svg/frame-laptop.svg" alt="" aria-hidden="true">
+      <img class="device-base" src="assets/svg/base-776.svg" alt="" aria-hidden="true">
+    </a>
+
+    <div class="t body" style="--x:174;--y:2120;--w:676">
+      <p>Web design for a university streaming platform focused on accessibility and content discovery.</p>
+      <p>The layout prioritizes easy navigation and clear content hierarchy, allowing users to quickly find the needed information.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ PROYECTO 2 — RANKING MUSIC APP ══════════ -->
+  <section class="sec s-project s-p2" aria-labelledby="p2-title">
+    <h2 class="t h-section" id="p2-title" style="--x:237;--y:2320;--w:549">Ranking music app</h2>
+
+    <div class="phones">
+      <a class="w phone" href="https://www.behance.net/gallery/234674487/Manual-de-marca-Jukebox"
+         target="_blank" rel="noopener noreferrer" style="--x:197.5;--y:2420;--w:201;--h:420"
+         aria-label="View the Jukebox music app project on Behance">
+        <img src="assets/img/music-1.png" alt="Ranking music app, screen 1" width="366" height="765">
+      </a>
+      <a class="w phone" href="https://www.behance.net/gallery/234674487/Manual-de-marca-Jukebox"
+         target="_blank" rel="noopener noreferrer" style="--x:410.5;--y:2420;--w:201;--h:420"
+         aria-label="View the Jukebox music app project on Behance">
+        <img src="assets/img/music-2.png" alt="Ranking music app, screen 2" width="366" height="765">
+      </a>
+      <a class="w phone" href="https://www.behance.net/gallery/234674487/Manual-de-marca-Jukebox"
+         target="_blank" rel="noopener noreferrer" style="--x:624.5;--y:2420;--w:201;--h:420"
+         aria-label="View the Jukebox music app project on Behance">
+        <img src="assets/img/music-3.png" alt="Ranking music app, screen 3" width="366" height="765">
+      </a>
+    </div>
+
+    <div class="t body" style="--x:174;--y:2920;--w:676">
+      <p>Group project focused on creating a platform for emerging artists to showcase their work and connect with audiences. The design prioritizes intuitive navigation and content discovery, encouraging user engagement through community-driven features and a more personalized listening experience.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ PROYECTO 3 — EMERGING ARTIST ══════════ -->
+  <section class="sec s-project s-p3" aria-labelledby="p3-title">
+    <h2 class="t h-section" id="p3-title" style="--x:236;--y:3114;--w:549">Emerging Artist's Website</h2>
+
+    <img class="w shot" src="assets/img/artist.png" alt="Emerging artist website, main view" width="957" height="612"
+         style="--x:169;--y:3220;--w:685;--h:438">
+
+    <div class="t body" style="--x:174;--y:3740;--w:676">
+      <p>Web design for an emerging artist, focused on building a strong visual identity and digital presence. The layout highlights the artist’s work through clear hierarchy and immersive visuals, creating a more engaging and intuitive experience for users.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ PROYECTO 4 — TAYLOR SWIFT MERCH ══════════ -->
+  <section class="sec s-project s-p4" aria-labelledby="p4-title">
+    <img class="w bleed" src="assets/img/merch-bleed.png" alt="" aria-hidden="true"
+         style="--x:-14;--y:3841;--w:1062;--h:899" width="1280" height="1084">
+
+    <h2 class="t h-section" id="p4-title" style="--x:234;--y:3954;--w:549">Taylor Swift Merch Landing Page</h2>
+
+    <a class="w shot" href="https://www.behance.net/gallery/234673811/folklore-landing-page"
+       target="_blank" rel="noopener noreferrer" style="--x:67;--y:4060;--w:609;--h:369"
+       aria-label="View the folklore landing page on Behance">
+      <img src="assets/img/merch-1.png" alt="Taylor Swift merch landing page, screen 1" width="705" height="427">
+    </a>
+
+    <img class="w shot" src="assets/img/merch-2.png" alt="Taylor Swift merch landing page, screen 2" width="776" height="450"
+         style="--x:353;--y:4350;--w:604;--h:350">
+
+    <div class="t body" style="--x:174;--y:4780;--w:676">
+      <p>Concept landing page focused on showcasing merchandise in a clear and engaging way.</p>
+      <p>The design prioritizes visual hierarchy and intuitive navigation, helping users quickly explore products and encouraging conversion through strategic call-to-actions.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ CONTACTO ══════════ -->
+  <section class="sec s-contact" aria-labelledby="contact-title">
+    <img class="w bleed bleed--above" src="assets/img/contact-bleed.png" alt="" aria-hidden="true"
+         style="--x:-22;--y:4889;--w:1076;--h:411" width="1228" height="469">
+
+    <h2 class="t t-contact" id="contact-title" style="--x:166;--y:5320;--w:691">CONTACT ME</h2>
+
+    <a class="t t-email" href="mailto:avrilmotta@gmail.com" style="--x:378;--y:5450;--w:267">avrilmotta@gmail.com</a>
+
+    <a class="w pill" href="https://www.behance.net/avimotta" target="_blank" rel="noopener noreferrer"
+       style="--x:433;--y:5499;--w:154;--h:50">Behance</a>
+
+    <a class="w pill" href="https://www.linkedin.com/in/avril-victoria-motta-marcos-214318252/"
+       target="_blank" rel="noopener noreferrer" style="--x:433;--y:5560;--w:154;--h:50">Linkedin</a>
+  </section>
+
+</main>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
