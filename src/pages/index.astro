@@ -1,5 +1,8 @@
 ---
 import ProjectSection from "../components/ProjectSection.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
 ---
 
 <!DOCTYPE html>
@@ -50,31 +53,24 @@ import ProjectSection from "../components/ProjectSection.astro";
        --g:linear-gradient(180deg,#D4DCFF00 0%,#D4DCFF 42.3%)"></div>
 
   <!-- ══════════ HERO ══════════ -->
-  <section class="sec s-hero" aria-labelledby="hero-title">
-    <div class="w hero-stage" style="--x:-2;--y:-390;--w:1030;--h:1270">
-      <img class="hero-photo" src="assets/img/hero.png" alt="Portrait of Avi Motta" width="1118" height="1379" fetchpriority="high">
-      <div class="hero-copy">
-        <h1 class="t-hero" id="hero-title">Avi<br>Motta</h1>
-        <p class="t-role">UX Artist</p>
-      </div>
-    </div>
-
-    <span class="dot dot--1" aria-hidden="true"></span>
-    <span class="dot dot--2" aria-hidden="true"></span>
-    <span class="dot dot--3" aria-hidden="true"></span>
-  </section>
+  <Hero
+  firstName="Avi"
+  lastName="Motta"
+  role="UX Artist"
+  photo="assets/img/hero.png"
+  photoAlt="Portrait of Avi Motta"
+/>
 
   <!-- ══════════ ABOUT ══════════ -->
-  <section class="sec s-about" aria-labelledby="about-title">
-    <h2 class="t h-section" id="about-title" style="--x:425;--y:800;--w:174">About me</h2>
-
-    <div class="t about-copy reveal" style="--x:174;--y:900;--w:676">
-      <p>I’m a UX Artist focused on creating meaningful user experiences, going beyond “just a page.”</p>
-      <p>I have advanced knowledge of tools such as Adobe Illustrator, Adobe Photoshop, Adobe Premiere, and Figma, which I use as my primary design toolkit.</p>
-      <p>I’m also deeply interested in art and music, which strongly influence my creative approach.</p>
-      <p>Keep scrolling and find my works!</p>
-    </div>
-  </section>
+  <About
+  title="About me"
+  paragraphs={[
+    "I’m a UX Artist focused on creating meaningful user experiences, going beyond “just a page.”",
+    "I have advanced knowledge of tools such as Adobe Illustrator, Adobe Photoshop, Adobe Premiere, and Figma, which I use as my primary design toolkit.",
+    "I’m also deeply interested in art and music, which strongly influence my creative approach.",
+    "Keep scrolling and find my works!"
+  ]}
+/>
 
   <!-- ══════════ PROYECTO 1 — UNIVERSITY STREAMING ══════════ -->
   <ProjectSection
@@ -188,20 +184,14 @@ import ProjectSection from "../components/ProjectSection.astro";
   </ProjectSection>
 
   <!-- ══════════ CONTACTO ══════════ -->
-  <section class="sec s-contact" aria-labelledby="contact-title">
-    <img class="w bleed bleed--above" src="assets/img/contact-bleed.png" alt="" aria-hidden="true"
-         style="--x:-22;--y:4889;--w:1076;--h:411" width="1228" height="469">
-
-    <h2 class="t t-contact" id="contact-title" style="--x:166;--y:5320;--w:691">CONTACT ME</h2>
-
-    <a class="t t-email" href="mailto:avrilmotta@gmail.com" style="--x:378;--y:5450;--w:267">avrilmotta@gmail.com</a>
-
-    <a class="w pill" href="https://www.behance.net/avimotta" target="_blank" rel="noopener noreferrer"
-       style="--x:433;--y:5499;--w:154;--h:50">Behance</a>
-
-    <a class="w pill" href="https://www.linkedin.com/in/avril-victoria-motta-marcos-214318252/"
-       target="_blank" rel="noopener noreferrer" style="--x:433;--y:5560;--w:154;--h:50">Linkedin</a>
-  </section>
+  <Contact
+  title="CONTACT ME"
+  email="avrilmotta@gmail.com"
+  links={[
+    { label: "Behance", href: "https://www.behance.net/avimotta" },
+    { label: "Linkedin", href: "https://www.linkedin.com/in/avril-victoria-motta-marcos-214318252/" }
+  ]}
+/>
 
 </main>
 

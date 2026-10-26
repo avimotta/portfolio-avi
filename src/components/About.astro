@@ -1,0 +1,10 @@
+---
+const { title, paragraphs } = Astro.props;
+---
+<section class="sec s-about" aria-labelledby="about-title">
+  <h2 class="t h-section" id="about-title" style="--x:425;--y:800;--w:174">{title}</h2>
+
+  <div class="t about-copy reveal" style="--x:174;--y:900;--w:676">
+    {paragraphs.map((text) => <p>{text}</p>)}
+  </div>
+</section>

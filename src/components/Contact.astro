@@ -1,0 +1,16 @@
+---
+const { title, email, links } = Astro.props;
+---
+<section class="sec s-contact" aria-labelledby="contact-title">
+  <img class="w bleed bleed--above" src="assets/img/contact-bleed.png" alt="" aria-hidden="true"
+       style="--x:-22;--y:4889;--w:1076;--h:411" width="1228" height="469">
+
+  <h2 class="t t-contact" id="contact-title" style="--x:166;--y:5320;--w:691">{title}</h2>
+
+  <a class="t t-email" href={`mailto:${email}`} style="--x:378;--y:5450;--w:267">{email}</a>
+
+  {links.map((link, i) => (
+    <a class="w pill" href={link.href} target="_blank" rel="noopener noreferrer"
+       style={`--x:433;--y:${5499 + i * 61};--w:154;--h:50`}>{link.label}</a>
+  ))}
+</section>
