@@ -4,6 +4,7 @@ import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
 import Contact from "../components/Contact.astro";
 import OnRepeat from "../components/OnRepeat.astro";
+import { projects } from "../data/projects.js";
 ---
 
 <!DOCTYPE html>
@@ -27,10 +28,12 @@ import OnRepeat from "../components/OnRepeat.astro";
 
   <!-- ══════════ FONDOS (bandas de color) ══════════
        Secuencia de color base del original. El hero tiene alfa decreciente en
-       su base, por eso la lavanda empieza en 560 y se ve a través de la foto. -->
-  <div class="band" style="--by:560;  --bh:1680; --bg:#D4DCFF" aria-hidden="true"></div>
-  <div class="band" style="--by:2240; --bh:1100; --bg:#FFF2DE" aria-hidden="true"></div>
-  <div class="band" style="--by:3340; --bh:1549; --bg:#D4DCFF" aria-hidden="true"></div>
+       su base, por eso la lavanda empieza en 560 y se ve a través de la foto.
+       Desde el proyecto 1, bandas y degradados están 1100 más abajo que en el
+       original (--shift): la primera lavanda se estira para cubrir On repeat. -->
+  <div class="band" style="--by:560;  --bh:2780; --bg:#D4DCFF" aria-hidden="true"></div>
+  <div class="band" style="--by:3340; --bh:1100; --bg:#FFF2DE" aria-hidden="true"></div>
+  <div class="band" style="--by:4440; --bh:1549; --bg:#D4DCFF" aria-hidden="true"></div>
   <div class="band" style="--by:5989; --bh:913;  --bg:#495D94" aria-hidden="true"></div>
 
   <!-- ══════════ DEGRADADOS DE TRANSICIÓN ══════════
@@ -38,19 +41,19 @@ import OnRepeat from "../components/OnRepeat.astro";
        preserveAspectRatio="xMidYMid meet": el degradado NO ocupa la caja entera,
        queda letterboxeado y centrado verticalmente. De ahí --gy (offset) y --gh
        (alto dibujado). Los valores son los stops exactos del SVG original. -->
-  <div class="grad" aria-hidden="true" style="--x:-2;  --by:1065; --w:1026; --bh:355; --gy:35.2;  --gh:284.6;
+  <div class="grad" aria-hidden="true" style="--x:-2;  --by:2165; --w:1026; --bh:355; --gy:35.2;  --gh:284.6;
        --g:linear-gradient(180deg,#D4DCFF 72.6%,#D4DCFF00 100%)"></div>
 
-  <div class="grad" aria-hidden="true" style="--x:-2;  --by:1945; --w:1036; --bh:375; --gy:43.9;  --gh:287.3;
+  <div class="grad" aria-hidden="true" style="--x:-2;  --by:3045; --w:1036; --bh:375; --gy:43.9;  --gh:287.3;
        --g:linear-gradient(180deg,#FFF2DE00 0%,#FFF2DE00 4.85%,#FFF2DE 54.6%,#FFF2DE 100%)"></div>
 
-  <div class="grad" aria-hidden="true" style="--x:-14; --by:2940; --w:1059; --bh:456; --gy:42.5;  --gh:371;
+  <div class="grad" aria-hidden="true" style="--x:-14; --by:4040; --w:1059; --bh:456; --gy:42.5;  --gh:371;
        --g:linear-gradient(180deg,#FFF2DE 0.96%,#D4DCFF 89.9%)"></div>
 
-  <div class="grad" aria-hidden="true" style="--x:-21; --by:3566; --w:1066; --bh:834; --gy:230.3; --gh:373.4;
+  <div class="grad" aria-hidden="true" style="--x:-21; --by:4666; --w:1066; --bh:834; --gy:230.3; --gh:373.4;
        --g:linear-gradient(180deg,#D4DCFF 70.19%,#D4DCFF00 100%)"></div>
 
-  <div class="grad" aria-hidden="true" style="--x:-14; --by:4480; --w:1066; --bh:456; --gy:41.3;  --gh:373.4;
+  <div class="grad" aria-hidden="true" style="--x:-14; --by:5580; --w:1066; --bh:456; --gy:41.3;  --gh:373.4;
        --g:linear-gradient(180deg,#D4DCFF00 0%,#D4DCFF 42.3%)"></div>
 
   <!-- ══════════ HERO ══════════ -->
@@ -73,10 +76,11 @@ import OnRepeat from "../components/OnRepeat.astro";
   ]}
 />
 
-<OnRepeat
-  title="On repeat"
-  artists={["Taylor Swift", "Olivia Rodrigo", "Lorde", "Chappell Roan"]}
-/>
+  <!-- ══════════ ON REPEAT ══════════ -->
+  <OnRepeat
+    title="On repeat"
+    tracks={projects}
+  />
 
   <!-- ══════════ PROYECTO 1 — UNIVERSITY STREAMING ══════════ -->
   <ProjectSection

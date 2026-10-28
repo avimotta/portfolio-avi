@@ -115,11 +115,13 @@ a   { color: inherit; }
 }
 
 /* ── Utilidades de posicionamiento ──────────────────────────────────────── */
+/* --off es un desplazamiento vertical opcional (vale 0 si nadie lo define).
+   Lo usan los proyectos para bajar lo que mide la sección On repeat. */
 
 .w {
   position: absolute;
   left: calc(var(--x) * var(--u));
-  top: calc(var(--y) * var(--u));
+  top: calc((var(--y) + var(--off, 0)) * var(--u));
   width: calc(var(--w) * var(--u));
   height: calc(var(--h) * var(--u));
   z-index: 2;
@@ -128,7 +130,7 @@ a   { color: inherit; }
 .t {
   position: absolute;
   left: calc(var(--x) * var(--u));
-  top: calc(var(--y) * var(--u));
+  top: calc((var(--y) + var(--off, 0)) * var(--u));
   width: calc(var(--w) * var(--u));
   margin: 0;
   z-index: 2;
@@ -591,6 +593,9 @@ a:focus-visible {
 
 @media (min-width: 900px) {
   .page { height: calc(var(--page-h, 5724) * var(--u)); }
+
+  /* On repeat va entre About y el proyecto 1: los proyectos bajan lo que mide */
+  .s-project { --off: var(--shift, 0); }
 
   .s-contact {
     display: block;
