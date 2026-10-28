@@ -588,3 +588,16 @@ a:focus-visible {
     outline-offset: 4px;
   }
 }
+
+@media (min-width: 900px) {
+  .page { height: calc(var(--page-h, 5724) * var(--u)); }
+
+  .s-contact {
+    display: block;
+    position: absolute;
+    top: calc(var(--shift, 0) * var(--u));
+    left: 0;
+    width: 100%;
+    height: calc(5724 * var(--u));
+  }
+}

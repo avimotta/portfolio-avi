@@ -3,6 +3,7 @@ import ProjectSection from "../components/ProjectSection.astro";
 import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
 import Contact from "../components/Contact.astro";
+import OnRepeat from "../components/OnRepeat.astro";
 ---
 
 <!DOCTYPE html>
@@ -22,7 +23,7 @@ import Contact from "../components/Contact.astro";
 </head>
 
 <body>
-<main class="page">
+<main class="page" style="--page-h:6824; --shift:1100">
 
   <!-- ══════════ FONDOS (bandas de color) ══════════
        Secuencia de color base del original. El hero tiene alfa decreciente en
@@ -30,7 +31,7 @@ import Contact from "../components/Contact.astro";
   <div class="band" style="--by:560;  --bh:1680; --bg:#D4DCFF" aria-hidden="true"></div>
   <div class="band" style="--by:2240; --bh:1100; --bg:#FFF2DE" aria-hidden="true"></div>
   <div class="band" style="--by:3340; --bh:1549; --bg:#D4DCFF" aria-hidden="true"></div>
-  <div class="band" style="--by:4889; --bh:913;  --bg:#495D94" aria-hidden="true"></div>
+  <div class="band" style="--by:5989; --bh:913;  --bg:#495D94" aria-hidden="true"></div>
 
   <!-- ══════════ DEGRADADOS DE TRANSICIÓN ══════════
        En el original son 5 SVG con viewBox 1302×456 (o 1280×355) escalados con
@@ -70,6 +71,11 @@ import Contact from "../components/Contact.astro";
     "I’m also deeply interested in art and music, which strongly influence my creative approach.",
     "Keep scrolling and find my works!"
   ]}
+/>
+
+<OnRepeat
+  title="On repeat"
+  artists={["Taylor Swift", "Olivia Rodrigo", "Lorde", "Chappell Roan"]}
 />
 
   <!-- ══════════ PROYECTO 1 — UNIVERSITY STREAMING ══════════ -->
@@ -192,6 +198,7 @@ import Contact from "../components/Contact.astro";
     { label: "Linkedin", href: "https://www.linkedin.com/in/avril-victoria-motta-marcos-214318252/" }
   ]}
 />
+
 
 </main>
 
