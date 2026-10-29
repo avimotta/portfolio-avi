@@ -309,7 +309,7 @@ Ahora cada mockup es un link con una sola imagen y usa la misma clase que las ca
 
 Después los achiqué para que tengan el mismo tamaño y disposición que las capturas de folklore, y centré el par entre el título y el texto. El cartel "click the screens" y la flecha bajaron lo mismo que el primer mockup.
 
-En el proyecto 3 (Babeblade) las puntas de la base de la laptop se veían cortadas. Volví a exportar artist.png con más margen y al doble de tamaño, con el mismo nombre.
+En el proyecto 3 (Babeblade) las puntas de la base de la laptop se veían cortadas. Volví a exportar artist.png con más margen y al doble de tamaño, con el mismo nombre. El PNG nuevo tenía otra proporción y, como la imagen usa object-fit: cover, seguía recortándose a los costados; ajusté la caja a la proporción nueva (685×401) para que no se recorte.
 
 Pruebas: [completar]
 
