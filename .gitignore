@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# vercel (vínculo local con el proyecto de Vercel)
+.vercel/
