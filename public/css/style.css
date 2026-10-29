@@ -315,8 +315,6 @@ main { --u: calc(100cqw / 1024); }
 .device-frame { left: var(--fl); top: var(--ft); width: var(--fw); height: var(--fh); }
 .device-base  { top: var(--bt); height: var(--bh); }
 
-.device:hover .device-shot { filter: brightness(1.06); }
-
 /* ── Caption + flecha del proyecto 1 ────────────────────────────────────── */
 
 .hint {
@@ -348,12 +346,34 @@ main { --u: calc(100cqw / 1024); }
   object-position: top center;
 }
 
-.shot:hover img,
-.phone:hover img { filter: brightness(1.06); }
-
 .phones { display: contents; }
 
 .phone { z-index: 3; }
+
+/* ── Elevación de las imágenes de los proyectos ─────────────────────────── */
+/* Al pasar el mouse (o con foco de teclado) la imagen sube y proyecta sombra.
+   Se usa translate y no transform, para no pisar otras transformaciones.
+   drop-shadow sigue la forma del PNG transparente; box-shadow haría un rectángulo. */
+
+.device,
+.phone,
+.shot { transition: translate 300ms ease, filter 300ms ease; }
+
+@media (hover: hover) {
+  .device:hover,
+  .phone:hover,
+  .shot:hover {
+    translate: 0 calc(-8 * var(--u));
+    filter: drop-shadow(0 calc(14 * var(--u)) calc(18 * var(--u)) #2F2B5340);
+  }
+}
+
+.device:focus-visible,
+.phone:focus-visible,
+.shot:focus-visible {
+  translate: 0 calc(-8 * var(--u));
+  filter: drop-shadow(0 calc(14 * var(--u)) calc(18 * var(--u)) #2F2B5340);
+}
 
 /* ── Contacto ───────────────────────────────────────────────────────────── */
 
@@ -425,6 +445,14 @@ a:focus-visible {
     opacity: 1;
     transition: none;
   }
+
+  /* la imagen no se mueve: queda solo la sombra */
+  .device:hover,
+  .phone:hover,
+  .shot:hover,
+  .device:focus-visible,
+  .phone:focus-visible,
+  .shot:focus-visible { translate: none; }
 }
 
 /* ==========================================================================

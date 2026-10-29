@@ -2,7 +2,7 @@
 
 Portfolio web personal e interactivo. Examen final de Programación Multimedial IV.
 
-- **Sitio publicado:** [completar: URL de Vercel]
+- **Sitio publicado:** https://portfolio-avi-phi.vercel.app/
 - **Repositorio:** https://github.com/avimotta/portfolio-avi
 - **Bitácora de proceso y registro de uso de IA:** [PROCESO.md](PROCESO.md)
 
@@ -133,7 +133,7 @@ Probado en: [completar: anchos y dispositivos probados, ver PROCESO.md]
 - Cada sección está asociada a su título con `aria-labelledby`, y los links a Behance tienen un `aria-label` que dice a qué proyecto llevan.
 - Los textos de los links dicen adónde llevan ("See UMAI TV", no "See project").
 - `scroll-margin-top` en los títulos, para que al saltar a uno no quede debajo del menú.
-- Se respeta `prefers-reduced-motion`: sin scroll suave ni animación de entrada.
+- Se respeta `prefers-reduced-motion` en todas las animaciones: sin scroll suave, los textos aparecen sin animación de entrada, las imágenes muestran la sombra al pasar el mouse sin moverse y la carátula de On repeat no gira. El estado de reproducción no depende del giro: lo indica el botón con `aria-pressed`.
 - En celular, los botones de On repeat miden al menos 44 px de alto.
 
 ## Limitaciones conocidas y posibles mejoras
@@ -143,6 +143,7 @@ Probado en: [completar: anchos y dispositivos probados, ver PROCESO.md]
 - **Los links del menú miden unos 29 px de alto en celular**: superan el mínimo de 24 px de WCAG 2.2, pero no los 44 px recomendados. Se priorizó que el menú fuera sutil.
 - **El contraste de colores todavía no se revisó con una herramienta.**
 - **El error por límite de pedidos (429) no se pudo probar en el navegador**: se revisó leyendo el código.
+- **Los textos con animación de entrada dependen de JavaScript**: empiezan invisibles y los hace aparecer `main.js`. Si el JavaScript fallara, no se verían.
 - **On repeat necesita JavaScript** para la carátula y el audio. Sin JavaScript se ven la playlist, la canción del primer proyecto y su link.
 - **El sitio está solo en inglés.**
 - **Los proyectos todavía no se generan desde `projects.js`**: su material visual está escrito en `index.astro`. Pasarlos a la lista permitiría agregar un proyecto en un solo lugar.
