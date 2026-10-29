@@ -27,9 +27,11 @@ const first = tracks[0];
           <img alt="" width="400" height="400" hidden>
           <button type="button" class="repeat-play" aria-pressed="false" hidden>&#9654;&#65038;</button>
         </div>
-        <p class="repeat-label">The song of {first.name}</p>
-        <p class="repeat-title">{first.song.title}</p>
-        <p class="repeat-artist">{first.song.artist}</p>
+        <div class="repeat-info">
+          <p class="repeat-label">The song of {first.name}</p>
+          <p class="repeat-title">{first.song.title}</p>
+          <p class="repeat-artist">{first.song.artist}</p>
+        </div>
         <a class="repeat-link" href={`#${first.id}-title`}>
           See <span class="repeat-link-name">{first.name}</span> <span aria-hidden="true">&darr;</span>
         </a>
@@ -42,68 +44,64 @@ const first = tracks[0];
 </section>
 
 <style is:global>
-  /* ── Escritorio: la sección ocupa su propio tramo del lienzo, entre About y
-     el proyecto 1. Mide --shift, lo mismo que bajan los proyectos y el contacto ── */
+  /* ── Escritorio: la sección va en flujo normal, entre los dos lienzos.
+     No tiene alto fijo: mide lo que ocupa su contenido. Usa la misma columna
+     que About: 174 de margen a cada lado del lienzo de 1024 = 676 de ancho ── */
   .s-repeat {
-    position: absolute;
-    top: calc(1065 * var(--u));
-    left: 0;
-    width: 100%;
-    height: calc(var(--shift, 1100) * var(--u));
-    box-sizing: border-box;
-    padding: calc(60 * var(--u)) calc(100 * var(--u)) 0;
+    padding: calc(20 * var(--u)) calc(174 * var(--u)) calc(90 * var(--u));
     background: var(--lavender);
     color: var(--ink);
-    text-align: center;
-    z-index: 2;
   }
 
   /* style.css pone display:block a todas las img, y eso le gana al atributo hidden */
   .s-repeat [hidden] { display: none; }
 
-  .s-repeat .h-section { margin: 0; line-height: 1.2; }
+  /* mismo título que "About me" */
+  .s-repeat .h-section { margin: 0; }
 
-  .repeat-intro {
-    margin: calc(12 * var(--u)) 0 0;
-    font-size: calc(18 * var(--u));
-    line-height: 1.4;
-  }
+  /* mismo texto que About */
+  .repeat-intro { margin: 0; font-size: calc(16 * var(--u)); }
 
-  /* playlist a la izquierda, canción elegida a la derecha */
+  /* playlist a la izquierda, canción elegida en una columna angosta a la derecha */
   .repeat-body {
     display: grid;
-    grid-template-columns: 1fr calc(380 * var(--u));
-    gap: calc(48 * var(--u));
+    grid-template-columns: 1fr calc(220 * var(--u));
+    gap: calc(40 * var(--u));
     align-items: start;
-    margin-top: calc(40 * var(--u));
-    text-align: left;
+    margin-top: calc(32 * var(--u));
   }
 
+  /* tracklist: filas separadas por una línea fina, como en una app de música */
   .repeat-list {
-    display: flex;
-    flex-direction: column;
-    gap: calc(12 * var(--u));
     margin: 0;
     padding: 0;
     list-style: none;
+    border-top: 1px solid #495D9440;
+  }
+
+  .repeat-list li {
+    padding-block: calc(4 * var(--u));
+    border-bottom: 1px solid #495D9440;
   }
 
   /* número a la izquierda (ocupa dos filas), nombre y canción a la derecha */
   .repeat-pick {
     display: grid;
     grid-template-columns: auto 1fr;
-    column-gap: calc(16 * var(--u));
+    column-gap: calc(14 * var(--u));
     align-items: baseline;
     width: 100%;
-    padding: calc(16 * var(--u)) calc(22 * var(--u));
-    border: 2px solid var(--indigo);
-    border-radius: calc(16 * var(--u));
-    background: var(--cream);
-    color: var(--indigo);
+    padding: calc(10 * var(--u)) calc(14 * var(--u));
+    border: 0;
+    border-radius: calc(10 * var(--u));
+    background: transparent;
+    color: var(--ink);
     font-family: var(--sans);
     text-align: left;
     cursor: pointer;
   }
+
+  .repeat-pick:hover { background: #FFF2DE99; }
 
   .repeat-pick[aria-pressed="true"] {
     background: var(--indigo);
@@ -113,17 +111,20 @@ const first = tracks[0];
   .repeat-num {
     grid-row: span 2;
     font-family: var(--serif);
-    font-size: calc(28 * var(--u));
+    font-size: calc(20 * var(--u));
+    color: var(--indigo);
   }
 
+  .repeat-pick[aria-pressed="true"] .repeat-num { color: inherit; }
+
   .repeat-name {
-    font-size: calc(20 * var(--u));
+    font-size: calc(17 * var(--u));
     font-weight: 600;
   }
 
   .repeat-song {
     grid-column: 2;
-    font-size: calc(16 * var(--u));
+    font-size: calc(14 * var(--u));
   }
 
   .repeat-pick:focus-visible,
@@ -136,14 +137,14 @@ const first = tracks[0];
   .repeat-now {
     display: flex;
     flex-direction: column;
-    gap: calc(10 * var(--u));
+    gap: calc(8 * var(--u));
   }
 
   .repeat-cover {
     position: relative;
     aspect-ratio: 1;
     overflow: hidden;
-    border-radius: calc(16 * var(--u));
+    border-radius: calc(12 * var(--u));
     background: var(--cream);
   }
 
@@ -151,15 +152,15 @@ const first = tracks[0];
 
   .repeat-play {
     position: absolute;
-    right: calc(14 * var(--u));
-    bottom: calc(14 * var(--u));
-    width: calc(60 * var(--u));
-    height: calc(60 * var(--u));
+    right: calc(10 * var(--u));
+    bottom: calc(10 * var(--u));
+    width: calc(44 * var(--u));
+    height: calc(44 * var(--u));
     border: 0;
     border-radius: 50%;
     background: var(--cream);
     color: var(--indigo);
-    font-size: calc(22 * var(--u));
+    font-size: calc(16 * var(--u));
     cursor: pointer;
   }
 
@@ -168,9 +169,15 @@ const first = tracks[0];
     color: var(--cream);
   }
 
+  .repeat-info {
+    display: flex;
+    flex-direction: column;
+    gap: calc(2 * var(--u));
+  }
+
   .repeat-label {
-    margin: calc(6 * var(--u)) 0 0;
-    font-size: calc(14 * var(--u));
+    margin: 0;
+    font-size: calc(12 * var(--u));
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--indigo);
@@ -179,77 +186,83 @@ const first = tracks[0];
   .repeat-title {
     margin: 0;
     font-family: var(--serif);
-    font-size: calc(28 * var(--u));
+    font-size: calc(22 * var(--u));
     line-height: 1.2;
   }
 
   .repeat-artist {
     margin: 0;
-    font-size: calc(18 * var(--u));
+    font-size: calc(15 * var(--u));
   }
-
-  .repeat-status {
-    min-height: calc(26 * var(--u));
-    margin: 0;
-    font-size: calc(16 * var(--u));
-    line-height: 1.4;
-  }
-
-  .repeat-status[data-state="error"] { color: #9B2C4A; font-weight: 600; }
 
   /* acción principal del panel: lleva al proyecto de la canción elegida */
   .repeat-link {
     align-self: flex-start;
     display: inline-flex;
     align-items: center;
-    gap: calc(8 * var(--u));
-    margin-top: calc(8 * var(--u));
-    padding: calc(14 * var(--u)) calc(28 * var(--u));
+    gap: calc(6 * var(--u));
+    margin-top: calc(4 * var(--u));
+    padding: calc(10 * var(--u)) calc(20 * var(--u));
     border-radius: 999px;
     background: var(--indigo);
     color: var(--cream);
-    font-size: calc(18 * var(--u));
+    font-size: calc(15 * var(--u));
     font-weight: 600;
     text-decoration: none;
   }
 
   .repeat-link:hover { background: var(--ink); }
 
-  .repeat-credit {
-    margin: calc(36 * var(--u)) 0 0;
-    font-size: calc(15 * var(--u));
+  .repeat-status {
+    min-height: calc(22 * var(--u));
+    margin: 0;
+    font-size: calc(14 * var(--u));
+    line-height: 1.4;
   }
 
-  /* ── Celular: una columna, primero la playlist y después la canción ── */
+  .repeat-status[data-state="error"] { color: #9B2C4A; font-weight: 600; }
+
+  .repeat-credit {
+    margin: calc(32 * var(--u)) 0 0;
+    font-size: calc(13 * var(--u));
+  }
+
+  /* ── Celular: playlist arriba; debajo, la carátula chica al lado del título
+     y el botón de ancho completo ── */
   @media (max-width: 899px) {
-    .s-repeat {
-      position: static;
-      height: auto;
-      padding: 56px 20px;
-    }
-    .repeat-intro { font-size: 15px; margin-top: 10px; }
-    .repeat-body { grid-template-columns: 1fr; gap: 28px; margin-top: 24px; }
-    .repeat-list { gap: 10px; }
-    .repeat-pick { column-gap: 12px; padding: 12px 16px; border-radius: 14px; }
-    .repeat-num { font-size: 22px; }
+    /* misma columna máxima de 640 px que las demás secciones (style.css) */
+    .s-repeat { padding: 56px max(20px, calc((100% - 640px) / 2)); }
+    .repeat-intro { margin-top: 22px; font-size: 16px; }
+    .repeat-body { grid-template-columns: 1fr; gap: 24px; margin-top: 24px; }
+    .repeat-list li { padding-block: 4px; }
+    .repeat-pick { column-gap: 12px; min-height: 48px; padding: 10px 12px; border-radius: 10px; }
+    .repeat-num { font-size: 18px; }
     .repeat-name { font-size: 16px; }
     .repeat-song { font-size: 14px; }
-    .repeat-now { width: 100%; max-width: 360px; margin: 0 auto; gap: 8px; }
-    .repeat-cover { border-radius: 14px; }
-    .repeat-play { width: 48px; height: 48px; right: 10px; bottom: 10px; font-size: 18px; }
+
+    .repeat-now {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      column-gap: 14px;
+      row-gap: 8px;
+      align-items: center;
+    }
+    .repeat-cover { border-radius: 10px; }
+    .repeat-play { width: 44px; height: 44px; right: 6px; bottom: 6px; font-size: 15px; }
     .repeat-label { font-size: 12px; }
-    .repeat-title { font-size: 22px; }
+    .repeat-title { font-size: 20px; }
     .repeat-artist { font-size: 15px; }
-    .repeat-status { font-size: 15px; min-height: 22px; }
+    .repeat-link,
+    .repeat-status { grid-column: 1 / -1; }
     .repeat-link {
-      align-self: stretch;
       justify-content: center;
       min-height: 48px;
       gap: 6px;
-      margin-top: 6px;
+      margin-top: 4px;
       padding: 12px 20px;
       font-size: 16px;
     }
+    .repeat-status { font-size: 15px; min-height: 22px; }
     .repeat-credit { font-size: 12px; margin-top: 24px; }
   }
 </style>

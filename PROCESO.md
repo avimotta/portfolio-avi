@@ -190,7 +190,88 @@ Link al proyecto. El link "See project" pasaba desapercibido. Lo convertí en un
 
 Pendiente: probar en 900 px (que el texto de About no pise On repeat), 1280 px, 1920 px y 375 px, y revisar si la frase "Keep scrolling and find my works!" del About sigue teniendo sentido ahora que lo siguiente es la playlist.
 
-9. Uso de inteligencia artificial
+9. 28 de octubre — Dos lienzos: On repeat deja de tener alto fijo
+
+Problema. No me cerraba que todas las alturas fueran fijas. La solución de la entrada anterior funcionaba, pero era un parche: On repeat medía 1100 escrito a mano, y si su contenido crecía no empujaba nada, se superponía con lo de abajo.
+
+Por qué pasaba. El diseño reconstruye Readymag como un lienzo: cada elemento tiene position: absolute y un --y. Un elemento con posición absoluta sale del flujo, no empuja a los de abajo y su contenedor no sabe cuánto mide. Por eso el lienzo necesita un alto escrito a mano. Para las composiciones de los proyectos tiene sentido, porque es lo que permite superponer mockups y degradados; para una sección con contenido dinámico, no.
+
+Alternativas que consideré:
+
+1. Seguir con el lienzo y calcular los números en el frontmatter de Astro a partir de una constante. Era el cambio más chico, pero las alturas seguían fijas.
+2. Partir la página en dos lienzos y dejar On repeat entre los dos, en flujo normal.
+3. Rehacer todo el escritorio en flujo (flex o grid), sin posiciones absolutas. No habría ninguna altura fija, pero era rehacer gran parte del CSS con riesgo de perder la composición del diseño original.
+
+Elegí la 2. [completar: por qué]
+
+Cómo quedó:
+
+Lienzo 1 (Hero y About) mide 1100. En el original About terminaba en 1065, pero dejé margen porque el texto de About tiene tamaño fijo y en pantallas angostas termina cerca de ese punto; el lienzo recorta lo que se pasa de su alto.
+On repeat va entre los dos lienzos, en flujo normal, y mide lo que ocupa su contenido.
+Lienzo 2 (proyectos y Contact) usa las coordenadas del diseño original. Tiene --off:-1065, que resta 1065 a cada --y y --by (el punto donde empezaba el proyecto 1), y mide lo que faltaba del original: 5724 - 1065 = 4659.
+--u ahora se define en main y no en cada lienzo, para que On repeat, que quedó afuera, también la pueda usar.
+Desaparecieron los parches de la entrada anterior: --shift, el --off de los proyectos y el bloque que posicionaba Contact aparte. Las bandas y los degradados volvieron a sus números originales.
+
+Rediseño de On repeat. Se veía demasiado grande y desconectada del resto. Ahora usa la misma columna que About (174 de margen a cada lado del lienzo de 1024, 676 de ancho), el mismo estilo de título y el mismo texto. La playlist pasó de cajas con borde a filas separadas por una línea fina, y la carátula de 380 a 220. En celular la carátula queda chica, al lado del título, y el botón al proyecto ocupa todo el ancho.
+
+Límites que reconozco. Los dos lienzos siguen teniendo alto fijo, porque adentro todo es absoluto; pero son composiciones que no cambian. De 900 px para arriba el diseño sigue escalando proporcionalmente (pendiente del responsive de escritorio).
+
+Punto de vuelta. Antes de este cambio hice un commit (96dbc91) con la versión anterior, para poder volver si no me gustaba el resultado.
+
+Pruebas: [completar: uniones de color en 900, 1280 y 1920 px; proyectos y Contact iguales que antes; About sin cortes en 900 px; zoom al 200 % (On repeat crece y empuja los proyectos); celular en 375 px]
+
+10. 28 de octubre — Navegación: componente Nav
+
+Problema. No había ninguna forma de recorrer las secciones, y la consigna pide una navegación clara.
+
+Alternativas que consideré:
+
+1. Una barra fija arriba con los nombres de las secciones. Es lo más claro, pero puede tapar el hero.
+2. Un índice vertical de puntos o números al costado. Es más editorial, pero menos obvio para quien no lo conoce.
+3. Un botón "Menu" que abre un panel. Es lo más limpio, pero agrega estados para resolver (abierto, cerrado, foco, tecla Esc).
+
+Elegí la 1, pero sutil para no tapar el hero. [completar: por qué]
+
+Cómo quedó. No es una barra de lado a lado sino una pastilla chica, centrada arriba, con fondo crema semitransparente y desenfoque (backdrop-filter), para que se lea sobre la foto, la lavanda y el índigo sin ser un bloque sólido. Tiene cuatro links: About, On repeat, Works y Contact.
+
+Por qué "Works" agrupado. Con un link por proyecto serían siete y no entran en un celular. Además, la playlist de On repeat ya funciona como índice de los proyectos. "Works" lleva al proyecto 1 y queda marcado mientras se ve cualquiera de los cuatro. Los títulos que agrupa salen de src/data/projects.js, así que si agrego un proyecto, Works lo reconoce solo.
+
+Cómo marca la sección actual. Cada vez que hay scroll, el script busca el último título que pasó el 40 % de la altura de la pantalla y le pone aria-current="true" a su link. Usa requestAnimationFrame para no calcular más de una vez por cuadro. Primero iba a usar IntersectionObserver, pero en escritorio las secciones tienen display: contents y no ocupan lugar, así que el observer no las puede mirar; por eso se miran los títulos con getBoundingClientRect.
+
+Accesibilidad:
+
+Un link "Skip to content", escondido, que aparece con la primera tecla Tab y lleva al <main>. El <main> tiene tabindex="-1" para que el foco se mueva de verdad, también en Safari.
+aria-current en el link activo, para que los lectores de pantalla lo anuncien.
+scroll-margin-top en los títulos, para que al saltar a uno no quede escondido debajo del menú.
+El link activo usa el mismo lenguaje visual que el track elegido en On repeat (fondo índigo, texto crema).
+
+Límite que reconozco. En celular cada link mide unos 29 px de alto. Supera el mínimo de 24 px de WCAG 2.2, pero está por debajo de los 44 px recomendados. Lo elegí así para que el menú sea sutil; si al probarlo cuesta tocarlo, lo agrando.
+
+Pruebas: [completar: que no tape el hero en 375 px y en escritorio; que se marque la sección correcta al hacer scroll, incluido Works en los cuatro proyectos y Contact al final; que cada link lleve al título sin taparlo; Skip to content con Tab; legibilidad sobre cada fondo]
+
+11. 28 de octubre — Responsive: tablet y pantallas grandes
+
+Problema. La consigna dice que no alcanza con que el contenido se reduzca. El celular ya tenía su versión en columna, pero faltaba revisar los demás tamaños.
+
+Propuesta descartada. Primero se propuso usar la versión en columna hasta unos 1100 px, para cubrir la tablet acostada. Al revisar el CSS se vio que habría sido un error: la versión en columna está pensada para celular (imágenes a todo el ancho, textos sin ancho máximo) y en 1024 px quedarían imágenes enormes y renglones larguísimos. Además, 1024 px es justo el ancho para el que está dibujado el lienzo: ahí se ve exactamente como el diseño.
+
+Qué pasaba en cada ancho:
+
+375 a 600 px (celular): columna. Bien.
+600 a 899 px (tablet vertical, por ejemplo iPad de 768): la misma columna estirada, con imágenes de unos 730 px y renglones de más de 100 caracteres. Se leía mal.
+900 a 1440 px (tablet acostada, notebook): el lienzo, cerca de su tamaño original. Bien.
+Más de 1440 px (monitor grande): el lienzo escala y todo se ve más grande, pero el texto de About no escalaba: quedaba en 16 px mientras los textos de los proyectos llegaban a unos 34 px en 1920.
+
+Cambios:
+
+En la versión en columna, cada sección tiene padding-inline: max(20px, calc((100% - 640px) / 2)). En celular el margen sigue siendo 20 px; en tablet crece lo necesario para que el contenido no pase de 640 px y quede centrado, mientras el fondo de color sigue ocupando todo el ancho. On repeat usa la misma regla.
+El texto de About ahora mide calc(16 * var(--u)) en escritorio: en 1024 px mide lo mismo que antes y en pantallas grandes escala como el resto. En celular vuelve a 16 px fijos, porque ahí --u es muy chica. La intro de On repeat hace lo mismo.
+
+Decisión. En escritorio mantengo que el lienzo escale proporcionalmente de 900 px en adelante, para conservar la composición del diseño de Readymag. [completar: por qué]
+
+Pruebas: [completar: 375, 768, 899, 1024 y 1920 px; en 768 la columna centrada con fondos de lado a lado; en 1920 About proporcionado con los proyectos y sin la última línea cortada]
+
+12. Uso de inteligencia artificial
 
 La consigna pide registrar el uso de IA. Lo hago en esta sección y la mantengo actualizada.
 
@@ -215,24 +296,24 @@ Claude Code (agente en la terminal, con acceso al proyecto), desde el 28/10:
 
 Tareas para las que lo usé: leer el proyecto completo y compararlo con la consigna, proponer un plan en pasos chicos y completar esta bitácora con lo que muestran el código y el historial de commits.
 Cómo lo usé: le pedí que antes de modificar cada archivo me explicara qué iba a cambiar y por qué, y que esperara mi OK antes de seguir. Las pruebas en el navegador las hago yo.
-Código que escribió: src/data/projects.js y la nueva versión de OnRepeat.astro (playlist de proyectos y canciones), a partir de la alternativa que elegí; después, el desplazamiento con --off para mover On repeat después de About y el nuevo estilo del link al proyecto. Antes de cada archivo me explicó qué iba a cambiar y por qué.
+Código que escribió: src/data/projects.js y la nueva versión de OnRepeat.astro (playlist de proyectos y canciones), a partir de la alternativa que elegí; después, el desplazamiento con --off para mover On repeat después de About y el nuevo estilo del link al proyecto; por último, la división en dos lienzos y el rediseño de On repeat alineado con About; el componente Nav; y los ajustes de responsive para tablet y pantallas grandes. Antes de cada archivo me explicó qué iba a cambiar y por qué.
 Qué revisé yo: [completar: qué partes del código leí, entendí o cambié]
-Errores o límites detectados: [completar]
-Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat (primero después del proyecto 4 y después, al verla, después de About), darle más jerarquía al link al proyecto, el nuevo concepto de una canción por proyecto, las canciones elegidas (y el cambio de Vogue por Girls Just Want to Have Fun), y resolverlo como playlist entre las tres alternativas que me propuso.
-10. Pendiente
+Errores o límites detectados: propuso usar la versión en columna hasta 1100 px para la tablet; al revisar el CSS él mismo vio que era un error, porque esa versión no está pensada para pantallas anchas, y lo corrigió antes de aplicarlo. También cambió dos veces lo que había anticipado: en Nav usó scroll y getBoundingClientRect en lugar de IntersectionObserver, y en On repeat agrupó tres textos en un div que no estaba en la explicación; en los dos casos lo avisó. [completar: otros errores que haya detectado yo]
+Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat (primero después del proyecto 4 y después, al verla, después de About), darle más jerarquía al link al proyecto, achicar On repeat para que sea coherente con About, no aceptar que las alturas quedaran fijas y cambiar la estructura a dos lienzos, una navegación en barra pero sutil para no tapar el hero, el nuevo concepto de una canción por proyecto, las canciones elegidas (y el cambio de Vogue por Girls Just Want to Have Fun), y resolverlo como playlist entre las tres alternativas que me propuso.
+13. Pendiente
  Migrar el proyecto a Astro. (hecho, 26/10)
  Crear el primer componente (ProjectSection) y usarlo en los cuatro proyectos. (hecho, 26/10)
  Hacer los componentes Hero, About y Contact, hasta tener al menos tres relevantes, con responsabilidad clara. (hecho, 26/10)
  Integrar una API o fuente dinámica de datos, con manejo de carga, error y vacío. (hecho, 28/10; adaptada al concepto de una canción por proyecto el mismo día)
  Sumar una interacción que modifique la experiencia o el contenido.
- Revisar el responsive del tramo de escritorio (tablet y pantallas grandes). El de celular ya existe.
+ Revisar el responsive del tramo de escritorio (tablet y pantallas grandes). El de celular ya existe. (revisado, 28/10: columna con ancho máximo en tablet y texto de About que escala; falta registrar las pruebas)
  Revisar accesibilidad: contraste, foco, textos alternativos, navegación.
- Definir la navegación entre secciones.
+ Definir la navegación entre secciones. (hecho, 28/10: componente Nav)
  Unir la rama astro con main, publicar con enlace limpio de producción y probarlo en otros dispositivos.
  Escribir el README completo.
  Probar en distintos tamaños de pantalla y registrar los resultados.
  Preparar la defensa: poder explicar cada componente y hacer un cambio en vivo.
-11. Registro de próximas entradas
+14. Registro de próximas entradas
 
 Agregar acá, con fecha, cada decisión, alternativa descartada, problema y solución.
 
