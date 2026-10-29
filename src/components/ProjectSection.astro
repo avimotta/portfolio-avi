@@ -2,11 +2,11 @@
 const { id, title, titleStyle, bodyStyle, class: className = "" } = Astro.props;
 ---
 <section class={`sec s-project ${className}`} aria-labelledby={`${id}-title`}>
-  <h2 class="t h-section" id={`${id}-title`} style={titleStyle}>{title}</h2>
+  <h2 class="t h-section reveal" id={`${id}-title`} style={titleStyle}>{title}</h2>
 
   <slot />
 
-  <div class="t body" style={bodyStyle}>
+  <div class="t body reveal" style={bodyStyle}>
     <slot name="body" />
   </div>
 </section>

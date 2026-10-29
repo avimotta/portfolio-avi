@@ -271,7 +271,25 @@ Decisión. En escritorio mantengo que el lienzo escale proporcionalmente de 900 
 
 Pruebas: [completar: 375, 768, 899, 1024 y 1920 px; en 768 la columna centrada con fondos de lado a lado; en 1920 About proporcionado con los proyectos y sin la última línea cortada]
 
-12. Uso de inteligencia artificial
+12. 28 de octubre — Animaciones
+
+Problema. El sitio tenía una sola animación (la entrada del texto de About). Quería darle más vida al recorrido, pero con animaciones que tuvieran que ver con el concepto y no fueran solo decoración.
+
+Opciones que consideré: A) entrada de los proyectos al hacer scroll; B) un ecualizador animado en el track que suena; C) la carátula girando como un vinilo mientras suena; D) elevación de las imágenes al pasar el mouse. Elegí A, C y D. [completar: por qué]
+
+A. Entrada de los textos. Reusa la misma animación de About (el bloque entra bajando y apareciendo), así todo el sitio tiene un solo lenguaje de movimiento. main.js ya animaba todo lo que tuviera la clase reveal, así que solo hubo que agregar esa clase. Primero la puse en los títulos, los textos y las imágenes de los proyectos, pero se veía demasiado lleno de animaciones y poco fluido, así que la dejé solo en los títulos y los textos (desde ProjectSection, para los cuatro proyectos a la vez).
+
+D. Elevación de las imágenes. Al pasar el mouse o llegar con Tab, las imágenes de los proyectos suben un poco y proyectan una sombra. Decidí que se eleven todas, sean links o no. Se usa la propiedad translate y no transform, para no pisar otras transformaciones (por ejemplo, si una imagen tuviera también la animación de entrada), y drop-shadow en lugar de box-shadow, porque sigue la forma del PNG transparente en vez de dibujar un rectángulo. Está dentro de @media (hover: hover), para que en celular no quede trabada después de tocar.
+
+C. Vinilo. En On repeat la carátula es un círculo con surcos (un repeating-radial-gradient encima de la imagen) y gira mientras suena el preview. El botón de play pasó al centro, como la etiqueta de un vinilo, porque en la esquina quedaba fuera del círculo. Funciona con dos clases: is-spinning le da a la imagen la animación de giro, pausada, e is-playing la hace correr. Al pausar se saca solo is-playing, así el disco se queda quieto en su ángulo en lugar de volver de golpe; al cambiar de track se saca is-spinning, así la carátula nueva arranca derecha.
+
+Accesibilidad. Las tres animaciones respetan prefers-reduced-motion: los textos aparecen sin animación, las imágenes muestran la sombra sin moverse y el disco no gira. La información no depende del movimiento: el botón de play sigue indicando si suena con aria-pressed.
+
+Límite que reconozco. Los textos con reveal empiezan invisibles y los hace aparecer main.js: si el JavaScript fallara, no se verían.
+
+Pruebas: [completar: scroll en escritorio y celular; hover y Tab en las imágenes; play, pausa, fin del preview y cambio de track con el vinilo; movimiento reducido]
+
+13. Uso de inteligencia artificial
 
 La consigna pide registrar el uso de IA. Lo hago en esta sección y la mantengo actualizada.
 
@@ -296,11 +314,11 @@ Claude Code (agente en la terminal, con acceso al proyecto), desde el 28/10:
 
 Tareas para las que lo usé: leer el proyecto completo y compararlo con la consigna, proponer un plan en pasos chicos y completar esta bitácora con lo que muestran el código y el historial de commits.
 Cómo lo usé: le pedí que antes de modificar cada archivo me explicara qué iba a cambiar y por qué, y que esperara mi OK antes de seguir. Las pruebas en el navegador las hago yo.
-Código que escribió: src/data/projects.js y la nueva versión de OnRepeat.astro (playlist de proyectos y canciones), a partir de la alternativa que elegí; después, el desplazamiento con --off para mover On repeat después de About y el nuevo estilo del link al proyecto; por último, la división en dos lienzos y el rediseño de On repeat alineado con About; el componente Nav; y los ajustes de responsive para tablet y pantallas grandes. Antes de cada archivo me explicó qué iba a cambiar y por qué.
+Código que escribió: src/data/projects.js y la nueva versión de OnRepeat.astro (playlist de proyectos y canciones), a partir de la alternativa que elegí; después, el desplazamiento con --off para mover On repeat después de About y el nuevo estilo del link al proyecto; por último, la división en dos lienzos y el rediseño de On repeat alineado con About; el componente Nav; los ajustes de responsive para tablet y pantallas grandes; y las animaciones (entrada de textos, elevación de imágenes y vinilo). Antes de cada archivo me explicó qué iba a cambiar y por qué.
 Qué revisé yo: [completar: qué partes del código leí, entendí o cambié]
 Errores o límites detectados: propuso usar la versión en columna hasta 1100 px para la tablet; al revisar el CSS él mismo vio que era un error, porque esa versión no está pensada para pantallas anchas, y lo corrigió antes de aplicarlo. También cambió dos veces lo que había anticipado: en Nav usó scroll y getBoundingClientRect en lugar de IntersectionObserver, y en On repeat agrupó tres textos en un div que no estaba en la explicación; en los dos casos lo avisó. [completar: otros errores que haya detectado yo]
-Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat (primero después del proyecto 4 y después, al verla, después de About), darle más jerarquía al link al proyecto, achicar On repeat para que sea coherente con About, no aceptar que las alturas quedaran fijas y cambiar la estructura a dos lienzos, una navegación en barra pero sutil para no tapar el hero, el nuevo concepto de una canción por proyecto, las canciones elegidas (y el cambio de Vogue por Girls Just Want to Have Fun), y resolverlo como playlist entre las tres alternativas que me propuso.
-13. Pendiente
+Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat (primero después del proyecto 4 y después, al verla, después de About), darle más jerarquía al link al proyecto, achicar On repeat para que sea coherente con About, no aceptar que las alturas quedaran fijas y cambiar la estructura a dos lienzos, una navegación en barra pero sutil para no tapar el hero, qué animaciones sumar, dejar la entrada solo en los textos y que se eleven todas las imágenes, el nuevo concepto de una canción por proyecto, las canciones elegidas (y el cambio de Vogue por Girls Just Want to Have Fun), y resolverlo como playlist entre las tres alternativas que me propuso.
+14. Pendiente
  Migrar el proyecto a Astro. (hecho, 26/10)
  Crear el primer componente (ProjectSection) y usarlo en los cuatro proyectos. (hecho, 26/10)
  Hacer los componentes Hero, About y Contact, hasta tener al menos tres relevantes, con responsabilidad clara. (hecho, 26/10)
@@ -313,7 +331,7 @@ Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat 
  Escribir el README completo.
  Probar en distintos tamaños de pantalla y registrar los resultados.
  Preparar la defensa: poder explicar cada componente y hacer un cambio en vivo.
-14. Registro de próximas entradas
+15. Registro de próximas entradas
 
 Agregar acá, con fecha, cada decisión, alternativa descartada, problema y solución.
 
