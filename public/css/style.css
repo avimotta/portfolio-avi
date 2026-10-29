@@ -19,7 +19,7 @@
   --lavender: #D4DCFF;
   --indigo:   #495D94;
   --ink:      #2F2B53;
-  --link:     #0080FF64;  /* azul del original: #0080FF al 39% de opacidad */
+  --link:     #0066CC;    /* el original era #0080FF al 39% (contraste 1.64 sobre crema); este da 5.04 */
   --white:    #FFFFFF;
 
   --serif: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -430,10 +430,14 @@ main { --u: calc(100cqw / 1024); }
 
 .pill:hover { text-decoration: none; }
 
+/* El foco va en ink, que se ve sobre lavanda y crema. En contacto el fondo es
+   indigo, y ahí el ink no se distingue: se usa crema. */
 a:focus-visible {
-  outline: calc(2 * var(--u)) solid var(--cream);
+  outline: calc(2 * var(--u)) solid var(--ink);
   outline-offset: calc(4 * var(--u));
 }
+
+.s-contact a:focus-visible { outline-color: var(--cream); }
 
 /* ── Accesibilidad: menos movimiento ────────────────────────────────────── */
 
@@ -628,7 +632,7 @@ a:focus-visible {
   .pill::before { display: none; }
 
   a:focus-visible {
-    outline: 2px solid var(--cream);
+    outline: 2px solid var(--ink);
     outline-offset: 4px;
   }
 }

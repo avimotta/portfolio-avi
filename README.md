@@ -127,6 +127,7 @@ Probado en: [completar: anchos y dispositivos probados, ver PROCESO.md]
 
 - Link "Skip to content" al principio de la página, visible al recibir foco con Tab.
 - Foco visible en todos los elementos interactivos.
+- Contraste medido con la fórmula de WCAG 2.1: todos los pares de texto y fondo pasan AA. El borde de foco cambia de color según el fondo (ink sobre lavanda y crema, crema sobre el indigo de contacto). El texto del hero, que va sobre la foto, se revisó a ojo.
 - `aria-current` en el link del menú de la sección actual, y `aria-pressed` en el track elegido y en el botón de play.
 - Mensajes de estado de la API anunciados con `aria-live`.
 - Textos alternativos en las imágenes con contenido; las decorativas tienen `alt=""` y `aria-hidden`.
@@ -141,7 +142,6 @@ Probado en: [completar: anchos y dispositivos probados, ver PROCESO.md]
 - **Los lienzos tienen alto fijo**, porque adentro todo tiene posición absoluta. Si un texto de Hero, About o de los proyectos crece mucho, no empuja lo de abajo.
 - **En escritorio el diseño escala, pero no se reorganiza.** Una mejora sería rehacer el escritorio con flex o grid para que se adapte de otra manera en monitores grandes.
 - **Los links del menú miden unos 29 px de alto en celular**: superan el mínimo de 24 px de WCAG 2.2, pero no los 44 px recomendados. Se priorizó que el menú fuera sutil.
-- **El contraste de colores todavía no se revisó con una herramienta.**
 - **El error por límite de pedidos (429) no se pudo probar en el navegador**: se revisó leyendo el código.
 - **Los textos con animación de entrada dependen de JavaScript**: empiezan invisibles y los hace aparecer `main.js`. Si el JavaScript fallara, no se verían.
 - **On repeat necesita JavaScript** para la carátula y el audio. Sin JavaScript se ven la playlist, la canción del primer proyecto y su link.
