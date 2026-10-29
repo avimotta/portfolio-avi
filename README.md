@@ -55,7 +55,7 @@ src/
 public/
   css/style.css             estilos globales y sistema de lienzo
   js/main.js                animación de entrada del texto de About
-  assets/                   imágenes y SVG
+  assets/                   imágenes
 PROCESO.md                  bitácora de proceso y uso de IA
 ```
 

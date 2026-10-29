@@ -273,48 +273,6 @@ main { --u: calc(100cqw / 1024); }
   opacity: 1;
 }
 
-/* ── Mockups de dispositivos ────────────────────────────────────────────── */
-
-.device {
-  display: block;
-  z-index: 3;
-}
-
-.device-shot,
-.device-frame,
-.device-base {
-  position: absolute;
-  pointer-events: none;
-}
-
-.device-shot {
-  z-index: 2;
-  object-fit: cover;
-  object-position: top center;
-  background: #000;
-}
-
-.device-frame { z-index: 3; }
-.device-base  { z-index: 4; left: 0; width: 100%; }
-
-/* Caja 728 x 426 — navegador sobre base de laptop */
-.device--a {
-  --fl: 9.0659%;  --ft: 0;      --fw: 81.7308%; --fh: 95.3052%;
-  --sl: 12.2253%; --st: 7.2770%; --sw: 75.5495%; --sh: 81.4554%;
-  --bt: 91.5493%; --bh: 8.4507%;
-}
-
-/* Caja 775 x 454 — pantalla de laptop */
-.device--b {
-  --fl: 9.1613%;  --ft: 0;      --fw: 81.8065%; --fh: 95.1542%;
-  --sl: 12.3871%; --st: 7.2687%; --sw: 75.4839%; --sh: 81.2775%;
-  --bt: 91.4097%; --bh: 8.5903%;
-}
-
-.device-shot  { left: var(--sl); top: var(--st); width: var(--sw); height: var(--sh); }
-.device-frame { left: var(--fl); top: var(--ft); width: var(--fw); height: var(--fh); }
-.device-base  { top: var(--bt); height: var(--bh); }
-
 /* ── Caption + flecha del proyecto 1 ────────────────────────────────────── */
 
 .hint {
@@ -355,12 +313,10 @@ main { --u: calc(100cqw / 1024); }
    Se usa translate y no transform, para no pisar otras transformaciones.
    drop-shadow sigue la forma del PNG transparente; box-shadow haría un rectángulo. */
 
-.device,
 .phone,
 .shot { transition: translate 300ms ease, filter 300ms ease; }
 
 @media (hover: hover) {
-  .device:hover,
   .phone:hover,
   .shot:hover {
     translate: 0 calc(-8 * var(--u));
@@ -368,7 +324,6 @@ main { --u: calc(100cqw / 1024); }
   }
 }
 
-.device:focus-visible,
 .phone:focus-visible,
 .shot:focus-visible {
   translate: 0 calc(-8 * var(--u));
@@ -451,10 +406,8 @@ a:focus-visible {
   }
 
   /* la imagen no se mueve: queda solo la sombra */
-  .device:hover,
   .phone:hover,
   .shot:hover,
-  .device:focus-visible,
   .phone:focus-visible,
   .shot:focus-visible { translate: none; }
 }
@@ -571,16 +524,7 @@ a:focus-visible {
   .hint,
   .arrow { display: none; }
 
-  /* ── Mockups ── */
-  .device {
-    position: relative;
-    width: 100%;
-    height: auto;
-  }
-
-  .device--a { aspect-ratio: 728 / 426; }
-  .device--b { aspect-ratio: 775 / 454; }
-
+  /* ── Capturas y mockups ── */
   .shot  { width: 100%; }
   .shot img { height: auto; }
 

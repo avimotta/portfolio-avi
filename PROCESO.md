@@ -301,7 +301,19 @@ El texto del hero es crema sobre la foto y eso no se puede calcular con la fórm
 
 Pruebas: [completar]
 
-14. Uso de inteligencia artificial
+14. 29 de octubre — Mockups del proyecto 1 en PNG
+
+Los dos mockups del proyecto 1 se armaban con tres capas cada uno: la captura de pantalla, un marco SVG y una base SVG, posicionados con porcentajes en el CSS. Los reemplacé por dos PNG exportados desde mi diseño, que ya traen la laptop completa y tienen fondo transparente. Los exporté al doble de tamaño (@2x) para que se vean nítidos en pantallas retina y cuando el lienzo escala en monitores grandes.
+
+Ahora cada mockup es un link con una sola imagen y usa la misma clase que las capturas del proyecto 4 (shot), que ya tenía la elevación y el comportamiento en mobile. Eso me dejó borrar todo el CSS de los dispositivos (58 líneas), los cuatro SVG y las dos capturas viejas.
+
+Después los achiqué para que tengan el mismo tamaño y disposición que las capturas de folklore, y centré el par entre el título y el texto. El cartel "click the screens" y la flecha bajaron lo mismo que el primer mockup.
+
+En el proyecto 3 (Babeblade) las puntas de la base de la laptop se veían cortadas. Volví a exportar artist.png con más margen y al doble de tamaño, con el mismo nombre.
+
+Pruebas: [completar]
+
+15. Uso de inteligencia artificial
 
 La consigna pide registrar el uso de IA. Lo hago en esta sección y la mantengo actualizada.
 
@@ -326,11 +338,11 @@ Claude Code (agente en la terminal, con acceso al proyecto), desde el 28/10:
 
 Tareas para las que lo usé: leer el proyecto completo y compararlo con la consigna, proponer un plan en pasos chicos y completar esta bitácora con lo que muestran el código y el historial de commits.
 Cómo lo usé: le pedí que antes de modificar cada archivo me explicara qué iba a cambiar y por qué, y que esperara mi OK antes de seguir. Las pruebas en el navegador las hago yo.
-Código que escribió: src/data/projects.js y la nueva versión de OnRepeat.astro (playlist de proyectos y canciones), a partir de la alternativa que elegí; después, el desplazamiento con --off para mover On repeat después de About y el nuevo estilo del link al proyecto; por último, la división en dos lienzos y el rediseño de On repeat alineado con About; el componente Nav; los ajustes de responsive para tablet y pantallas grandes; las animaciones (entrada de textos, elevación de imágenes y vinilo); y la revisión de contraste y foco. Antes de cada archivo me explicó qué iba a cambiar y por qué.
+Código que escribió: src/data/projects.js y la nueva versión de OnRepeat.astro (playlist de proyectos y canciones), a partir de la alternativa que elegí; después, el desplazamiento con --off para mover On repeat después de About y el nuevo estilo del link al proyecto; por último, la división en dos lienzos y el rediseño de On repeat alineado con About; el componente Nav; los ajustes de responsive para tablet y pantallas grandes; las animaciones (entrada de textos, elevación de imágenes y vinilo); la revisión de contraste y foco; y el reemplazo de los mockups del proyecto 1 por PNG. Antes de cada archivo me explicó qué iba a cambiar y por qué.
 Qué revisé yo: [completar: qué partes del código leí, entendí o cambié]
 Errores o límites detectados: propuso usar la versión en columna hasta 1100 px para la tablet; al revisar el CSS él mismo vio que era un error, porque esa versión no está pensada para pantallas anchas, y lo corrigió antes de aplicarlo. También cambió dos veces lo que había anticipado: en Nav usó scroll y getBoundingClientRect en lugar de IntersectionObserver, y en On repeat agrupó tres textos en un div que no estaba en la explicación; en los dos casos lo avisó. [completar: otros errores que haya detectado yo]
 Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat (primero después del proyecto 4 y después, al verla, después de About), darle más jerarquía al link al proyecto, achicar On repeat para que sea coherente con About, no aceptar que las alturas quedaran fijas y cambiar la estructura a dos lienzos, una navegación en barra pero sutil para no tapar el hero, qué animaciones sumar, dejar la entrada solo en los textos y que se eleven todas las imágenes, el nuevo concepto de una canción por proyecto, las canciones elegidas (y el cambio de Vogue por Girls Just Want to Have Fun), y resolverlo como playlist entre las tres alternativas que me propuso.
-15. Pendiente
+16. Pendiente
  Migrar el proyecto a Astro. (hecho, 26/10)
  Crear el primer componente (ProjectSection) y usarlo en los cuatro proyectos. (hecho, 26/10)
  Hacer los componentes Hero, About y Contact, hasta tener al menos tres relevantes, con responsabilidad clara. (hecho, 26/10)
@@ -343,7 +355,7 @@ Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat 
  Escribir el README completo.
  Probar en distintos tamaños de pantalla y registrar los resultados.
  Preparar la defensa: poder explicar cada componente y hacer un cambio en vivo.
-16. Registro de próximas entradas
+17. Registro de próximas entradas
 
 Agregar acá, con fecha, cada decisión, alternativa descartada, problema y solución.
 
