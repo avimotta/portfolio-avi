@@ -49,21 +49,25 @@ a   { color: inherit; }
 
 ::selection { background: var(--indigo); color: var(--cream); }
 
-/* ── Lienzo ─────────────────────────────────────────────────────────────── */
+/* ── Lienzos ────────────────────────────────────────────────────────────── */
+/* La página tiene dos lienzos (.page): Hero + About, y proyectos + Contact.
+   Entre los dos va On repeat, en flujo normal. --u se define en main para que
+   también la use On repeat, que queda fuera de los lienzos.
+   Cada lienzo indica su alto con --page-h. */
+
+main { --u: calc(100cqw / 1024); }
 
 .page {
-  --u: calc(100cqw / 1024);
-
   position: relative;
   width: 100%;
-  height: calc(5724 * var(--u));
+  height: calc(var(--page-h, 5724) * var(--u));
   overflow: hidden;
   background: var(--white);
 }
 
 /* Fallback para navegadores sin container queries (Safari < 16). */
 @supports not (container-type: inline-size) {
-  .page { --u: calc(100vw / 1024); }
+  main { --u: calc(100vw / 1024); }
 }
 
 /* Las secciones son envoltorios semánticos: no pintan ni posicionan nada.
@@ -83,7 +87,7 @@ a   { color: inherit; }
   position: absolute;
   left: 0;
   width: 100%;
-  top: calc(var(--by) * var(--u));
+  top: calc((var(--by) + var(--off, 0)) * var(--u));
   height: calc(var(--bh) * var(--u));
   background: var(--bg);
   z-index: 0;
@@ -97,7 +101,7 @@ a   { color: inherit; }
 .grad {
   position: absolute;
   left: calc(var(--x) * var(--u));
-  top: calc(var(--by) * var(--u));
+  top: calc((var(--by) + var(--off, 0)) * var(--u));
   width: calc(var(--w) * var(--u));
   height: calc(var(--bh) * var(--u));
   z-index: 2;
@@ -115,11 +119,14 @@ a   { color: inherit; }
 }
 
 /* ── Utilidades de posicionamiento ──────────────────────────────────────── */
+/* --off es un desplazamiento vertical opcional (vale 0 si nadie lo define).
+   El segundo lienzo usa --off:-1065 para que sus elementos conserven las
+   coordenadas del diseño original. Lo mismo vale para .band y .grad. */
 
 .w {
   position: absolute;
   left: calc(var(--x) * var(--u));
-  top: calc(var(--y) * var(--u));
+  top: calc((var(--y) + var(--off, 0)) * var(--u));
   width: calc(var(--w) * var(--u));
   height: calc(var(--h) * var(--u));
   z-index: 2;
@@ -128,7 +135,7 @@ a   { color: inherit; }
 .t {
   position: absolute;
   left: calc(var(--x) * var(--u));
-  top: calc(var(--y) * var(--u));
+  top: calc((var(--y) + var(--off, 0)) * var(--u));
   width: calc(var(--w) * var(--u));
   margin: 0;
   z-index: 2;
@@ -243,6 +250,9 @@ a   { color: inherit; }
 
 .body p,
 .about-copy p { margin: 0; }
+
+/* El texto de About escala con el lienzo, como el resto: en 1024 px mide 16 */
+.about-copy { font-size: calc(16 * var(--u)); }
 
 /* ── Animación de entrada del párrafo "About" ───────────────────────────── */
 /* El original tenía una única animación ligada al scroll: el bloque bajaba
@@ -440,8 +450,14 @@ a:focus-visible {
     flex-direction: column;
     gap: 22px;
     padding: 56px 20px;
+    /* en tablet el contenido no pasa de 640 px y queda centrado;
+       el fondo de la sección sigue ocupando todo el ancho */
+    padding-inline: max(20px, calc((100% - 640px) / 2));
     align-items: stretch;
   }
+
+  /* --u es muy chica en celular: el texto de About vuelve a un tamaño fijo */
+  .about-copy { font-size: 16px; }
 
   /* todos los bloques vuelven al flujo */
   .w,

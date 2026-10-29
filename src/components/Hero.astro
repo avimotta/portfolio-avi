@@ -1,0 +1,16 @@
+---
+const { firstName, lastName, role, photo, photoAlt } = Astro.props;
+---
+<section class="sec s-hero" aria-labelledby="hero-title">
+  <div class="w hero-stage" style="--x:-2;--y:-390;--w:1030;--h:1270">
+    <img class="hero-photo" src={photo} alt={photoAlt} width="1118" height="1379" fetchpriority="high">
+    <div class="hero-copy">
+      <h1 class="t-hero" id="hero-title">{firstName}<br>{lastName}</h1>
+      <p class="t-role">{role}</p>
+    </div>
+  </div>
+
+  <span class="dot dot--1" aria-hidden="true"></span>
+  <span class="dot dot--2" aria-hidden="true"></span>
+  <span class="dot dot--3" aria-hidden="true"></span>
+</section>

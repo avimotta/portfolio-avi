@@ -1,0 +1,153 @@
+---
+import { projects } from "../data/projects.js";
+
+// Cada link apunta a uno o más títulos de la página.
+// "Works" agrupa los proyectos: queda marcado mientras se ve cualquiera de ellos.
+const links = [
+  { label: "About", targets: ["about-title"] },
+  { label: "On repeat", targets: ["repeat-title"] },
+  { label: "Works", targets: projects.map((p) => `${p.id}-title`) },
+  { label: "Contact", targets: ["contact-title"] },
+];
+---
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="site-nav" aria-label="Sections">
+  <ul>
+    {links.map((link) => (
+      <li>
+        <a href={`#${link.targets[0]}`} data-targets={link.targets.join(" ")}>{link.label}</a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style is:global>
+  /* ── Saltar al contenido: escondido arriba, aparece al recibir foco con Tab ── */
+  .skip-link {
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0px) + 12px);
+    left: 12px;
+    z-index: 30;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--cream);
+    font: 600 14px/1 var(--sans);
+    text-decoration: none;
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus { transform: none; }
+
+  #main:focus { outline: none; }
+
+  /* ── Menú: pastilla flotante centrada, semitransparente para no tapar el hero ── */
+  .site-nav {
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0px) + 12px);
+    left: 50%;
+    z-index: 20;
+    transform: translateX(-50%);
+  }
+
+  .site-nav ul {
+    display: flex;
+    gap: 2px;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    border-radius: 999px;
+    background: #FFF2DEB3;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 8px #2F2B531A;
+  }
+
+  .site-nav a {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    color: var(--ink);
+    font: 500 13px/1 var(--sans);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-nav a:hover { background: var(--cream); }
+
+  /* sección actual: mismo lenguaje que el track elegido en On repeat */
+  .site-nav a[aria-current="true"] {
+    background: var(--indigo);
+    color: var(--cream);
+  }
+
+  .site-nav a:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  /* al saltar a un título, que no quede escondido debajo del menú */
+  [id$="-title"] { scroll-margin-top: 72px; }
+
+  @media (max-width: 899px) {
+    .site-nav { top: calc(env(safe-area-inset-top, 0px) + 10px); }
+    .site-nav a { padding: 8px 11px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    "use strict";
+
+    var links = document.querySelectorAll(".site-nav a[data-targets]");
+    if (!links.length) return;
+
+    // Cada título de la página con el link al que pertenece.
+    var targets = [];
+    for (var i = 0; i < links.length; i++) {
+      var ids = links[i].getAttribute("data-targets").split(" ");
+      for (var j = 0; j < ids.length; j++) {
+        var el = document.getElementById(ids[j]);
+        if (el) targets.push({ el: el, link: links[i] });
+      }
+    }
+
+    var ticking = false; // hay un cálculo pendiente para el próximo cuadro
+
+    // La sección actual es la del último título que pasó el 40 % de la pantalla.
+    // Se miran los títulos porque en escritorio las secciones tienen
+    // display: contents y no ocupan lugar.
+    function update() {
+      ticking = false;
+      var line = window.innerHeight * 0.4;
+      var current = null;
+      var best = -Infinity;
+
+      for (var k = 0; k < targets.length; k++) {
+        var top = targets[k].el.getBoundingClientRect().top;
+        if (top < line && top > best) {
+          best = top;
+          current = targets[k].link;
+        }
+      }
+
+      for (var m = 0; m < links.length; m++) {
+        if (links[m] === current) links[m].setAttribute("aria-current", "true");
+        else links[m].removeAttribute("aria-current");
+      }
+    }
+
+    // requestAnimationFrame: como mucho un cálculo por cuadro, aunque el
+    // evento scroll se dispare muchas veces seguidas.
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+  })();
+</script>
