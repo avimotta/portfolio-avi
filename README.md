@@ -10,7 +10,7 @@ Portfolio web personal e interactivo. Examen final de Programación Multimedial 
 
 Soy UX Artist: diseño interfaces, identidades visuales y productos digitales, y la música y el arte influyen mucho en cómo trabajo. El portfolio presenta cuatro proyectos de diseño, y cada uno está representado por una canción. El visitante puede ver qué canción le corresponde a cada proyecto, escuchar un fragmento de 30 segundos e ir directamente al proyecto.
 
-[completar: qué quiero que entienda o recuerde quien visita el portfolio, y a quién está dirigido]
+Quiero que quien entre a mi portfolio sepa que soy una persona artística y musical y vea la creatividad que hay detrás de mi trabajo. [completar: a quién está dirigido, por ejemplo estudios de diseño, agencias o equipos de producto que buscan una UX Artist]
 
 | Proyecto | Canción |
 |---|---|
@@ -175,6 +175,8 @@ Probado en: [completar: anchos y dispositivos probados, ver PROCESO.md]
 - **El error por límite de pedidos (429) no se pudo probar en el navegador**: se revisó leyendo el código.
 - **Las animaciones de entrada dependen de que cargue Motion**: si no carga en 3 segundos, el sitio se muestra completo sin animaciones, pero esa espera inicial puede verse vacía en conexiones muy lentas.
 - **On repeat necesita JavaScript** para la carátula y el audio. Sin JavaScript se ven la playlist, la canción del primer proyecto y su link.
+- **El disco de cada proyecto muestra las imágenes del portfolio, no el proyecto completo:** Behance no permite mostrar sus proyectos dentro de otra página (su versión para insertar solo trae la portada). Para ver todo, el disco tiene un link a Behance.
+- **Los previews de las canciones duran 30 segundos** (es lo que da la API) y no se repiten solos.
 - **El sitio está solo en inglés.**
 - **Los proyectos todavía no se generan desde `projects.js`**: su material visual está escrito en `index.astro`. Pasarlos a la lista permitiría agregar un proyecto en un solo lugar.
 
@@ -186,7 +188,8 @@ Resumen del uso de IA (el detalle está en la sección "Uso de inteligencia arti
 
 - **opencode:** primera versión del sitio en HTML, CSS y JavaScript, a partir de mi diseño en Readymag.
 - **Claude (chat):** análisis de la consigna, plan de trabajo y guía paso a paso de la migración a Astro.
-- **Claude Code:** revisión del proyecto contra la consigna, propuestas de alternativas y escritura de parte del código (la playlist, la estructura de dos lienzos, Nav, los ajustes de responsive) y de la documentación. Le pedí que me explicara cada cambio antes de hacerlo y esperara mi aprobación; las pruebas en el navegador las hice yo.
+- **Claude Code (hasta noviembre):** revisión del proyecto contra la consigna, propuestas de alternativas y escritura de parte del código (la playlist, la estructura de dos lienzos, Nav, los ajustes de responsive) y de la documentación. Le pedí que me explicara cada cambio antes de hacerlo y esperara mi aprobación; las pruebas en el navegador las hice yo.
+- **Claude Code (18 de noviembre):** a partir del pedido del profesor de contar una historia con las animaciones, me propuso la idea de "el portfolio es una canción" y escribió las animaciones con Motion, el mini reproductor (MiniPlayer) y el disco de cada proyecto (RecordModal); también hizo una revisión de todo el código y arregló lo que encontró. Esta vez escribió y subió los cambios él, y los probó con un navegador automatizado; yo elegí entre sus propuestas, le marqué qué cambiar y probé el sitio. Las decisiones están en las entradas 14 a 18 de la bitácora.
 
 Las decisiones de concepto, diseño y estructura fueron mías: entre ellas, que cada proyecto tenga una canción y cuál, resolverlo como playlist, dónde va la sección, no aceptar alturas fijas para On repeat y un menú sutil. [completar: revisar y ajustar este resumen]
 
@@ -196,3 +199,4 @@ Las decisiones de concepto, diseño y estructura fueron mías: entre ellas, que 
 - **Tipografías:** [Inter](https://fonts.google.com/specimen/Inter) y [Playfair Display](https://fonts.google.com/specimen/Playfair+Display), de Google Fonts, con licencia SIL Open Font License.
 - **Datos, carátulas y previews de las canciones:** iTunes Search API, de Apple. Son propiedad de Apple y de sus titulares de derechos; se muestran y reproducen desde los servidores de Apple, sin descargarlos ni guardarlos.
 - **Framework:** [Astro](https://astro.build), licencia MIT.
+- **Animaciones:** [Motion](https://motion.dev), licencia MIT.

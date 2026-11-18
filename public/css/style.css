@@ -1,7 +1,7 @@
 /* ==========================================================================
    Avi Motta — Portfolio
    Estilos globales. El diseño original fue hecho en Readymag, acá en CSS lo
-   reconsyo con medidas exactas. Los estilos de cada componente con
+   reconstruyo con medidas exactas. Los estilos de cada componente con
    lógica propia (Nav, OnRepeat, MiniPlayer, RecordModal) están en su archivo.
 
    SISTEMA DE ESCALA
@@ -21,7 +21,7 @@
   --lavender: #D4DCFF;
   --indigo:   #495D94;
   --ink:      #2F2B53;
-  --link:     #0066CC;   
+  --link:     #0066CC;
   --white:    #FFFFFF;
 
   --serif: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -42,7 +42,7 @@ body {
   background: var(--white);
   color: var(--ink);
   font-family: var(--sans);
-  container-type: inline-size; 
+  container-type: inline-size;
   overflow-x: hidden;
 }
 
