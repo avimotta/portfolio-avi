@@ -186,13 +186,14 @@ Resumen del uso de IA (el detalle está en la sección "Uso de inteligencia arti
 
 - **opencode:** primera versión del sitio en HTML, CSS y JavaScript, a partir de mi diseño en Readymag.
 - **Claude (chat):** análisis de la consigna, plan de trabajo y guía paso a paso de la migración a Astro.
-- **Claude Code:** revisión del proyecto contra la consigna, propuestas de alternativas y escritura de parte del código (la playlist, la estructura de dos lienzos, Nav, los ajustes de responsive) y de la documentación. Le pedí que me explicara cada cambio antes de hacerlo y esperara mi aprobación; las pruebas en el navegador las hice yo. A partir del pedido del profesor de contar una historia con las animaciones, se me ocurrió la idea de  que el portfolio sea una canción y Claude escribió las animaciones con Motion, el mini reproductor (MiniPlayer) y el disco de cada proyecto (RecordModal); también hizo una revisión de todo el código y arregló lo que encontró. Yo le marqué qué cambiar y probé el sitio. Las decisiones están en las entradas 14 a 18 de la bitácora.
+- **Claude Code:** revisión del proyecto contra la consigna, propuestas de alternativas y escritura de parte del código (la playlist, la estructura de dos lienzos, Nav, los ajustes de responsive) y de la documentación. Le pedí que me explicara cada cambio antes de hacerlo y esperara mi aprobación; las pruebas en el navegador las hice yo. A partir del pedido del profesor de contar una historia con las animaciones, se me ocurrió la idea de que el portfolio sea una canción y Claude escribió las animaciones con Motion, el mini reproductor (MiniPlayer) y el disco de cada proyecto (RecordModal); también hizo una revisión de todo el código y arregló lo que encontró. Yo le marqué qué cambiar y probé el sitio. Las decisiones están en las entradas 13 a 17 de la bitácora.
 
 Las decisiones de concepto, diseño y estructura fueron mías: entre ellas, que cada proyecto tenga una canción y cuál, resolverlo como playlist, dónde va la sección, no aceptar alturas fijas para On repeat y un menú sutil. 
 
 ## Créditos y licencias
 
-- **Diseño, textos, fotografía e imágenes de los proyectos:** propios, Taylor Swift, Babeblade, Universidad Maimonides. Jukebox: trabajo grupal con Lola García Marelli, Abril Mancuso y Agustina Pacharelli.
+- **Diseño y textos:** propios. En los proyectos aparecen marcas e imágenes de terceros: Taylor Swift (folklore), fotos de la artista Babeblade y la Universidad Maimónides (UMAI TV).
+- **JukeBox:** trabajo grupal con Lola García Marelli, Abril Mancuso y Agustina Pacharelli.
 - **Tipografías:** [Inter](https://fonts.google.com/specimen/Inter) y [Playfair Display](https://fonts.google.com/specimen/Playfair+Display), de Google Fonts, con licencia SIL Open Font License.
 - **Datos, carátulas y previews de las canciones:** iTunes Search API, de Apple. Son propiedad de Apple y de sus titulares de derechos; se muestran y reproducen desde los servidores de Apple, sin descargarlos ni guardarlos.
 - **Framework:** [Astro](https://astro.build), licencia MIT.

@@ -30,12 +30,12 @@ Diseño en Readymag → primera versión en HTML, CSS y JavaScript → migració
 - Errores al empezar con Motion y con las imágenes del disco.
 
 6. Qué reconozco como pendiente o mejorable
-- Los lienzos tienen alto fijo y en escritorio el diseño escala, pero no se reorganiza.\
+- Los lienzos tienen alto fijo y en escritorio el diseño escala, pero no se reorganiza.
 - El error por límite de pedidos de la API no se pudo probar en el navegador.
 - El disco muestra las imágenes del portfolio y no el proyecto completo, porque Behance no deja mostrarlo en otra página.
 - Los proyectos todavía no se generan desde projects.js.
 
-Uso de IA: está detallado en la entrada 18.
+Uso de IA: está detallado en la entrada 17.
 
 BITÁCORA COMPLETA
 
@@ -258,18 +258,18 @@ Opciones que consideré: A) entrada de los proyectos al hacer scroll; B) un ecua
 
 Límite que reconozco: Los textos con reveal empiezan invisibles y los hace aparecer main.js, o sea, si el JavaScript fallara, no se verían.
 
-Después, la entrada de los textos y el giro del vinilo se rehicieron con Motion (entradas 14 y 17); las pruebas de esa versión están ahí.
+Después, la entrada de los textos y el giro del vinilo se rehicieron con Motion (entradas 13 y 16); las pruebas de esa versión están ahí.
 
 12. 7 de noviembre — Contraste y foco
 
-Medí el contraste de todos los pares de texto y fondo con la fórmula de WCAG 2.1 (nivel AA: 4.5:1 para texto común, 3:1 para texto grande y para el borde de foco). Casi todo pasa: el texto principal da entre 9.7 y 13.2, y el cceleste pastel sobre lavanda da 4.72, que es el más justo. Encontré dos problemas:
+Medí el contraste de todos los pares de texto y fondo con la fórmula de WCAG 2.1 (nivel AA: 4.5:1 para texto común, 3:1 para texto grande y para el borde de foco). Casi todo pasa: el texto principal da entre 9.7 y 13.2, y el celeste pastel sobre lavanda da 4.72, que es el más justo. Encontré dos problemas:
 
 1. El texto del botón de contacto era el azul del original (#0080FF) al 39% de opacidad. Sobre la crema daba 1.64. Lo cambié por un azul sólido, #0066CC, que da 5.04 y mantiene el mismo tono.
 2. El borde de foco era crema en todos los links, pero las imágenes de los proyectos están sobre lavanda o crema, y ahí daba entre 1.0 y 1.23: navegando con Tab no se veía dónde estaba el foco. Ahora es ink (9.7 sobre lavanda) y solo queda crema en contacto, donde el fondo es indigo. Esa regla gana por especificidad, también en mobile.
 
-14. 10 de noviembre — La historia: el portfolio es una canción (Motion)
+13. 10 de noviembre — La historia: el portfolio es una canción (Motion)
 
-Problema: El profesor pidió que el portfolio cuente una historia a través de las animaciones y recomendó usar Motion. Las animaciones que tenía (entrada de textos, elevación de imágenes y vinilo) estaban bien, pero eran sueltas ya que no contaban nada en órden.
+Problema: El profesor pidió que el portfolio cuente una historia a través de las animaciones y recomendó usar Motion. Las animaciones que tenía (entrada de textos, elevación de imágenes y vinilo) estaban bien, pero eran sueltas ya que no contaban nada en orden.
 
 Decisión: Usar el concepto que ya tenía, una canción por proyecto, para todo el recorrido: el portfolio es una canción y el scroll es el tema avanzando. Cada sección es una parte de la canción y tiene su propia animación.
 
@@ -279,7 +279,7 @@ Problema que apareció: En la primera prueba, tres animaciones (el título de On
 
 Accesibilidad: Con prefers-reduced-motion no hay animaciones de entrada ni pulsos: todo se ve desde el principio. La barra de reproducción se mantiene, porque no es decorativa sino que acompaña el scroll que hace el usuario, no se mueve sola. Es aria-hidden, porque el menú ya indica la sección actual con aria-current.
 
-15. 11 de noviembre — Mini reproductor: la canción elegida te acompaña
+14. 11 de noviembre — Mini reproductor: la canción elegida te acompaña
 
 Problema. Con las animaciones nuevas la historia se entendía, pero faltaba algo que la hiciera sentir como escuchar música de verdad. 
 
@@ -290,13 +290,13 @@ Alternativas que se pensaron:
 
 Decisión. La alternativa 2. Me gusta más la idea de la playlist: que el usuario elija la canción y que se mantenga mientras recorre el portfolio. No quise que cambie según el trabajo porque eso ya lo había hecho un compañero. El usuario elige la canción en On repeat y el mini reproductor la mantiene sonando mientras recorre el portfolio. Así el vinilo grande y el mini reproductor no compiten y son el mismo reproductor, grande en la playlist y chico en el resto de la página.
 
-16. 13 de noviembre — Cada proyecto se abre como un disco
+15. 13 de noviembre — Cada proyecto se abre como un disco
 
 Problema: Al tocar las imágenes de los proyectos, el sitio mandaba directo a Behance en otra pestaña. Se sentía brusco ya que quien estaba recorriendo el portfolio se iba a otra página.
 
 Decisión: Una vista del proyecto dentro del portfolio, con las imágenes que ya están en el sitio, pero que tenga que ver con la música: cada proyecto se abre como un disco. No tenía las imágenes de los proyectos para exportarlas, y quería que la vista fuera más creativa y tuviera que ver con la música, como el resto del portfolio. Entonces se pensó en un vinilo que sale de la funda hacia el costado y empieza a girar, con el nombre del proyecto en la etiqueta del centro. Todo esto mantiene coherencia con el mini reproductor ya que si se coloca play en uno, comienza a sonar el otro.
 
-17. 18 de noviembre — Revisión del código
+16. 18 de noviembre — Revisión del código
 
 Antes de entregar, revisé todo el código personalmente y luego con Claude Code buscando código que sobrara, errores y detalles de contenido. No había console.log olvidados ni notas pendientes, y todas las imágenes tenían texto alternativo. Lo que se encontró y se arregló:
 
@@ -308,7 +308,7 @@ Antes de entregar, revisé todo el código personalmente y luego con Claude Code
 - Código sin usar: El reproductor compartido tenía una función load que nadie usaba, y el CSS del mini reproductor tenía dos reglas iguales seguidas. Se borró y se unió.
 - El disco de On repeat gira con Motion: Era el único giro hecho con CSS (@keyframes y las clases is-spinning e is-playing); el del mini reproductor y el del disco de cada proyecto ya eran con Motion. Ahora story.js escucha el evento player:update y hace girar el disco mientras suena, lo frena donde está al pausar y lo endereza al cambiar de track. Así todas las animaciones del sitio usan Motion.
 
-18. Uso de inteligencia artificial
+17. Uso de inteligencia artificial
 
 opencode (primera versión del proyecto):
 - Tareas para las que lo usé: trasladar el portfolio completo de mi diseño en Readymag a código (HTML, CSS y JavaScript).
@@ -319,7 +319,7 @@ Claude (asistente de chat), desde el 26/10:
 - Qué hice yo: ejecuté los comandos, copié los archivos, pegué y modifiqué el código, y verifiqué en el navegador que cada cambio se viera igual.
 Errores o límites detectados: Me dijo que mi versión de Node servía y Astro exigía una más nueva. Lo detecté al ejecutar el proyecto. Supuso que mi diseño no tenía versión para celular. Lo corrigió después de ver mi CSS.
 Aprendí que conviene verificar lo que dice la IA contra mi propio código.
-- Decisiones que tomé yo: migrar a Astro en lugar de rehacer el proyecto, rediseñar con criterio responsive para cumplir la consigna completa, componhacer componentesentizar sin tocar el CSS, y dejar para después la revisión del tramo de escritorio.
+- Decisiones que tomé yo: migrar a Astro en lugar de rehacer el proyecto, rediseñar con criterio responsive para cumplir la consigna completa, hacer componentes sin tocar el CSS, y dejar para después la revisión del tramo de escritorio.
 
 Claude Code (agente en la terminal, con acceso al proyecto), desde el 28/10:
 - Tareas para las que lo usé: leer el proyecto completo y compararlo con la consigna, proponer un plan en pasos chicos y completar esta bitácora con lo que muestran el código y el historial de commits.
