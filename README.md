@@ -1,4 +1,4 @@
-# Avi Motta — UX Artist
+# Avi Motta - UX Artist
 
 Portfolio web personal e interactivo. Examen final de Programación Multimedial IV.
 
@@ -150,8 +150,6 @@ Los mensajes están en un elemento con `role="status"` y `aria-live="polite"`, p
 
 - **Hasta 899 px (celular y tablet vertical):** el lienzo deja de existir y todo pasa a una columna en flujo normal, con tipografías fluidas (`clamp()`). En tablet, el contenido no pasa de 640 px y queda centrado (`padding-inline: max(20px, calc((100% - 640px) / 2))`), mientras los fondos de color ocupan todo el ancho. En On repeat, la carátula queda chica al lado del título y el botón al proyecto ocupa todo el ancho.
 - **Desde 900 px (tablet acostada, notebook, monitor):** el lienzo escala proporcionalmente para conservar la composición del diseño original. En 1024 px se ve exactamente como el diseño.
-
-Probado en: [completar: anchos y dispositivos probados, ver PROCESO.md]
 
 ## Accesibilidad
 
