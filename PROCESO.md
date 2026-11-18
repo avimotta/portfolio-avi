@@ -313,7 +313,39 @@ En el proyecto 3 (Babeblade) las puntas de la base de la laptop se veían cortad
 
 Pruebas: [completar]
 
-15. Uso de inteligencia artificial
+15. 18 de noviembre — La historia: el portfolio es una canción (Motion)
+
+Problema. El profesor pidió que el portfolio cuente una historia a través de las animaciones y recomendó usar Motion. Las animaciones que tenía (entrada de textos, elevación de imágenes y vinilo) estaban bien, pero eran sueltas: no contaban nada en orden.
+
+Decisión. Usar el concepto que ya tenía, una canción por proyecto, para todo el recorrido: el portfolio es una canción y el scroll es el tema avanzando. Cada sección es una parte de la canción y tiene su propia animación:
+
+Intro (Hero): la foto se acerca suave, "Avi" y "Motta" entran de a una palabra y después el rol. Los puntos del ángulo laten a 120 BPM mientras el hero está en pantalla.
+Primera estrofa (About): los párrafos aparecen de a uno, en lugar de todo el bloque junto. La última frase, "Keep scrolling and find my works!", tiene una flecha que rebota para invitar a seguir bajando.
+Estribillo (On repeat): el título, la introducción y los cuatro tracks aparecen escalonados, como un tracklist que carga. Al elegir otro track, el título y el artista nuevos entran en vez de cambiar de golpe, y la carátula aparece cuando termina de cargar.
+Las canciones (proyectos): cada proyecto entra con su propio movimiento. En UMAI TV y folklore las dos pantallas llegan desde lados opuestos y se encuentran; en UMAI TV, "click the screens and see!" aparece cuando ya están las pantallas. En JukeBox los tres celulares aparecen uno tras otro, como un ranking. En Babeblade el sitio de la artista emergente crece desde un poco más chico, como algo que "emerge".
+Outro (Contact): "CONTACT ME" entra un poco más grande y se asienta, como el acorde final, y después aparecen el mail y los links.
+Barra de reproducción (Nav): una línea fina debajo del menú se llena a medida que se baja, como el progreso de una canción. Al llegar a Contact, el tema terminó.
+
+Un mismo lenguaje de movimiento: todo sube desde abajo con la misma curva y duraciones parecidas. La única excepción son las pantallas de los proyectos 1 y 4, que llegan desde los costados, porque la idea de "encontrarse" es parte de esa animación. Reemplaza la animación original de Readymag, en la que el texto de About bajaba al entrar: ahora todo sube.
+
+Por qué Motion. Tiene justo las herramientas para esto: animate para animar, inView para disparar una animación cuando un elemento entra en pantalla, stagger para escalonar varios elementos y scroll para conectar algo con el avance del scroll (la barra de reproducción). Se instala con npm (npm install motion) y Astro lo incluye en el sitio al construir. Antes, main.js hacía la entrada de los textos con IntersectionObserver; ahora todo eso está en src/scripts/story.js y main.js se eliminó.
+
+Cómo está hecho.
+
+src/scripts/story.js tiene una función por parte de la canción (intro, verse, chorus, songs, outro). Una función onceInView hace que cada animación se ejecute una sola vez, la primera vez que el elemento entra en pantalla.
+En escritorio las secciones tienen display: contents y no se pueden observar, así que inView observa los elementos concretos (títulos, pantallas, celulares).
+Solo se animan opacidad y transform (posición y escala), que no cambian el lugar de los elementos en el lienzo: el sistema de --x, --y y --u sigue igual. La elevación al pasar el mouse usa la propiedad translate, que es distinta de transform, así que las dos animaciones no se pisan. La flecha de "click the screens" ya está rotada con transform, así que solo se anima su opacidad.
+Las palabras del nombre y la flecha de About pasaron a inline-block, porque transform no funciona sobre elementos en línea.
+
+Problema resuelto de paso. Antes, si el JavaScript fallaba, los textos con animación de entrada no se veían (estaba en las limitaciones del README). Ahora los elementos arrancan invisibles solo si <html> tiene la clase motion, que la pone un script en el <head>. Si Motion no cargó a los 3 segundos, el script saca la clase y todo se ve sin animación. Sin JavaScript, la clase nunca se pone.
+
+Problema que apareció. En la primera prueba, tres animaciones (el título de On repeat, el final de On repeat y los links de Contact) no aparecían y la consola mostraba "Invalid value used as weak map key". Era porque les pasaba a Motion una lista de selectores de texto, y en una lista Motion espera elementos. Se resolvió buscando primero los elementos con querySelectorAll.
+
+Accesibilidad. Con prefers-reduced-motion no hay animaciones de entrada ni pulsos: todo se ve desde el principio. La barra de reproducción se mantiene, porque no es decorativa: acompaña el scroll que hace el usuario, no se mueve sola. Es aria-hidden, porque el menú ya indica la sección actual con aria-current.
+
+Cómo lo verifiqué. Con un navegador automatizado (Playwright) se recorrió la página de arriba abajo en escritorio (1280 px) y en celular (390 px), y se comprobó que al final todos los elementos animados quedan visibles, que la barra llega al 100 % y que no hay errores en la consola. También con prefers-reduced-motion y con el JavaScript desactivado: en los dos casos todo se ve desde el principio. Se probó el cambio de track en On repeat. [completar: cómo lo probé yo en el navegador y en el celular, y qué ajusté]
+
+16. Uso de inteligencia artificial
 
 La consigna pide registrar el uso de IA. Lo hago en esta sección y la mantengo actualizada.
 
@@ -342,7 +374,9 @@ Código que escribió: src/data/projects.js y la nueva versión de OnRepeat.astr
 Qué revisé yo: [completar: qué partes del código leí, entendí o cambié]
 Errores o límites detectados: propuso usar la versión en columna hasta 1100 px para la tablet; al revisar el CSS él mismo vio que era un error, porque esa versión no está pensada para pantallas anchas, y lo corrigió antes de aplicarlo. También cambió dos veces lo que había anticipado: en Nav usó scroll y getBoundingClientRect en lugar de IntersectionObserver, y en On repeat agrupó tres textos en un div que no estaba en la explicación; en los dos casos lo avisó. [completar: otros errores que haya detectado yo]
 Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat (primero después del proyecto 4 y después, al verla, después de About), darle más jerarquía al link al proyecto, achicar On repeat para que sea coherente con About, no aceptar que las alturas quedaran fijas y cambiar la estructura a dos lienzos, una navegación en barra pero sutil para no tapar el hero, qué animaciones sumar, dejar la entrada solo en los textos y que se eleven todas las imágenes, el nuevo concepto de una canción por proyecto, las canciones elegidas (y el cambio de Vogue por Girls Just Want to Have Fun), y resolverlo como playlist entre las tres alternativas que me propuso.
-16. Pendiente
+Claude Code, 18 de noviembre (animaciones con Motion). Le pedí ayuda para entender la consigna del profesor ("contar una historia con las animaciones") y para hacerlo con Motion. Revisó el portfolio y propuso la historia de "el portfolio es una canción", con una animación por sección y la barra de reproducción; la elegí yo y le pedí que hiciera todo. Escribió src/scripts/story.js, los cambios en Hero, About, ProjectSection, Nav, index.astro y style.css, y esta entrada de la bitácora. Probó el sitio con un navegador automatizado. [completar: qué revisé yo, qué cambié o pedí cambiar]
+
+17. Pendiente
  Migrar el proyecto a Astro. (hecho, 26/10)
  Crear el primer componente (ProjectSection) y usarlo en los cuatro proyectos. (hecho, 26/10)
  Hacer los componentes Hero, About y Contact, hasta tener al menos tres relevantes, con responsabilidad clara. (hecho, 26/10)
@@ -355,7 +389,7 @@ Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat 
  Escribir el README completo.
  Probar en distintos tamaños de pantalla y registrar los resultados.
  Preparar la defensa: poder explicar cada componente y hacer un cambio en vivo.
-17. Registro de próximas entradas
+18. Registro de próximas entradas
 
 Agregar acá, con fecha, cada decisión, alternativa descartada, problema y solución.
 

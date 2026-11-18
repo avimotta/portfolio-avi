@@ -20,6 +20,8 @@ const links = [
       </li>
     ))}
   </ul>
+  <!-- Barra de reproducción: se llena con el scroll (src/scripts/story.js) -->
+  <div class="site-progress" aria-hidden="true"><span class="site-progress-fill"></span></div>
 </nav>
 
 <style is:global>
@@ -45,6 +47,7 @@ const links = [
   /* ── Menú: pastilla flotante centrada, semitransparente para no tapar el hero ── */
   .site-nav {
     position: fixed;
+    /* referencia para la barra de reproducción */
     top: calc(env(safe-area-inset-top, 0px) + 12px);
     left: 50%;
     z-index: 20;
@@ -75,6 +78,27 @@ const links = [
   }
 
   .site-nav a:hover { background: var(--cream); }
+
+  /* ── Barra de reproducción: la canción (el portfolio) avanza con el scroll ── */
+  .site-progress {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 1px;
+    height: 2px;
+    border-radius: 2px;
+    background: #2F2B5326;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .site-progress-fill {
+    display: block;
+    height: 100%;
+    background: var(--indigo);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
 
   /* sección actual: mismo lenguaje que el track elegido en On repeat */
   .site-nav a[aria-current="true"] {

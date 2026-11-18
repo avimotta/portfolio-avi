@@ -22,6 +22,22 @@ import { projects } from "../data/projects.js";
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:wght@400..900&display=swap">
 <link rel="stylesheet" href="css/style.css">
+
+<!-- Animaciones de la historia (Motion). Marca <html> con "motion" antes de
+     pintar, para que los elementos que van a entrar arranquen invisibles y no
+     se vea un parpadeo. Si el usuario pidió menos movimiento, no se marca.
+     Si el script de Motion no cargó a los 3 segundos, se saca la marca y todo
+     se ve igual, sin animación. -->
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    root.classList.add("motion");
+    setTimeout(function () {
+      if (!window.__storyReady) root.classList.remove("motion");
+    }, 3000);
+  })();
+</script>
 </head>
 
 <body>
@@ -221,6 +237,9 @@ import { projects } from "../data/projects.js";
 
 </main>
 
-<script is:inline src="/js/main.js" defer></script>
+<!-- Astro procesa este script e incluye Motion desde node_modules -->
+<script>
+  import "../scripts/story.js";
+</script>
 </body>
 </html>
