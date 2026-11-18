@@ -1,0 +1,418 @@
+---
+// Cada proyecto se abre como un disco, encima de la página, sin ir a Behance.
+//   - La funda (sleeve) tiene de tapa la imagen del proyecto que se tocó.
+//   - El vinilo sale de la funda y gira.
+//   - La contratapa tiene el nombre, la canción del proyecto (con play), la
+//     descripción como "liner notes" y el link al proyecto completo en Behance.
+// Usa <dialog>: el navegador ya resuelve el foco, la tecla Esc y que el resto
+// de la página no se pueda usar mientras está abierto.
+// Sin JavaScript, las imágenes siguen siendo links a Behance.
+const { projects = [] } = Astro.props;
+---
+<dialog class="record" aria-labelledby="record-title" data-records={JSON.stringify(projects)}>
+  <div class="record-inner">
+    <button type="button" class="record-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+
+    <div class="record-front">
+      <div class="record-vinyl" aria-hidden="true">
+        <span class="record-label"><span class="record-label-name"></span></span>
+      </div>
+      <div class="record-sleeve">
+        <img class="record-cover" alt="">
+      </div>
+    </div>
+
+    <div class="record-back">
+      <p class="record-kicker">Now spinning</p>
+      <h2 class="record-title" id="record-title"></h2>
+      <p class="record-name"></p>
+
+      <div class="record-song">
+        <button type="button" class="record-play" aria-pressed="false">
+          <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15L20 12z"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h4.5v15H6zM13.5 4.5H18v15h-4.5z"/></svg>
+        </button>
+        <p>
+          <span class="record-song-label">The song of <span class="record-song-project"></span></span>
+          <span class="record-song-title"></span>
+        </p>
+      </div>
+
+      <p class="record-notes-title">Liner notes</p>
+      <div class="record-notes"></div>
+
+      <a class="record-behance" target="_blank" rel="noopener noreferrer">
+        Full project on Behance <span aria-hidden="true">&nearr;</span>
+      </a>
+    </div>
+  </div>
+</dialog>
+
+<style is:global>
+  /* el <dialog> ocupa toda la pantalla y es transparente: un clic en él (y no
+     en .record-inner) es un clic afuera del disco, y lo cierra */
+  .record {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 24px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--sans);
+  }
+
+  .record[open] { display: grid; place-items: center; }
+
+  .record::backdrop { background: #2F2B53B3; }
+
+  html.record-open { overflow: hidden; } /* la página no scrollea por detrás */
+
+  .record-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 360px);
+    align-items: center;
+    gap: 56px;
+    max-width: 960px;
+    max-height: 100%;
+    padding: 40px 48px 40px 40px;
+    border-radius: 28px;
+    background: var(--cream);
+    box-shadow: 0 24px 60px #0000004D;
+    overflow: auto;
+  }
+
+  .record-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .record-close svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .record-close:hover { background: var(--lavender); }
+
+  /* ── Frente: funda + vinilo. El vinilo empieza escondido detrás de la funda
+     y Motion lo saca hacia la derecha. El espacio a la derecha de la funda es
+     el lugar adonde sale. ── */
+  .record-front {
+    --size: 320px;
+    position: relative;
+    width: calc(var(--size) * 1.42);
+    height: var(--size);
+  }
+
+  .record-sleeve {
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 2;
+    width: var(--size);
+    height: var(--size);
+    padding: 22px;
+    border-radius: 6px;
+    background: linear-gradient(145deg, var(--lavender), #B9C4F5);
+    box-shadow: 0 10px 30px #2F2B5340;
+    display: grid;
+    place-items: center;
+  }
+
+  /* la imagen entra entera en la funda, sea apaisada (laptops) o alta (celular) */
+  .record-cover {
+    position: absolute;
+    inset: 22px;
+    width: calc(100% - 44px);
+    height: calc(100% - 44px);
+    max-width: none;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 14px #2F2B5340);
+  }
+
+  .record-vinyl {
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    z-index: 1;
+    width: calc(var(--size) * 0.96);
+    height: calc(var(--size) * 0.96);
+    border-radius: 50%;
+    /* surcos del vinilo, como el disco de On repeat */
+    background: repeating-radial-gradient(circle, #1B1830 0 2px, #2A2645 2px 4px);
+    box-shadow: 0 8px 24px #0000004D;
+    display: grid;
+    place-items: center;
+  }
+
+  /* etiqueta del centro del disco, con el nombre del proyecto */
+  .record-label {
+    display: grid;
+    place-items: center;
+    width: 36%;
+    height: 36%;
+    border-radius: 50%;
+    background: var(--indigo);
+    color: var(--cream);
+    font: 600 13px/1.1 var(--sans);
+    text-align: center;
+    position: relative;
+  }
+
+  .record-label::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--cream);
+    left: calc(50% - 5px);
+    top: calc(50% - 5px);
+  }
+
+  .record-label-name { transform: translateY(-16px); max-width: 80%; }
+
+  /* ── Contratapa ── */
+  .record-kicker,
+  .record-notes-title,
+  .record-song-label {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--indigo);
+  }
+
+  .record-title {
+    margin: 6px 0 0;
+    font-family: var(--serif);
+    font-size: 34px;
+    line-height: 1.1;
+    color: var(--indigo);
+  }
+
+  .record-name { margin: 6px 0 0; font-size: 15px; font-weight: 600; }
+
+  .record-song {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 22px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: var(--lavender);
+  }
+
+  .record-song p { margin: 0; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .record-song-title { font-size: 15px; font-weight: 600; }
+
+  .record-play {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--indigo);
+    color: var(--cream);
+    cursor: pointer;
+  }
+
+  .record-play:hover { background: var(--ink); }
+  .record-play svg { width: 20px; height: 20px; fill: currentColor; }
+  .record-play .icon-pause,
+  .record-play[aria-pressed="true"] .icon-play { display: none; }
+  .record-play[aria-pressed="true"] .icon-pause { display: block; }
+
+  .record-notes-title { margin-top: 24px; }
+
+  .record-notes p {
+    margin: 8px 0 0;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .record-behance {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--cream);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .record-behance:hover { background: var(--indigo); }
+
+  .record-close:focus-visible,
+  .record-play:focus-visible,
+  .record-behance:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  /* ── Tablet y celular: el disco arriba, la contratapa abajo ── */
+  @media (max-width: 899px) {
+    .record { padding: 12px; }
+    .record-inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+      padding: 56px 22px 28px;
+      width: min(560px, 100%);
+    }
+    .record-front { --size: min(220px, 54vw); justify-self: center; }
+    .record-title { font-size: 28px; }
+    .record-label { font-size: 10px; }
+    .record-label-name { transform: translateY(-11px); }
+  }
+</style>
+
+<script>
+  import { animate, stagger } from "motion";
+
+  const dialog = document.querySelector("dialog.record");
+  if (dialog && typeof dialog.showModal === "function") init();
+
+  function init() {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const EASE = [0.22, 0.61, 0.36, 1];
+    const records = JSON.parse(dialog.dataset.records || "[]");
+
+    const inner = dialog.querySelector(".record-inner");
+    const sleeve = dialog.querySelector(".record-sleeve");
+    const vinyl = dialog.querySelector(".record-vinyl");
+    const cover = dialog.querySelector(".record-cover");
+    const titleEl = dialog.querySelector(".record-title");
+    const nameEl = dialog.querySelector(".record-name");
+    const labelName = dialog.querySelector(".record-label-name");
+    const songProject = dialog.querySelector(".record-song-project");
+    const songTitle = dialog.querySelector(".record-song-title");
+    const notes = dialog.querySelector(".record-notes");
+    const behance = dialog.querySelector(".record-behance");
+    const playBtn = dialog.querySelector(".record-play");
+    const back = Array.from(dialog.querySelector(".record-back").children);
+
+    let index = -1;   // proyecto abierto (posición en la lista)
+    let spin = null;  // giro del vinilo
+    let closing = false;
+
+    // Cuánto sale el vinilo de la funda: un poco menos de la mitad.
+    const slideOut = () => sleeve.offsetWidth * 0.42;
+
+    /* ── Abrir ── */
+    function open(id, img) {
+      index = records.findIndex((r) => r.id === id);
+      const r = records[index];
+      if (!r) return false;
+
+      cover.src = img ? img.currentSrc || img.src : "";
+      cover.alt = img ? img.alt : "";
+      titleEl.textContent = document.getElementById(`${id}-title`)?.textContent || r.name;
+      nameEl.textContent = r.name;
+      labelName.textContent = r.name;
+      songProject.textContent = r.name;
+      songTitle.textContent = `${r.song.title} — ${r.song.artist}`;
+      behance.href = r.behance;
+      behance.setAttribute("aria-label", `See the full ${r.name} project on Behance (opens in a new tab)`);
+
+      // La descripción del proyecto, la misma que está en la página.
+      notes.replaceChildren(
+        ...Array.from(document.querySelectorAll(`.s-${id} .body p`), (p) => p.cloneNode(true))
+      );
+
+      syncPlay(window.portfolioPlayer && window.portfolioPlayer.state);
+      closing = false;
+      document.documentElement.classList.add("record-open");
+      dialog.showModal();
+
+      if (reduced) {
+        vinyl.style.transform = `translateX(${slideOut()}px)`;
+        return true;
+      }
+
+      // La funda entra, el vinilo sale y empieza a girar, la contratapa aparece.
+      animate(inner, { opacity: [0, 1], scale: [0.96, 1] }, { duration: 0.35, ease: EASE });
+      animate(sleeve, { y: [40, 0], rotate: [-4, 0] }, { duration: 0.6, ease: EASE });
+      animate(vinyl, { x: [0, slideOut()], rotate: [0, 120] }, { duration: 0.9, delay: 0.35, ease: EASE })
+        .then(() => {
+          if (closing) return;
+          spin = animate(vinyl, { rotate: [120, 480] }, { duration: 8, repeat: Infinity, ease: "linear" });
+        });
+      animate(back, { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: stagger(0.07, { startDelay: 0.3 }), ease: EASE });
+      return true;
+    }
+
+    /* ── Cerrar: el vinilo vuelve a la funda y el disco se va ── */
+    async function close() {
+      if (closing || !dialog.open) return;
+      closing = true;
+      if (spin) { spin.stop(); spin = null; }
+
+      if (!reduced) {
+        await animate(vinyl, { x: 0, rotate: 0 }, { duration: 0.45, ease: "easeIn" });
+        await animate(inner, { opacity: 0, scale: 0.96 }, { duration: 0.2 });
+      }
+      dialog.close(); // el navegador devuelve el foco a la imagen que abrió el disco
+    }
+
+    dialog.addEventListener("close", () => {
+      document.documentElement.classList.remove("record-open");
+      inner.style.opacity = "";
+      inner.style.transform = "";
+      vinyl.style.transform = "";
+    });
+
+    // Esc: en lugar de cerrar de golpe, cierra con la animación.
+    dialog.addEventListener("cancel", (e) => {
+      e.preventDefault();
+      close();
+    });
+
+    dialog.querySelector(".record-close").addEventListener("click", close);
+
+    // Clic afuera del disco (en el fondo oscuro).
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) close();
+    });
+
+    /* ── La canción del proyecto: suena en el mismo reproductor de siempre ── */
+    playBtn.addEventListener("click", () => {
+      if (window.portfolioPlayer && index !== -1) window.portfolioPlayer.playIndex(index);
+    });
+
+    function syncPlay(state) {
+      const on = !!(state && state.index === index && state.playing);
+      playBtn.setAttribute("aria-pressed", on ? "true" : "false");
+      const r = records[index];
+      if (r) playBtn.setAttribute("aria-label", `${on ? "Pause" : "Play"} ${r.song.title} by ${r.song.artist}`);
+    }
+
+    document.addEventListener("player:update", (e) => syncPlay(e.detail));
+
+    /* ── Las imágenes de los proyectos abren su disco ──
+       Con Ctrl/Cmd, Shift o la rueda del mouse se respeta el link a Behance. */
+    document.querySelectorAll("a[data-record]").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+        if (open(link.dataset.record, link.querySelector("img"))) e.preventDefault();
+      });
+    });
+  }
+</script>

@@ -6,6 +6,7 @@ import Contact from "../components/Contact.astro";
 import OnRepeat from "../components/OnRepeat.astro";
 import Nav from "../components/Nav.astro";
 import MiniPlayer from "../components/MiniPlayer.astro";
+import RecordModal from "../components/RecordModal.astro";
 import { projects } from "../data/projects.js";
 ---
 
@@ -130,7 +131,7 @@ import { projects } from "../data/projects.js";
 
     <a class="w shot" href="https://www.behance.net/gallery/251283847/Landing-Page-for-university-streaming"
       target="_blank" rel="noopener noreferrer" style="--x:67;--y:1311;--w:609;--h:356"
-      aria-label="View the University streaming project on Behance">
+      data-record="p1" aria-haspopup="dialog" aria-label="Open the UMAI TV project">
       <img src="assets/img/streaming-mockup-1.png" alt="UMAI TV landing page on a laptop, home screen" width="1457" height="854">
     </a>
 
@@ -141,7 +142,7 @@ import { projects } from "../data/projects.js";
 
     <a class="w shot" href="https://www.behance.net/gallery/251283847/Landing-Page-for-university-streaming"
       target="_blank" rel="noopener noreferrer" style="--x:353;--y:1601;--w:604;--h:354"
-      aria-label="View the University streaming project on Behance">
+      data-record="p1" aria-haspopup="dialog" aria-label="Open the UMAI TV project">
       <img src="assets/img/streaming-mockup-2.png" alt="UMAI TV landing page on a laptop, features section" width="1551" height="908">
     </a>
 
@@ -162,17 +163,17 @@ import { projects } from "../data/projects.js";
     <div class="phones">
       <a class="w phone" href="https://www.behance.net/gallery/234674487/Manual-de-marca-Jukebox"
         target="_blank" rel="noopener noreferrer" style="--x:197.5;--y:2420;--w:201;--h:420"
-        aria-label="View the Jukebox music app project on Behance">
+        data-record="p2" aria-haspopup="dialog" aria-label="Open the JukeBox project">
         <img src="assets/img/music-1.png" alt="Ranking music app, screen 1" width="366" height="765">
       </a>
       <a class="w phone" href="https://www.behance.net/gallery/234674487/Manual-de-marca-Jukebox"
         target="_blank" rel="noopener noreferrer" style="--x:410.5;--y:2420;--w:201;--h:420"
-        aria-label="View the Jukebox music app project on Behance">
+        data-record="p2" aria-haspopup="dialog" aria-label="Open the JukeBox project">
         <img src="assets/img/music-2.png" alt="Ranking music app, screen 2" width="366" height="765">
       </a>
       <a class="w phone" href="https://www.behance.net/gallery/234674487/Manual-de-marca-Jukebox"
         target="_blank" rel="noopener noreferrer" style="--x:624.5;--y:2420;--w:201;--h:420"
-        aria-label="View the Jukebox music app project on Behance">
+        data-record="p2" aria-haspopup="dialog" aria-label="Open the JukeBox project">
         <img src="assets/img/music-3.png" alt="Ranking music app, screen 3" width="366" height="765">
       </a>
     </div>
@@ -190,8 +191,11 @@ import { projects } from "../data/projects.js";
     titleStyle="--x:236;--y:3114;--w:549"
     bodyStyle="--x:174;--y:3740;--w:676"
   >
-    <img class="w shot" src="assets/img/artist-mockup.png" alt="Emerging artist website, main view" width="2088" height="1223"
-        style="--x:169;--y:3220;--w:685;--h:401">
+    <a class="w shot" href="https://www.behance.net/gallery/234672375/Babeblades-landing-page"
+      target="_blank" rel="noopener noreferrer" style="--x:169;--y:3220;--w:685;--h:401"
+      data-record="p3" aria-haspopup="dialog" aria-label="Open the Babeblade project">
+      <img src="assets/img/artist-mockup.png" alt="Emerging artist website, main view" width="2088" height="1223">
+    </a>
 
     <Fragment slot="body">
       <p>Web design for an emerging artist, focused on building a strong visual identity and digital presence. The layout highlights the artist’s work through clear hierarchy and immersive visuals, creating a more engaging and intuitive experience for users.</p>
@@ -211,12 +215,15 @@ import { projects } from "../data/projects.js";
 
     <a class="w shot" href="https://www.behance.net/gallery/234673811/folklore-landing-page"
       target="_blank" rel="noopener noreferrer" style="--x:67;--y:4060;--w:609;--h:369"
-      aria-label="View the folklore landing page on Behance">
+      data-record="p4" aria-haspopup="dialog" aria-label="Open the folklore project">
       <img src="assets/img/merch-1.png" alt="Taylor Swift merch landing page, screen 1" width="705" height="427">
     </a>
 
-    <img class="w shot" src="assets/img/merch-2.png" alt="Taylor Swift merch landing page, screen 2" width="776" height="450"
-        style="--x:353;--y:4350;--w:604;--h:350">
+    <a class="w shot" href="https://www.behance.net/gallery/234673811/folklore-landing-page"
+      target="_blank" rel="noopener noreferrer" style="--x:353;--y:4350;--w:604;--h:350"
+      data-record="p4" aria-haspopup="dialog" aria-label="Open the folklore project">
+      <img src="assets/img/merch-2.png" alt="Taylor Swift merch landing page, screen 2" width="776" height="450">
+    </a>
 
     <Fragment slot="body">
       <p>Concept landing page focused on showcasing merchandise in a clear and engaging way.</p>
@@ -240,6 +247,9 @@ import { projects } from "../data/projects.js";
 
 <!-- Mini reproductor: la canción elegida en On repeat sigue sonando en todo el recorrido -->
 <MiniPlayer />
+
+<!-- Cada proyecto se abre como un disco, sin salir de la página -->
+<RecordModal projects={projects} />
 
 <!-- Astro procesa este script e incluye Motion desde node_modules -->
 <script>

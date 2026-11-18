@@ -333,7 +333,13 @@ const first = tracks[0];
       toggle: toggle,
       load: function (index) { load(index, playing); },
       next: function () { load((current + 1) % picks.length, playing); },
-      prev: function () { load((current - 1 + picks.length) % picks.length, playing); }
+      prev: function () { load((current - 1 + picks.length) % picks.length, playing); },
+      // Lo usa el disco de cada proyecto: si ya es el track elegido, play/pausa;
+      // si no, lo elige y arranca a sonar.
+      playIndex: function (index) {
+        if (index === current && previewUrl) toggle();
+        else load(index, true);
+      }
     });
 
     // Avisa a quien escuche (el mini reproductor) que algo cambió.

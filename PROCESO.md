@@ -383,7 +383,36 @@ Accesibilidad: el reproductor es una región con aria-label "Music player"; los 
 
 Cómo lo verifiqué. Con Playwright, simulando la API y el audio: en escritorio y en celular, el reproductor no se ve arriba ni en On repeat, aparece al bajar con la canción elegida sonando, siguiente cambia de canción en los dos lugares y sigue sonando, pausa funciona, y al volver al Hero con música sigue visible. Sin errores en la consola. [completar: cómo lo probé yo con las canciones reales]
 
-17. Uso de inteligencia artificial
+17. 18 de noviembre — Cada proyecto se abre como un disco
+
+Problema. Al tocar las imágenes de los proyectos, el sitio mandaba directo a Behance en otra pestaña. Se sentía brusco: quien estaba recorriendo el portfolio se iba a otra página. Además, la imagen de Babeblade y la segunda pantalla de folklore no eran links, así que no hacían nada al tocarlas.
+
+Qué se probó primero. Mostrar el proyecto de Behance adentro del portfolio. La página normal de Behance bloquea los accesos automáticos, y la versión para insertar (behance.net/embed/project/...) solo trae la portada y el título, no las imágenes del proyecto, y al hacer clic igual lleva a Behance. Behance tampoco tiene una API pública. Para mostrar el proyecto completo habría que exportar las imágenes, y no las tengo en este momento.
+
+Decisión. Una vista del proyecto dentro del portfolio, con las imágenes que ya están en el sitio, pero que tenga que ver con la música: cada proyecto se abre como un disco. [completar: por qué me gustó esta idea]
+
+La funda del disco tiene de tapa la imagen del proyecto que se tocó.
+El vinilo sale de la funda hacia el costado y empieza a girar, con el nombre del proyecto en la etiqueta del centro.
+La contratapa tiene el título del proyecto, "The song of [proyecto]" con un botón para escucharla, la descripción como "Liner notes" (así se llaman los textos de los discos) y un botón "Full project on Behance".
+Al cerrar (con la X, con Esc o tocando afuera), el vinilo vuelve a la funda y el disco desaparece.
+
+Coherencia con el mini reproductor. El botón de play del disco solo suena si el usuario lo toca, y suena en el mismo reproductor de siempre: elige ese track en la playlist y aparece en el mini reproductor. Así se mantiene la idea de que la música la elige el usuario.
+
+Cómo está hecho.
+
+Componente nuevo, RecordModal.astro, con un elemento <dialog>. Con showModal() el navegador ya resuelve tres cosas: el foco queda adentro del disco, Esc lo cierra y el resto de la página no se puede usar mientras está abierto. Al cerrar, el foco vuelve a la imagen que lo abrió.
+Los datos del disco salen de lugares que ya existían: el nombre y la canción de projects.js (donde se sumó el link de Behance de cada proyecto), el título y la descripción de la misma página (se copian los párrafos del proyecto) y la imagen es la que se tocó. No hay textos repetidos.
+Todas las imágenes de los proyectos son links a Behance con data-record. Con JavaScript, el clic abre el disco; sin JavaScript, o con Ctrl/Cmd o la rueda del mouse, el link sigue llevando a Behance. Así se sumaron los links que faltaban (Babeblade y la segunda pantalla de folklore).
+Animaciones con Motion: el disco aparece, la funda sube, el vinilo sale y gira, y la contratapa aparece en escalonado. Al cerrar, el vinilo vuelve y después el disco se va. Para que Esc también cierre con animación, se intercepta el evento cancel del <dialog>.
+OnRepeat suma playIndex al reproductor compartido: si el track ya es el elegido, play/pausa; si no, lo elige y arranca a sonar.
+
+Problema que apareció. En la funda, la imagen alta de JukeBox (un celular) se salía por arriba y por abajo, porque height: 100% no funciona adentro de un grid sin alto definido. Se resolvió posicionando la imagen en absoluto dentro de la funda, con object-fit: contain, así entra entera sea apaisada (laptops) o alta (celular).
+
+Accesibilidad. El disco tiene como nombre el título del proyecto (aria-labelledby), los botones tienen nombre ("Close", "Play Espresso by Sabrina Carpenter") y el de Behance avisa que abre una pestaña nueva. Las imágenes avisan con aria-haspopup que abren un diálogo. Con prefers-reduced-motion, el disco aparece con el vinilo ya afuera y sin girar.
+
+Cómo lo verifiqué. Con Playwright, en escritorio y en celular: el disco abre con los datos correctos del proyecto (título, descripción, link de Behance), no se abre ninguna pestaña, el play suena y se refleja en el mini reproductor, Esc y el clic afuera lo cierran, el foco vuelve a la imagen y la página vuelve a scrollear. También con prefers-reduced-motion. [completar: cómo lo probé yo]
+
+18. Uso de inteligencia artificial
 
 La consigna pide registrar el uso de IA. Lo hago en esta sección y la mantengo actualizada.
 
@@ -416,7 +445,9 @@ Claude Code, 18 de noviembre (animaciones con Motion). Le pedí ayuda para enten
 
 Claude Code, 18 de noviembre (mini reproductor). Le conté la idea de un reproductor de verdad. Me propuso primero que cambiara de canción según el proyecto; le dije que prefería que el usuario elija la canción y que se mantenga, y lo hizo así. Escribió MiniPlayer.astro, los cambios en el script de OnRepeat para compartir el audio y la entrada 16 de esta bitácora, y lo probó con un navegador automatizado. [completar: qué revisé yo]
 
-18. Pendiente
+Claude Code, 18 de noviembre (el disco). Le pedí que probara si se podía mostrar Behance adentro de la página; lo probó y no se podía. Me propuso una vista del proyecto con las imágenes que ya tenía y yo le pedí que fuera más creativa y tuviera que ver con la música; propuso el disco y me gustó. Me hizo notar que Babeblade no tenía link y le pasé el de Behance. Escribió RecordModal.astro, los cambios en index.astro, projects.js y OnRepeat, y esta entrada. Con acceso a la API real encontró que "Espresso" traía otra versión y lo arregló. Para probar Behance y la API real creó un entorno de trabajo con acceso solo a esas páginas, que aprobé yo. [completar: qué revisé yo]
+
+19. Pendiente
  Migrar el proyecto a Astro. (hecho, 26/10)
  Crear el primer componente (ProjectSection) y usarlo en los cuatro proyectos. (hecho, 26/10)
  Hacer los componentes Hero, About y Contact, hasta tener al menos tres relevantes, con responsabilidad clara. (hecho, 26/10)
@@ -429,7 +460,7 @@ Claude Code, 18 de noviembre (mini reproductor). Le conté la idea de un reprodu
  Escribir el README completo.
  Probar en distintos tamaños de pantalla y registrar los resultados.
  Preparar la defensa: poder explicar cada componente y hacer un cambio en vivo.
-19. Registro de próximas entradas
+20. Registro de próximas entradas
 
 Agregar acá, con fecha, cada decisión, alternativa descartada, problema y solución.
 
