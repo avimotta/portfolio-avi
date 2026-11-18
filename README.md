@@ -57,7 +57,8 @@ src/
   scripts/story.js          animaciones de la historia (Motion)
 public/
   css/style.css             estilos globales y sistema de lienzo
-  assets/                   imágenes
+  assets/                   imágenes (las pesadas en WebP)
+  favicon.ico, favicon.png, apple-touch-icon.png   ícono del sitio
 PROCESO.md                  bitácora de proceso y uso de IA
 ```
 
@@ -65,6 +66,7 @@ PROCESO.md                  bitácora de proceso y uso de IA
 
 - **Astro**, sin frameworks de componentes adicionales. El sitio es estático: Astro arma el HTML al construir, y el JavaScript que corre en el navegador es solo el de la playlist, el menú y las animaciones.
 - **Motion** ([motion.dev](https://motion.dev)) para las animaciones de la historia. Se instala con npm y Astro lo incluye al construir. Ver [La historia en las animaciones](#la-historia-en-las-animaciones).
+- **Imágenes en WebP** cuando eran pesadas: mantienen la transparencia y el sitio pasó de 5 MB a menos de 1 MB de imágenes.
 - **CSS propio, sin Tailwind.** El diseño original lo hice en Readymag y el CSS lo reconstruye con sus medidas exactas; una librería de utilidades no aportaba a eso.
 - **Un sistema de lienzo para escritorio.** El diseño está dibujado sobre un ancho de 1024. La variable `--u` equivale a una unidad de ese lienzo (`100cqw / 1024`), y cada elemento se ubica con `--x`, `--y` y `--w` multiplicados por `--u`. Así la composición se mantiene igual en cualquier pantalla de escritorio.
 - **Dos lienzos con una sección en flujo entre ellos.** Dentro de un lienzo todo tiene posición absoluta, y eso obliga a fijar su alto. Para las composiciones de los proyectos (mockups superpuestos, degradados) tiene sentido; para On repeat, cuyo contenido viene de una API, no. Por eso la página tiene un lienzo con Hero y About, On repeat en flujo normal (mide lo que ocupa su contenido) y un segundo lienzo con los proyectos y el contacto. El segundo lienzo conserva las coordenadas del diseño original y les resta 1065 con `--off`.
@@ -86,7 +88,7 @@ El portfolio es una canción y el scroll es el tema avanzando. Cada sección es 
 | Abrir un proyecto | RecordModal | La funda sube, el vinilo sale de la funda y gira, la contratapa aparece en escalonado; al cerrar, el vinilo vuelve a la funda |
 | La música que elegiste | MiniPlayer | Entra deslizándose desde abajo; el vinilo gira mientras suena, el ecualizador se mueve y al cambiar de track la carátula y el título entran |
 
-Todo sube desde abajo con la misma curva, salvo las pantallas de los proyectos 1 y 4, que llegan desde los costados. Cada animación se ejecuta una sola vez, al entrar en pantalla (`inView`); la barra usa `scroll` y los escalonados, `stagger`.
+Todas las animaciones usan Motion, también el giro del disco de On repeat. Todo sube desde abajo con la misma curva, salvo las pantallas de los proyectos 1 y 4, que llegan desde los costados. Cada animación se ejecuta una sola vez, al entrar en pantalla (`inView`); la barra usa `scroll` y los escalonados, `stagger`.
 
 Los elementos arrancan invisibles solo si `<html>` tiene la clase `motion`, que pone un script del `<head>` cuando hay JavaScript y no se pidió menos movimiento. Así, sin JavaScript o si Motion no carga, el sitio se ve completo.
 

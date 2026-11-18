@@ -161,18 +161,7 @@ const first = tracks[0];
     pointer-events: none;
   }
 
-  /* is-spinning: la imagen tiene el giro, pausado. is-playing: el giro corre.
-     Al pausar se saca solo is-playing, y el disco queda quieto en su ángulo. */
-  @keyframes repeat-spin {
-    to { transform: rotate(360deg); }
-  }
-
-  .repeat-cover.is-spinning img { animation: repeat-spin 6s linear infinite paused; }
-  .repeat-cover.is-playing img { animation-play-state: running; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .repeat-cover.is-spinning img { animation: none; }
-  }
+  /* El giro del disco mientras suena lo hace Motion, en src/scripts/story.js. */
 
   /* en el centro del disco, como la etiqueta de un vinilo; no gira */
   .repeat-play {
@@ -307,7 +296,6 @@ const first = tracks[0];
     var label = root.querySelector(".repeat-label");
     var songEl = root.querySelector(".repeat-title");
     var artistEl = root.querySelector(".repeat-artist");
-    var coverBox = root.querySelector(".repeat-cover");
     var cover = root.querySelector(".repeat-cover img");
     var playBtn = root.querySelector(".repeat-play");
     var link = root.querySelector(".repeat-link");
@@ -331,7 +319,6 @@ const first = tracks[0];
       audio: audio,
       state: null,
       toggle: toggle,
-      load: function (index) { load(index, playing); },
       next: function () { load((current + 1) % picks.length, playing); },
       prev: function () { load((current - 1 + picks.length) % picks.length, playing); },
       // Lo usa el disco de cada proyecto: si ya es el track elegido, play/pausa;
@@ -371,9 +358,7 @@ const first = tracks[0];
       playing = on;
       playBtn.setAttribute("aria-pressed", on ? "true" : "false");
       playBtn.textContent = on ? PAUSE : PLAY;
-      if (on) coverBox.classList.add("is-spinning", "is-playing"); // el disco gira
-      else coverBox.classList.remove("is-playing");               // se frena donde está
-      emit();
+      emit(); // story.js hace girar el disco (o lo frena) según este estado
     }
 
     function pause() {
@@ -440,7 +425,6 @@ const first = tracks[0];
       previewUrl = null;
       currentItem = null;
       audio.removeAttribute("src");
-      coverBox.classList.remove("is-spinning"); // la carátula nueva arranca derecha
     }
 
     // autoplay: si ya sonaba algo, la canción nueva arranca sola al estar lista.

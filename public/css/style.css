@@ -1,6 +1,8 @@
 /* ==========================================================================
    Avi Motta — Portfolio
-   Reconstrucción en HTML/CSS/JS puro del diseño original de Readymag.
+   Estilos globales. El diseño original lo hice en Readymag; este CSS lo
+   reconstruye con sus medidas exactas. Los estilos de cada componente con
+   lógica propia (Nav, OnRepeat, MiniPlayer, RecordModal) están en su archivo.
 
    SISTEMA DE ESCALA
    -----------------
@@ -75,13 +77,16 @@ main { --u: calc(100cqw / 1024); }
    lienzo real. En mobile vuelven a ser cajas normales (ver media query). */
 .sec { display: contents; }
 
-/* ── Bandas de color de fondo ───────────────────────────────────────────── */
+/* ── Capas de sangrado de contacto ──────────────────────────────────────── */
 
-.bleed--above { z-index: 3; }   /* img_14 va por encima de los degradados */
+/* la imagen de sangrado de contacto va por encima de los degradados */
+.bleed--above { z-index: 3; }
 
 /* el contenido de contacto tiene que quedar por encima de su sangrado */
 .s-contact .t,
 .s-contact .w { z-index: 4; }
+
+/* ── Bandas de color de fondo ───────────────────────────────────────────── */
 
 .band {
   position: absolute;

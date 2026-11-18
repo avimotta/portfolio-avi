@@ -412,7 +412,24 @@ Accesibilidad. El disco tiene como nombre el título del proyecto (aria-labelled
 
 Cómo lo verifiqué. Con Playwright, en escritorio y en celular: el disco abre con los datos correctos del proyecto (título, descripción, link de Behance), no se abre ninguna pestaña, el play suena y se refleja en el mini reproductor, Esc y el clic afuera lo cierran, el foco vuelve a la imagen y la página vuelve a scrollear. También con prefers-reduced-motion. [completar: cómo lo probé yo]
 
-18. Uso de inteligencia artificial
+18. 18 de noviembre — Revisión del código
+
+Antes de entregar, revisé todo el código con Claude Code buscando comentarios viejos, código que sobrara, errores y detalles de contenido. No había console.log olvidados ni notas pendientes, y todas las imágenes tenían texto alternativo. Lo que se encontró y se arregló:
+
+Ícono del sitio. La página tenía el ícono vacío (href="data:,") y en public/ quedaban favicon.svg y favicon.ico con el logo de Astro de la plantilla, sin usar. Se reemplazaron por mi ícono (favicon.ico, favicon.png y apple-touch-icon.png para la pantalla de inicio del celular, con fondo crema) y se borró el logo de Astro.
+Imágenes. Pesaban 5 MB en total (artist-mockup.png sola, 2,2 MB). Las siete más pesadas se pasaron a WebP, que mantiene la transparencia: quedaron en 460 KB entre todas, y se ven igual. La de Babeblade además se achicó a 1600 px de ancho, que alcanza para pantallas grandes.
+Descripción de JukeBox. Tenía un texto que no era de JukeBox ("a platform for emerging artists to showcase their work…"). Se reemplazó por una descripción de la app de ranking hecha a partir de lo que muestran las pantallas. [completar: revisar que el texto nuevo describa bien el proyecto]
+Textos. "Linkedin" pasó a "LinkedIn", y "Emerging Artist's Website" usa el mismo apóstrofo curvo (’) que "University’s".
+Comentarios viejos en style.css: el encabezado decía "Reconstrucción en HTML/CSS/JS puro" (ahora es Astro), uno mencionaba "img_14", un nombre de la exportación de Readymag, y un título de sección quedaba arriba de reglas que no eran de esa sección.
+Accesibilidad del mini reproductor. El link de la carátula se llamaba "Back to the playlist" para los lectores de pantalla, pero en pantalla muestra la canción. Ahora se lee "Back to the playlist: [canción], [artista]", que incluye lo que se ve.
+Código sin usar. El reproductor compartido tenía una función load que nadie usaba, y el CSS del mini reproductor tenía dos reglas iguales seguidas. Se borró y se unió.
+El disco de On repeat gira con Motion. Era el único giro hecho con CSS (@keyframes y las clases is-spinning e is-playing); el del mini reproductor y el del disco de cada proyecto ya eran con Motion. Ahora story.js escucha el evento player:update y hace girar el disco mientras suena, lo frena donde está al pausar y lo endereza al cambiar de track. Así todas las animaciones del sitio usan Motion.
+
+Pregunta posible en la defensa: por qué Nav y OnRepeat usan var y function y el resto usa const e import. Los scripts con is:inline Astro no los procesa: van tal cual al navegador. Los otros son módulos que Astro procesa al construir, y por eso pueden importar Motion desde node_modules.
+
+Cómo lo verifiqué. Se repitieron todas las pruebas con Playwright: animaciones en escritorio, celular, con menos movimiento y sin JavaScript; mini reproductor; disco de cada proyecto; que el disco de On repeat gire al sonar y quede quieto en pausa; que todas las imágenes carguen y que los íconos estén enlazados. [completar: cómo lo probé yo]
+
+19. Uso de inteligencia artificial
 
 La consigna pide registrar el uso de IA. Lo hago en esta sección y la mantengo actualizada.
 
@@ -447,20 +464,23 @@ Claude Code, 18 de noviembre (mini reproductor). Le conté la idea de un reprodu
 
 Claude Code, 18 de noviembre (el disco). Le pedí que probara si se podía mostrar Behance adentro de la página; lo probó y no se podía. Me propuso una vista del proyecto con las imágenes que ya tenía y yo le pedí que fuera más creativa y tuviera que ver con la música; propuso el disco y me gustó. Me hizo notar que Babeblade no tenía link y le pasé el de Behance. Escribió RecordModal.astro, los cambios en index.astro, projects.js y OnRepeat, y esta entrada. Con acceso a la API real encontró que "Espresso" traía otra versión y lo arregló. Para probar Behance y la API real creó un entorno de trabajo con acceso solo a esas páginas, que aprobé yo. [completar: qué revisé yo]
 
-19. Pendiente
+Claude Code, 18 de noviembre (revisión del código). Le pedí una revisión de todo el código. Me pasó una lista sin cambiar nada; le dije qué arreglar, le aclaré que la descripción de JukeBox no era la correcta y le pasé mi ícono. Hizo los arreglos de la entrada 18 y repitió todas las pruebas. [completar: qué revisé yo]
+
+20. Pendiente
  Migrar el proyecto a Astro. (hecho, 26/10)
  Crear el primer componente (ProjectSection) y usarlo en los cuatro proyectos. (hecho, 26/10)
  Hacer los componentes Hero, About y Contact, hasta tener al menos tres relevantes, con responsabilidad clara. (hecho, 26/10)
  Integrar una API o fuente dinámica de datos, con manejo de carga, error y vacío. (hecho, 28/10; adaptada al concepto de una canción por proyecto el mismo día)
- Sumar una interacción que modifique la experiencia o el contenido.
+ Sumar una interacción que modifique la experiencia o el contenido. (hecho: playlist con la API, 28/10; mini reproductor y disco de cada proyecto, 18/11)
  Revisar el responsive del tramo de escritorio (tablet y pantallas grandes). El de celular ya existe. (revisado, 28/10: columna con ancho máximo en tablet y texto de About que escala; falta registrar las pruebas)
- Revisar accesibilidad: contraste, foco, textos alternativos, navegación. (contraste y foco revisados, 29/10; faltan textos alternativos y navegación)
+ Revisar accesibilidad: contraste, foco, textos alternativos, navegación. (contraste y foco revisados, 29/10; textos alternativos y navegación revisados en la revisión del código, 18/11)
  Definir la navegación entre secciones. (hecho, 28/10: componente Nav)
- Unir la rama astro con main, publicar con enlace limpio de producción y probarlo en otros dispositivos.
- Escribir el README completo.
+ Unir la rama astro con main, publicar con enlace limpio de producción y probarlo en otros dispositivos. (unida y publicada; la rama animaciones-motion también se unió a main el 18/11; falta probar en otros dispositivos)
+ Escribir el README completo. (hecho; faltan los [completar])
  Probar en distintos tamaños de pantalla y registrar los resultados.
+ Completar los [completar] de esta bitácora y del README.
  Preparar la defensa: poder explicar cada componente y hacer un cambio en vivo.
-20. Registro de próximas entradas
+21. Registro de próximas entradas
 
 Agregar acá, con fecha, cada decisión, alternativa descartada, problema y solución.
 

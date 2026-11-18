@@ -10,7 +10,8 @@
 <section class="mini-player" aria-label="Music player" data-mini hidden>
   <div class="mini-progress" aria-hidden="true"><span class="mini-progress-fill"></span></div>
 
-  <a class="mini-track" href="#repeat-title" aria-label="Back to the playlist">
+  <a class="mini-track" href="#repeat-title">
+    <span class="mini-sr">Back to the playlist: </span>
     <span class="mini-cover"><img alt="" width="400" height="400" hidden></span>
     <span class="mini-text">
       <span class="mini-title"></span>
@@ -58,6 +59,17 @@
   }
 
   .mini-player[hidden] { display: none; }
+
+  /* texto solo para lectores de pantalla: el link se lee "Back to the playlist:
+     Espresso, Sabrina Carpenter", y así incluye lo que se ve */
+  .mini-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 
   /* avance del preview de 30 segundos, arriba de todo, de borde a borde */
   .mini-progress {
@@ -187,9 +199,8 @@
 
   /* en celular, sin ecualizador para que entre el título */
   @media (max-width: 480px) {
-    .mini-player { gap: 8px; }
+    .mini-player { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
     .mini-eq { display: none; }
-    .mini-player { grid-template-columns: minmax(0, 1fr) auto; }
   }
 </style>
 

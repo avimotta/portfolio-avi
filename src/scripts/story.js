@@ -4,7 +4,8 @@
    Cada sección es una parte del tema y las animaciones la cuentan en orden:
      Intro      → Hero: el nombre entra palabra por palabra y los puntos laten.
      Estrofa    → About: los párrafos aparecen de a uno.
-     Estribillo → On repeat: el tracklist carga track por track.
+     Estribillo → On repeat: el tracklist carga track por track y el disco gira
+                  mientras suena.
      Canciones  → Proyectos: cada uno entra con su propio movimiento.
      Outro      → Contact: el título cierra el tema y después aparecen los links.
    La barra de progreso del menú avanza con el scroll, como una canción.
@@ -143,11 +144,32 @@ function chorus() {
 
   // La carátula aparece cuando termina de cargar, como un disco que se pone.
   const cover = $(".repeat-cover img", section);
-  if (cover) {
-    cover.addEventListener("load", () => {
-      animate(cover, { opacity: [0, 1], scale: [0.85, 1] }, { duration: 0.5, ease: EASE });
-    });
+  if (!cover) return;
+  cover.addEventListener("load", () => {
+    animate(cover, { opacity: [0, 1], scale: [0.85, 1] }, { duration: 0.5, ease: EASE });
+  });
+
+  // El disco gira mientras suena y se frena donde está al pausar.
+  // Al cambiar de track se cancela el giro, así la carátula nueva arranca derecha.
+  // OnRepeat avisa cada cambio con el evento "player:update".
+  let spin = null;
+  let track = null;
+  function syncSpin(state) {
+    if (!state) return;
+    if (state.index !== track) {
+      track = state.index;
+      if (spin) spin.cancel();
+      spin = null;
+    }
+    if (state.playing) {
+      if (!spin) spin = animate(cover, { rotate: [0, 360] }, { duration: 6, repeat: Infinity, ease: "linear" });
+      else spin.play();
+    } else if (spin) {
+      spin.pause();
+    }
   }
+  document.addEventListener("player:update", (e) => syncSpin(e.detail));
+  syncSpin(window.portfolioPlayer && window.portfolioPlayer.state);
 }
 
 /* ── Las canciones: los cuatro proyectos ─────────────────────────────────── */
