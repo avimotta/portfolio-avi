@@ -4,40 +4,36 @@ Examen final de Programación Multimedial IV. Entrega: 19 de noviembre de 2026.
 
 RESUMEN
 
-Esta primera parte resume el proceso con los puntos que pide la consigna. Abajo está la bitácora completa, con el detalle de cada paso por fecha.
+Esta primera parte resume el proceso con los puntos que pide la consigna. Abajo está la bitácora completa con el detalle de cada paso por fecha.
 
 1. Qué problema de comunicación quise resolver
-Quiero que cuando alguien entre a mi portfolio sepa que soy una persona artística y musical y que vea la creatividad que hay detrás de mi trabajo. Por eso la música es el hilo conductor: cada proyecto tiene una canción y el portfolio se recorre como una canción.
+Quiero que cuando alguien entre a mi portfolio sepa que soy una persona artística y musical y que vea la creatividad que hay detrás de mi trabajo. Por eso la música es el hilo conductor y cada proyecto tiene una canción y el portfolio se recorre como una canción.
 
 2. Qué alternativas exploré y por qué elegí una
-- Concepto de On repeat: empezó como una lista de artistas que me gustan; lo cambié a una canción por proyecto, para que la música hable de mis trabajos y no solo de mis gustos (entrada 7).
-- Navegación: barra fija, índice de puntos o botón "Menu". Elegí una barra, pero como una pastilla chica para no tapar el hero (entrada 9).
-- Alturas fijas: un parche con números a mano, dos lienzos, o rehacer todo en flex/grid. Elegí dos lienzos, para no perder la composición de Readymag (entrada 8).
-- Mini reproductor: que la música cambie sola según el proyecto, o que el usuario elija la canción y la mantenga. Elegí que el usuario elija (entrada 15).
-- Proyectos: mostrar Behance adentro de la página (no se pudo: Behance no lo permite) o una vista propia. Elegí que cada proyecto se abra como un disco (entrada 16).
+- Concepto de On repeat: empezó como una lista de artistas que me gustan; lo cambié a una canción por proyecto, para que la música hable de mis trabajos y no sólo de mis gustos.
+- Navegación: barra fija, índice de puntos o botón "Menu". Elegí una barra, pero como una pastilla chica para no tapar el hero.
+- Mini reproductor: que la música cambie sola según el proyecto, o que el usuario elija la canción y la mantenga. Elegí que el usuario elija.
 
 3. Cómo evolucionaron la estructura, la identidad visual y las interacciones
 Diseño en Readymag → primera versión en HTML, CSS y JavaScript → migración a Astro y componentes → API de iTunes con la playlist "On repeat" → una canción por proyecto → dos lienzos, navegación, responsive y animaciones → la historia contada con Motion (el portfolio es una canción) → mini reproductor → cada proyecto se abre como un disco → revisión final del código.
 
 4. Qué pruebas hice en distintos tamaños de pantalla
-- Revisé los anchos 375 a 600 px (celular), 600 a 899 px (tablet vertical), 900 a 1440 px (notebook) y más de 1440 px (monitor). Los problemas que encontré y cómo los resolví están en la entrada 10.
-- Las animaciones, el mini reproductor y el disco se probaron con un navegador automatizado en 1280 px y 390 px, también con "menos movimiento" y sin JavaScript (entradas 14 a 17).
-- [completar: en qué dispositivos reales lo probé yo, por ejemplo mi celular y mi compu, y qué vi]
+- Revisé los anchos 375 a 600 px (celular), 600 a 899 px (tablet vertical), 900 a 1440 px (notebook) y más de 1440 px (monitor).
+- Las animaciones, el mini reproductor y el disco se probaron con un navegador automatizado en 1280 px y 390 px, también con "menos movimiento" y sin JavaScript.
+- Hice pruebas con mi celular, mi laptop y un monitor grande y vi todo en estado óptimo.
 
 5. Qué dificultades técnicas encontré y cómo las resolví
-- Astro no arrancaba por la versión de Node: actualicé Node (entrada 3).
-- El diseño de Readymag usa posiciones absolutas y alturas fijas: lo resolví con dos lienzos y On repeat en flujo normal (entrada 8).
-- Las secciones con display: contents no se pueden observar: el menú mira los títulos (entrada 9).
-- La API devolvía versiones equivocadas ("Espresso (On Vacation Version)"): ahora busca primero el título exacto (entrada 15).
-- Errores al empezar con Motion y con las imágenes del disco, explicados en las entradas 14 a 16.
+- Astro no corría por la versión de Node: actualicé Node (entrada 3).
+- El diseño de Readymag usa posiciones absolutas y alturas fijas: lo resolví con dos lienzos y On repeat en flujo normal.
+- Las secciones con display: contents no se pueden observar: el menú mira los títulos.
+- La API devolvía versiones equivocadas ("Espresso (On Vacation Version)"): ahora busca primero el título exacto.
+- Errores al empezar con Motion y con las imágenes del disco.
 
 6. Qué reconozco como pendiente o mejorable
-- Los lienzos tienen alto fijo y en escritorio el diseño escala, pero no se reorganiza.
-- Los links del menú en celular miden 29 px de alto, menos que los 44 px recomendados.
+- Los lienzos tienen alto fijo y en escritorio el diseño escala, pero no se reorganiza.\
 - El error por límite de pedidos de la API no se pudo probar en el navegador.
 - El disco muestra las imágenes del portfolio y no el proyecto completo, porque Behance no deja mostrarlo en otra página.
 - Los proyectos todavía no se generan desde projects.js.
-- El sitio está solo en inglés.
 
 Uso de IA: está detallado en la entrada 18.
 
@@ -254,217 +250,79 @@ El texto de About ahora mide calc(16 * var(--u)) en escritorio: en 1024 px mide 
 
 Decisión: En escritorio mantengo que el lienzo escale proporcionalmente de 900 px en adelante, para conservar la composición del diseño de Readymag.
 
-11. 28 de octubre — Animaciones
+11. 4 de noviembre — Animaciones
 
-Problema. El sitio tenía una sola animación (la entrada del texto de About). Quería darle más vida al recorrido, pero con animaciones que tuvieran que ver con el concepto y no fueran solo decoración.
+Problema: El sitio tenía una sola animación (la entrada del texto de About). Quería darle más vida al recorrido, pero con animaciones que tuvieran que ver con el concepto y no fueran solo decoración.
 
-Opciones que consideré: A) entrada de los proyectos al hacer scroll; B) un ecualizador animado en el track que suena; C) la carátula girando como un vinilo mientras suena; D) elevación de las imágenes al pasar el mouse. Elegí A, C y D. [completar: por qué]
+Opciones que consideré: A) entrada de los proyectos al hacer scroll; B) un ecualizador animado en el track que suena; C) la carátula girando como un vinilo mientras suena; D) elevación de las imágenes al pasar el mouse. Elegí A, C y D. El ecualizador me parecía buena idea pero sentía que se desviaba mucho del portfolio en sí. No descarto considerarlo en un futuro igualmente.
 
-A. Entrada de los textos. Reusa la misma animación de About (el bloque entra bajando y apareciendo), así todo el sitio tiene un solo lenguaje de movimiento. main.js ya animaba todo lo que tuviera la clase reveal, así que solo hubo que agregar esa clase. Primero la puse en los títulos, los textos y las imágenes de los proyectos, pero se veía demasiado lleno de animaciones y poco fluido, así que la dejé solo en los títulos y los textos (desde ProjectSection, para los cuatro proyectos a la vez).
-
-D. Elevación de las imágenes. Al pasar el mouse o llegar con Tab, las imágenes de los proyectos suben un poco y proyectan una sombra. Decidí que se eleven todas, sean links o no. Se usa la propiedad translate y no transform, para no pisar otras transformaciones (por ejemplo, si una imagen tuviera también la animación de entrada), y drop-shadow en lugar de box-shadow, porque sigue la forma del PNG transparente en vez de dibujar un rectángulo. Está dentro de @media (hover: hover), para que en celular no quede trabada después de tocar.
-
-C. Vinilo. En On repeat la carátula es un círculo con surcos (un repeating-radial-gradient encima de la imagen) y gira mientras suena el preview. El botón de play pasó al centro, como la etiqueta de un vinilo, porque en la esquina quedaba fuera del círculo. Funciona con dos clases: is-spinning le da a la imagen la animación de giro, pausada, e is-playing la hace correr. Al pausar se saca solo is-playing, así el disco se queda quieto en su ángulo en lugar de volver de golpe; al cambiar de track se saca is-spinning, así la carátula nueva arranca derecha.
-
-Accesibilidad. Las tres animaciones respetan prefers-reduced-motion: los textos aparecen sin animación, las imágenes muestran la sombra sin moverse y el disco no gira. La información no depende del movimiento: el botón de play sigue indicando si suena con aria-pressed.
-
-Límite que reconozco. Los textos con reveal empiezan invisibles y los hace aparecer main.js: si el JavaScript fallara, no se verían.
+Límite que reconozco: Los textos con reveal empiezan invisibles y los hace aparecer main.js, o sea, si el JavaScript fallara, no se verían.
 
 Después, la entrada de los textos y el giro del vinilo se rehicieron con Motion (entradas 14 y 17); las pruebas de esa versión están ahí.
 
-12. 29 de octubre — Contraste y foco
+12. 7 de noviembre — Contraste y foco
 
-Medí el contraste de todos los pares de texto y fondo con la fórmula de WCAG 2.1 (nivel AA: 4.5:1 para texto común, 3:1 para texto grande y para el borde de foco). Casi todo pasa: el texto principal da entre 9.7 y 13.2, y el indigo sobre lavanda da 4.72, que es el más justo. Encontré dos problemas:
+Medí el contraste de todos los pares de texto y fondo con la fórmula de WCAG 2.1 (nivel AA: 4.5:1 para texto común, 3:1 para texto grande y para el borde de foco). Casi todo pasa: el texto principal da entre 9.7 y 13.2, y el cceleste pastel sobre lavanda da 4.72, que es el más justo. Encontré dos problemas:
 
-A. El texto del botón de contacto era el azul del original (#0080FF) al 39% de opacidad. Sobre la crema daba 1.64. Lo cambié por un azul sólido, #0066CC, que da 5.04 y mantiene el mismo tono.
+1. El texto del botón de contacto era el azul del original (#0080FF) al 39% de opacidad. Sobre la crema daba 1.64. Lo cambié por un azul sólido, #0066CC, que da 5.04 y mantiene el mismo tono.
+2. El borde de foco era crema en todos los links, pero las imágenes de los proyectos están sobre lavanda o crema, y ahí daba entre 1.0 y 1.23: navegando con Tab no se veía dónde estaba el foco. Ahora es ink (9.7 sobre lavanda) y solo queda crema en contacto, donde el fondo es indigo. Esa regla gana por especificidad, también en mobile.
 
-B. El borde de foco era crema en todos los links, pero las imágenes de los proyectos están sobre lavanda o crema, y ahí daba entre 1.0 y 1.23: navegando con Tab no se veía dónde estaba el foco. Ahora es ink (9.7 sobre lavanda) y solo queda crema en contacto, donde el fondo es indigo. Esa regla gana por especificidad, también en mobile.
+14. 10 de noviembre — La historia: el portfolio es una canción (Motion)
 
-El texto del hero es crema sobre la foto y eso no se puede calcular con la fórmula: lo revisé a ojo. [completar: resultado]
+Problema: El profesor pidió que el portfolio cuente una historia a través de las animaciones y recomendó usar Motion. Las animaciones que tenía (entrada de textos, elevación de imágenes y vinilo) estaban bien, pero eran sueltas ya que no contaban nada en órden.
 
-13. 29 de octubre — Mockups del proyecto 1 en PNG
-
-Los dos mockups del proyecto 1 se armaban con tres capas cada uno: la captura de pantalla, un marco SVG y una base SVG, posicionados con porcentajes en el CSS. Los reemplacé por dos PNG exportados desde mi diseño, que ya traen la laptop completa y tienen fondo transparente. Los exporté al doble de tamaño (@2x) para que se vean nítidos en pantallas retina y cuando el lienzo escala en monitores grandes.
-
-Ahora cada mockup es un link con una sola imagen y usa la misma clase que las capturas del proyecto 4 (shot), que ya tenía la elevación y el comportamiento en mobile. Eso me dejó borrar todo el CSS de los dispositivos (58 líneas), los cuatro SVG y las dos capturas viejas.
-
-Después los achiqué para que tengan el mismo tamaño y disposición que las capturas de folklore, y centré el par entre el título y el texto. El cartel "click the screens" y la flecha bajaron lo mismo que el primer mockup.
-
-En el proyecto 3 (Babeblade) las puntas de la base de la laptop se veían cortadas. Volví a exportar artist.png con más margen y al doble de tamaño, con el mismo nombre. El PNG nuevo tenía otra proporción y, como la imagen usa object-fit: cover, seguía recortándose a los costados; ajusté la caja a la proporción nueva (685×401) para que no se recorte. En Vercel se seguía viendo la imagen vieja: Vercel manda las imágenes con caché de un año (immutable) y, como el archivo tenía el mismo nombre, el navegador no lo volvía a descargar. Lo renombré a artist-mockup.png. Aprendí que al reemplazar una imagen conviene cambiarle el nombre.
-
-14. 18 de noviembre — La historia: el portfolio es una canción (Motion)
-
-Problema. El profesor pidió que el portfolio cuente una historia a través de las animaciones y recomendó usar Motion. Las animaciones que tenía (entrada de textos, elevación de imágenes y vinilo) estaban bien, pero eran sueltas: no contaban nada en orden.
-
-Decisión. Usar el concepto que ya tenía, una canción por proyecto, para todo el recorrido: el portfolio es una canción y el scroll es el tema avanzando. Cada sección es una parte de la canción y tiene su propia animación:
-
-Intro (Hero): la foto se acerca suave, "Avi" y "Motta" entran de a una palabra y después el rol. Los puntos del ángulo laten a 120 BPM mientras el hero está en pantalla.
-Primera estrofa (About): los párrafos aparecen de a uno, en lugar de todo el bloque junto. La última frase, "Keep scrolling and find my works!", tiene una flecha que rebota para invitar a seguir bajando.
-Estribillo (On repeat): el título, la introducción y los cuatro tracks aparecen escalonados, como un tracklist que carga. Al elegir otro track, el título y el artista nuevos entran en vez de cambiar de golpe, y la carátula aparece cuando termina de cargar.
-Las canciones (proyectos): cada proyecto entra con su propio movimiento. En UMAI TV y folklore las dos pantallas llegan desde lados opuestos y se encuentran; en UMAI TV, "click the screens and see!" aparece cuando ya están las pantallas. En JukeBox los tres celulares aparecen uno tras otro, como un ranking. En Babeblade el sitio de la artista emergente crece desde un poco más chico, como algo que "emerge".
-Outro (Contact): "CONTACT ME" entra un poco más grande y se asienta, como el acorde final, y después aparecen el mail y los links.
-Barra de reproducción (Nav): una línea fina debajo del menú se llena a medida que se baja, como el progreso de una canción. Al llegar a Contact, el tema terminó.
-
-Un mismo lenguaje de movimiento: todo sube desde abajo con la misma curva y duraciones parecidas. La única excepción son las pantallas de los proyectos 1 y 4, que llegan desde los costados, porque la idea de "encontrarse" es parte de esa animación. Reemplaza la animación original de Readymag, en la que el texto de About bajaba al entrar: ahora todo sube.
-
-Por qué Motion. Tiene justo las herramientas para esto: animate para animar, inView para disparar una animación cuando un elemento entra en pantalla, stagger para escalonar varios elementos y scroll para conectar algo con el avance del scroll (la barra de reproducción). Se instala con npm (npm install motion) y Astro lo incluye en el sitio al construir. Antes, main.js hacía la entrada de los textos con IntersectionObserver; ahora todo eso está en src/scripts/story.js y main.js se eliminó.
-
-Cómo está hecho.
-
-src/scripts/story.js tiene una función por parte de la canción (intro, verse, chorus, songs, outro). Una función onceInView hace que cada animación se ejecute una sola vez, la primera vez que el elemento entra en pantalla.
-En escritorio las secciones tienen display: contents y no se pueden observar, así que inView observa los elementos concretos (títulos, pantallas, celulares).
-Solo se animan opacidad y transform (posición y escala), que no cambian el lugar de los elementos en el lienzo: el sistema de --x, --y y --u sigue igual. La elevación al pasar el mouse usa la propiedad translate, que es distinta de transform, así que las dos animaciones no se pisan. La flecha de "click the screens" ya está rotada con transform, así que solo se anima su opacidad.
-Las palabras del nombre y la flecha de About pasaron a inline-block, porque transform no funciona sobre elementos en línea.
+Decisión: Usar el concepto que ya tenía, una canción por proyecto, para todo el recorrido: el portfolio es una canción y el scroll es el tema avanzando. Cada sección es una parte de la canción y tiene su propia animación.
 
 Problema resuelto de paso. Antes, si el JavaScript fallaba, los textos con animación de entrada no se veían (estaba en las limitaciones del README). Ahora los elementos arrancan invisibles solo si <html> tiene la clase motion, que la pone un script en el <head>. Si Motion no cargó a los 3 segundos, el script saca la clase y todo se ve sin animación. Sin JavaScript, la clase nunca se pone.
 
-Problema que apareció. En la primera prueba, tres animaciones (el título de On repeat, el final de On repeat y los links de Contact) no aparecían y la consola mostraba "Invalid value used as weak map key". Era porque les pasaba a Motion una lista de selectores de texto, y en una lista Motion espera elementos. Se resolvió buscando primero los elementos con querySelectorAll.
+Problema que apareció: En la primera prueba, tres animaciones (el título de On repeat, el final de On repeat y los links de Contact) no aparecían y la consola mostraba "Invalid value used as weak map key". Era porque les pasaba a Motion una lista de selectores de texto, y en una lista Motion espera elementos. Se resolvió buscando primero los elementos con querySelectorAll.
 
-Accesibilidad. Con prefers-reduced-motion no hay animaciones de entrada ni pulsos: todo se ve desde el principio. La barra de reproducción se mantiene, porque no es decorativa: acompaña el scroll que hace el usuario, no se mueve sola. Es aria-hidden, porque el menú ya indica la sección actual con aria-current.
+Accesibilidad: Con prefers-reduced-motion no hay animaciones de entrada ni pulsos: todo se ve desde el principio. La barra de reproducción se mantiene, porque no es decorativa sino que acompaña el scroll que hace el usuario, no se mueve sola. Es aria-hidden, porque el menú ya indica la sección actual con aria-current.
 
-Cómo lo verifiqué. Con un navegador automatizado (Playwright) se recorrió la página de arriba abajo en escritorio (1280 px) y en celular (390 px), y se comprobó que al final todos los elementos animados quedan visibles, que la barra llega al 100 % y que no hay errores en la consola. También con prefers-reduced-motion y con el JavaScript desactivado: en los dos casos todo se ve desde el principio. Se probó el cambio de track en On repeat.
+15. 11 de noviembre — Mini reproductor: la canción elegida te acompaña
 
-15. 18 de noviembre — Mini reproductor: la canción elegida te acompaña
-
-Problema. Con las animaciones nuevas la historia se entendía, pero faltaba algo que la hiciera sentir como escuchar música de verdad. Además, al elegir una canción en On repeat y seguir bajando, la música se escuchaba pero ya no se veía nada que la controlara.
+Problema. Con las animaciones nuevas la historia se entendía, pero faltaba algo que la hiciera sentir como escuchar música de verdad. 
 
 Alternativas que se pensaron:
 
 1. Un mini reproductor que cambia solo de canción según el proyecto que se está mirando (al llegar a UMAI TV suena su canción, en JukeBox la suya, etc.). Contaba la historia de forma automática, pero el usuario no elige, y un compañero ya había hecho algo parecido.
 2. Un mini reproductor que mantiene la canción que eligió el usuario en la playlist, como Spotify, sin importar en qué proyecto esté.
 
-Decisión. La alternativa 2. Me gusta más la idea de la playlist: que el usuario elija la canción y que se mantenga mientras recorre el portfolio. No quise que cambie según el trabajo porque eso ya lo había hecho un compañero. El usuario elige la canción en On repeat y el mini reproductor la mantiene sonando mientras recorre el portfolio. Así el vinilo grande y el mini reproductor no compiten: son el mismo reproductor, grande en la playlist y chico en el resto de la página.
+Decisión. La alternativa 2. Me gusta más la idea de la playlist: que el usuario elija la canción y que se mantenga mientras recorre el portfolio. No quise que cambie según el trabajo porque eso ya lo había hecho un compañero. El usuario elige la canción en On repeat y el mini reproductor la mantiene sonando mientras recorre el portfolio. Así el vinilo grande y el mini reproductor no compiten y son el mismo reproductor, grande en la playlist y chico en el resto de la página.
 
-Cómo funciona.
+16. 13 de noviembre — Cada proyecto se abre como un disco
 
-Aparece abajo, centrado, cuando On repeat sale de la pantalla: si ya se bajó más allá de la playlist, o si hay algo sonando (por ejemplo, si se vuelve a subir al Hero). Se esconde cuando On repeat está a la vista, porque ahí ya está el disco grande.
-Tiene la carátula como un vinilo chico, el título y el artista, un ecualizador, los botones anterior, play/pausa y siguiente, y una barra con el avance del preview de 30 segundos.
-Anterior y siguiente cambian de track en la playlist; si había algo sonando, la canción nueva arranca sola. Tocar la carátula o el título vuelve a la playlist.
-Si se pausa y se vuelve a dar play, la canción sigue desde donde estaba (antes arrancaba de cero).
-Si la canción no tiene preview o la API falló, el botón de play queda desactivado y se lee "no preview" al lado del artista.
+Problema: Al tocar las imágenes de los proyectos, el sitio mandaba directo a Behance en otra pestaña. Se sentía brusco ya que quien estaba recorriendo el portfolio se iba a otra página.
 
-Cómo está hecho.
-
-Un solo audio para todo el sitio. Antes el audio estaba adentro del script de OnRepeat. Ahora OnRepeat lo comparte en window.portfolioPlayer (con toggle, next, prev y el estado actual) y avisa cada cambio con un evento player:update. El mini reproductor (MiniPlayer.astro) no tiene audio propio: escucha ese evento y usa esas funciones. Así nunca suenan dos canciones a la vez y la playlist y el mini reproductor siempre muestran lo mismo.
-On repeat es una sección en flujo normal (no tiene display: contents), así que se puede observar con IntersectionObserver para saber si está en pantalla.
-Animaciones con Motion: el reproductor entra deslizándose desde abajo y sale igual; al cambiar de track, la carátula y el título entran; el vinilo gira mientras suena y se frena donde está al pausar; las barras del ecualizador suben y bajan, cada una a su ritmo.
-El reproductor se centra con la propiedad translate y Motion lo mueve con transform, así no se pisan (lo mismo que con la elevación de las imágenes).
-
-Problema que apareció. El ecualizador no se movía: las animaciones de las barras se creaban al cargar, en pausa, y cada vez que el reproductor se actualizaba sin sonar se lanzaba otra animación que bajaba las barras y reemplazaba a la primera. Se resolvió creando las animaciones del ecualizador recién al dar play y frenándolas al pausar.
-
-Otro problema, probando con la API real. Para "Espresso", la API devuelve primero "Espresso (On Vacation Version)" y la versión original recién en segundo lugar, así que sonaba la versión equivocada. findSong ahora busca primero el título exacto y, si no lo encuentra, acepta uno que lo contenga. Con la API real se probaron las cuatro canciones: todas cargan carátula y preview.
-
-Detalles.
-
-En celular el reproductor ocupa casi todo el ancho y no muestra el ecualizador, para que entre el título. La sección de contacto tiene más espacio abajo para que el reproductor no tape los links.
-La introducción de On repeat ahora dice "It keeps playing while you scroll", para que se entienda que la música sigue.
-Accesibilidad: el reproductor es una región con aria-label "Music player"; los botones tienen nombre ("Previous track", "Next track", "Play Espresso by Sabrina Carpenter") y el de play indica si suena con aria-pressed. Con prefers-reduced-motion aparece y desaparece sin deslizarse, el vinilo no gira y el ecualizador no se mueve.
-
-Cómo lo verifiqué. Con Playwright, simulando la API y el audio: en escritorio y en celular, el reproductor no se ve arriba ni en On repeat, aparece al bajar con la canción elegida sonando, siguiente cambia de canción en los dos lugares y sigue sonando, pausa funciona, y al volver al Hero con música sigue visible. Sin errores en la consola.
-
-16. 18 de noviembre — Cada proyecto se abre como un disco
-
-Problema. Al tocar las imágenes de los proyectos, el sitio mandaba directo a Behance en otra pestaña. Se sentía brusco: quien estaba recorriendo el portfolio se iba a otra página. Además, la imagen de Babeblade y la segunda pantalla de folklore no eran links, así que no hacían nada al tocarlas.
-
-Qué se probó primero. Mostrar el proyecto de Behance adentro del portfolio. La página normal de Behance bloquea los accesos automáticos, y la versión para insertar (behance.net/embed/project/...) solo trae la portada y el título, no las imágenes del proyecto, y al hacer clic igual lleva a Behance. Behance tampoco tiene una API pública. Para mostrar el proyecto completo habría que exportar las imágenes, y no las tengo en este momento.
-
-Decisión. Una vista del proyecto dentro del portfolio, con las imágenes que ya están en el sitio, pero que tenga que ver con la música: cada proyecto se abre como un disco. No tenía las imágenes de los proyectos para exportarlas, y quería que la vista fuera más creativa y tuviera que ver con la música, como el resto del portfolio.
-
-La funda del disco tiene de tapa la imagen del proyecto que se tocó.
-El vinilo sale de la funda hacia el costado y empieza a girar, con el nombre del proyecto en la etiqueta del centro.
-La contratapa tiene el título del proyecto, "The song of [proyecto]" con un botón para escucharla, la descripción como "Liner notes" (así se llaman los textos de los discos) y un botón "Full project on Behance".
-Al cerrar (con la X, con Esc o tocando afuera), el vinilo vuelve a la funda y el disco desaparece.
-
-Coherencia con el mini reproductor. El botón de play del disco solo suena si el usuario lo toca, y suena en el mismo reproductor de siempre: elige ese track en la playlist y aparece en el mini reproductor. Así se mantiene la idea de que la música la elige el usuario.
-
-Cómo está hecho.
-
-Componente nuevo, RecordModal.astro, con un elemento <dialog>. Con showModal() el navegador ya resuelve tres cosas: el foco queda adentro del disco, Esc lo cierra y el resto de la página no se puede usar mientras está abierto. Al cerrar, el foco vuelve a la imagen que lo abrió.
-Los datos del disco salen de lugares que ya existían: el nombre y la canción de projects.js (donde se sumó el link de Behance de cada proyecto), el título y la descripción de la misma página (se copian los párrafos del proyecto) y la imagen es la que se tocó. No hay textos repetidos.
-Todas las imágenes de los proyectos son links a Behance con data-record. Con JavaScript, el clic abre el disco; sin JavaScript, o con Ctrl/Cmd o la rueda del mouse, el link sigue llevando a Behance. Así se sumaron los links que faltaban (Babeblade y la segunda pantalla de folklore).
-Animaciones con Motion: el disco aparece, la funda sube, el vinilo sale y gira, y la contratapa aparece en escalonado. Al cerrar, el vinilo vuelve y después el disco se va. Para que Esc también cierre con animación, se intercepta el evento cancel del <dialog>.
-OnRepeat suma playIndex al reproductor compartido: si el track ya es el elegido, play/pausa; si no, lo elige y arranca a sonar.
-
-Problema que apareció. En la funda, la imagen alta de JukeBox (un celular) se salía por arriba y por abajo, porque height: 100% no funciona adentro de un grid sin alto definido. Se resolvió posicionando la imagen en absoluto dentro de la funda, con object-fit: contain, así entra entera sea apaisada (laptops) o alta (celular).
-
-Accesibilidad. El disco tiene como nombre el título del proyecto (aria-labelledby), los botones tienen nombre ("Close", "Play Espresso by Sabrina Carpenter") y el de Behance avisa que abre una pestaña nueva. Las imágenes avisan con aria-haspopup que abren un diálogo. Con prefers-reduced-motion, el disco aparece con el vinilo ya afuera y sin girar.
-
-Cómo lo verifiqué. Con Playwright, en escritorio y en celular: el disco abre con los datos correctos del proyecto (título, descripción, link de Behance), no se abre ninguna pestaña, el play suena y se refleja en el mini reproductor, Esc y el clic afuera lo cierran, el foco vuelve a la imagen y la página vuelve a scrollear. También con prefers-reduced-motion.
+Decisión: Una vista del proyecto dentro del portfolio, con las imágenes que ya están en el sitio, pero que tenga que ver con la música: cada proyecto se abre como un disco. No tenía las imágenes de los proyectos para exportarlas, y quería que la vista fuera más creativa y tuviera que ver con la música, como el resto del portfolio. Entonces se pensó en un vinilo que sale de la funda hacia el costado y empieza a girar, con el nombre del proyecto en la etiqueta del centro. Todo esto mantiene coherencia con el mini reproductor ya que si se coloca play en uno, comienza a sonar el otro.
 
 17. 18 de noviembre — Revisión del código
 
-Antes de entregar, revisé todo el código con Claude Code buscando comentarios viejos, código que sobrara, errores y detalles de contenido. No había console.log olvidados ni notas pendientes, y todas las imágenes tenían texto alternativo. Lo que se encontró y se arregló:
+Antes de entregar, revisé todo el código personalmente y luego con Claude Code buscando código que sobrara, errores y detalles de contenido. No había console.log olvidados ni notas pendientes, y todas las imágenes tenían texto alternativo. Lo que se encontró y se arregló:
 
-Ícono del sitio. La página tenía el ícono vacío (href="data:,") y en public/ quedaban favicon.svg y favicon.ico con el logo de Astro de la plantilla, sin usar. Se reemplazaron por mi ícono (favicon.ico, favicon.png y apple-touch-icon.png para la pantalla de inicio del celular, con fondo crema) y se borró el logo de Astro.
-Imágenes. Pesaban 5 MB en total (artist-mockup.png sola, 2,2 MB). Las siete más pesadas se pasaron a WebP, que mantiene la transparencia: quedaron en 460 KB entre todas, y se ven igual. La de Babeblade además se achicó a 1600 px de ancho, que alcanza para pantallas grandes.
-Descripción de JukeBox. Tenía un texto que no era de JukeBox ("a platform for emerging artists to showcase their work…"). Se reemplazó por una descripción de la app de ranking hecha a partir de lo que muestran las pantallas. [completar: revisar que el texto nuevo describa bien el proyecto]
-Textos. "Linkedin" pasó a "LinkedIn", y "Emerging Artist's Website" usa el mismo apóstrofo curvo (’) que "University’s".
-Comentarios viejos en style.css: el encabezado decía "Reconstrucción en HTML/CSS/JS puro" (ahora es Astro), uno mencionaba "img_14", un nombre de la exportación de Readymag, y un título de sección quedaba arriba de reglas que no eran de esa sección.
-Accesibilidad del mini reproductor. El link de la carátula se llamaba "Back to the playlist" para los lectores de pantalla, pero en pantalla muestra la canción. Ahora se lee "Back to the playlist: [canción], [artista]", que incluye lo que se ve.
-Código sin usar. El reproductor compartido tenía una función load que nadie usaba, y el CSS del mini reproductor tenía dos reglas iguales seguidas. Se borró y se unió.
-El disco de On repeat gira con Motion. Era el único giro hecho con CSS (@keyframes y las clases is-spinning e is-playing); el del mini reproductor y el del disco de cada proyecto ya eran con Motion. Ahora story.js escucha el evento player:update y hace girar el disco mientras suena, lo frena donde está al pausar y lo endereza al cambiar de track. Así todas las animaciones del sitio usan Motion.
-
-Pregunta posible en la defensa: por qué Nav y OnRepeat usan var y function y el resto usa const e import. Los scripts con is:inline Astro no los procesa: van tal cual al navegador. Los otros son módulos que Astro procesa al construir, y por eso pueden importar Motion desde node_modules.
-
-Cómo lo verifiqué. Se repitieron todas las pruebas con Playwright: animaciones en escritorio, celular, con menos movimiento y sin JavaScript; mini reproductor; disco de cada proyecto; que el disco de On repeat gire al sonar y quede quieto en pausa; que todas las imágenes carguen y que los íconos estén enlazados.
+- Ícono: La página tenía el ícono vacío (href="data:,") y en public/ quedaban favicon.svg y favicon.ico con el logo de Astro de la plantilla, sin usar. Se reemplazaron por mi ícono (favicon.ico, favicon.png y apple-touch-icon.png para la pantalla de inicio del celular, con fondo crema) y se borró el logo de Astro.
+- Imágenes: Pesaban 5 MB en total (artist-mockup.png sola, 2,2 MB). Las siete más pesadas se pasaron a WebP.
+- Textos: "Linkedin" pasó a "LinkedIn", y "Emerging Artist's Website" usa el mismo apóstrofo curvo (’) que "University’s".
+- Comentarios viejos en style.css: el encabezado decía "Reconstrucción en HTML/CSS/JS puro" (ahora es Astro), uno mencionaba "img_14", un nombre de la exportación de Readymag, y un título de sección quedaba arriba de reglas que no eran de esa sección.
+- Accesibilidad del mini reproductor: El link de la carátula se llamaba "Back to the playlist" para los lectores de pantalla, pero en pantalla muestra la canción. Ahora se lee "Back to the playlist: [canción], [artista]", que incluye lo que se ve.
+- Código sin usar: El reproductor compartido tenía una función load que nadie usaba, y el CSS del mini reproductor tenía dos reglas iguales seguidas. Se borró y se unió.
+- El disco de On repeat gira con Motion: Era el único giro hecho con CSS (@keyframes y las clases is-spinning e is-playing); el del mini reproductor y el del disco de cada proyecto ya eran con Motion. Ahora story.js escucha el evento player:update y hace girar el disco mientras suena, lo frena donde está al pausar y lo endereza al cambiar de track. Así todas las animaciones del sitio usan Motion.
 
 18. Uso de inteligencia artificial
 
-La consigna pide registrar el uso de IA. Lo hago en esta sección y la mantengo actualizada.
-
 opencode (primera versión del proyecto):
-
-Tareas para las que lo usé: trasladar el portfolio completo de mi diseño en Readymag a código (HTML, CSS y JavaScript).
-Qué partes revisé, adapté o descarté: a partir de lo que generó, fui haciendo las modificaciones de diseño necesarias para que quede igual a lo que me imaginaba.
-AGENTS.md, en la raíz del repo, no lo generó opencode como había anotado: viene con la plantilla de Astro y tiene instrucciones para agentes de IA y links a la documentación de Astro.
+- Tareas para las que lo usé: trasladar el portfolio completo de mi diseño en Readymag a código (HTML, CSS y JavaScript).
+- Qué partes revisé, adapté o descarté: a partir de lo que generó, fui haciendo las modificaciones de diseño necesarias para que quede igual a lo que me imaginaba.
 
 Claude (asistente de chat), desde el 26/10:
-
-Tareas para las que lo usé: analizar la consigna y compararla con mi proyecto, armar el plan de trabajo, explicarme qué es Astro, guiarme en la migración y en el primer componente paso a paso, y armar el borrador de esta bitácora.
-Qué hice yo: ejecuté los comandos, copié los archivos, pegué y modifiqué el código, y verifiqué en el navegador que cada cambio se viera igual.
-Errores o límites detectados:
-Me dijo que mi versión de Node servía y Astro exigía una más nueva. Lo detecté al ejecutar el proyecto.
-Supuso que mi diseño no tenía versión para celular. Lo corrigió después de ver mi CSS.
+- Tareas para las que lo usé: analizar la consigna y compararla con mi proyecto, armar el plan de trabajo, explicarme qué es Astro, guiarme en la migración y en el primer componente paso a paso para hacerlo yo, y armar el borrador de esta bitácora.
+- Qué hice yo: ejecuté los comandos, copié los archivos, pegué y modifiqué el código, y verifiqué en el navegador que cada cambio se viera igual.
+Errores o límites detectados: Me dijo que mi versión de Node servía y Astro exigía una más nueva. Lo detecté al ejecutar el proyecto. Supuso que mi diseño no tenía versión para celular. Lo corrigió después de ver mi CSS.
 Aprendí que conviene verificar lo que dice la IA contra mi propio código.
-Decisiones que tomé yo: migrar a Astro en lugar de rehacer el proyecto, rediseñar con criterio responsive para cumplir la consigna completa, componentizar sin tocar el CSS, y dejar para después la revisión del tramo de escritorio.
+- Decisiones que tomé yo: migrar a Astro en lugar de rehacer el proyecto, rediseñar con criterio responsive para cumplir la consigna completa, componhacer componentesentizar sin tocar el CSS, y dejar para después la revisión del tramo de escritorio.
 
 Claude Code (agente en la terminal, con acceso al proyecto), desde el 28/10:
+- Tareas para las que lo usé: leer el proyecto completo y compararlo con la consigna, proponer un plan en pasos chicos y completar esta bitácora con lo que muestran el código y el historial de commits.
+- Cómo lo usé: le pedí que antes de modificar cada archivo me explicara qué iba a cambiar y por qué, y que esperara mi OK antes de seguir. Las pruebas en el navegador las hice yo.
+- Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat (primero después del proyecto 4 y después, al verla, después de About), darle más jerarquía al link al proyecto, achicar On repeat para que sea coherente con About, no aceptar que las alturas quedaran fijas y cambiar la estructura a dos lienzos, una navegación en barra pero sutil para no tapar el hero, qué animaciones sumar, dejar la entrada solo en los textos y que se eleven todas las imágenes, el nuevo concepto de una canción por proyecto, las canciones elegidas, y resolverlo como playlist entre las tres alternativas que me propuso. Le pedí ayuda para hacer animaciones con Motion. Decidí hacer que el portfolio sea una canción, con una animación por sección y la barra de reproducción. Lo creó y fuimos haciendo cambios en base a su código. Al final de todo le pedí una revisión de todo el código luego de la que hice yo. Me pasó una lista sin cambiar nada e hicimos arreglos en base a eso.
 
-Tareas para las que lo usé: leer el proyecto completo y compararlo con la consigna, proponer un plan en pasos chicos y completar esta bitácora con lo que muestran el código y el historial de commits.
-Cómo lo usé: le pedí que antes de modificar cada archivo me explicara qué iba a cambiar y por qué, y que esperara mi OK antes de seguir. Las pruebas en el navegador las hago yo.
-Código que escribió: src/data/projects.js y la nueva versión de OnRepeat.astro (playlist de proyectos y canciones), a partir de la alternativa que elegí; después, el desplazamiento con --off para mover On repeat después de About y el nuevo estilo del link al proyecto; por último, la división en dos lienzos y el rediseño de On repeat alineado con About; el componente Nav; los ajustes de responsive para tablet y pantallas grandes; las animaciones (entrada de textos, elevación de imágenes y vinilo); la revisión de contraste y foco; y el reemplazo de los mockups del proyecto 1 por PNG. Antes de cada archivo me explicó qué iba a cambiar y por qué.
-Qué revisé yo: [completar: qué partes del código leí, entendí o cambié]
-Errores o límites detectados: propuso usar la versión en columna hasta 1100 px para la tablet; al revisar el CSS él mismo vio que era un error, porque esa versión no está pensada para pantallas anchas, y lo corrigió antes de aplicarlo. También cambió dos veces lo que había anticipado: en Nav usó scroll y getBoundingClientRect en lugar de IntersectionObserver, y en On repeat agrupó tres textos en un div que no estaba en la explicación; en los dos casos lo avisó. [completar: otros errores que haya detectado yo]
-Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat (primero después del proyecto 4 y después, al verla, después de About), darle más jerarquía al link al proyecto, achicar On repeat para que sea coherente con About, no aceptar que las alturas quedaran fijas y cambiar la estructura a dos lienzos, una navegación en barra pero sutil para no tapar el hero, qué animaciones sumar, dejar la entrada solo en los textos y que se eleven todas las imágenes, el nuevo concepto de una canción por proyecto, las canciones elegidas (y el cambio de Vogue por Girls Just Want to Have Fun), y resolverlo como playlist entre las tres alternativas que me propuso.
-Claude Code, 18 de noviembre (animaciones con Motion). Le pedí ayuda para entender la consigna del profesor ("contar una historia con las animaciones") y para hacerlo con Motion. Revisó el portfolio y propuso la historia de "el portfolio es una canción", con una animación por sección y la barra de reproducción; la elegí yo y le pedí que hiciera todo. Escribió src/scripts/story.js, los cambios en Hero, About, ProjectSection, Nav, index.astro y style.css, y esta entrada de la bitácora. Probó el sitio con un navegador automatizado.
-
-Claude Code, 18 de noviembre (mini reproductor). Le conté la idea de un reproductor de verdad. Me propuso primero que cambiara de canción según el proyecto; le dije que prefería que el usuario elija la canción y que se mantenga, y lo hizo así. Escribió MiniPlayer.astro, los cambios en el script de OnRepeat para compartir el audio y la entrada 16 de esta bitácora, y lo probó con un navegador automatizado.
-
-Claude Code, 18 de noviembre (el disco). Le pedí que probara si se podía mostrar Behance adentro de la página; lo probó y no se podía. Me propuso una vista del proyecto con las imágenes que ya tenía y yo le pedí que fuera más creativa y tuviera que ver con la música; propuso el disco y me gustó. Me hizo notar que Babeblade no tenía link y le pasé el de Behance. Escribió RecordModal.astro, los cambios en index.astro, projects.js y OnRepeat, y esta entrada. Con acceso a la API real encontró que "Espresso" traía otra versión y lo arregló. Para probar Behance y la API real creó un entorno de trabajo con acceso solo a esas páginas, que aprobé yo.
-
-Claude Code, 18 de noviembre (revisión del código). Le pedí una revisión de todo el código. Me pasó una lista sin cambiar nada; le dije qué arreglar, le aclaré que la descripción de JukeBox no era la correcta y le pasé mi ícono. Hizo los arreglos de la entrada 18 y repitió todas las pruebas.
-
-Qué revisé yo en las tareas del 18 de noviembre (animaciones, mini reproductor, disco y revisión), y cómo probé el sitio: [completar]
-
-19. Pendiente
- Migrar el proyecto a Astro. (hecho, 26/10)
- Crear el primer componente (ProjectSection) y usarlo en los cuatro proyectos. (hecho, 26/10)
- Hacer los componentes Hero, About y Contact, hasta tener al menos tres relevantes, con responsabilidad clara. (hecho, 26/10)
- Integrar una API o fuente dinámica de datos, con manejo de carga, error y vacío. (hecho, 28/10; adaptada al concepto de una canción por proyecto el mismo día)
- Sumar una interacción que modifique la experiencia o el contenido. (hecho: playlist con la API, 28/10; mini reproductor y disco de cada proyecto, 18/11)
- Revisar el responsive del tramo de escritorio (tablet y pantallas grandes). El de celular ya existe. (revisado, 28/10: columna con ancho máximo en tablet y texto de About que escala; falta registrar las pruebas)
- Revisar accesibilidad: contraste, foco, textos alternativos, navegación. (contraste y foco revisados, 29/10; textos alternativos y navegación revisados en la revisión del código, 18/11)
- Definir la navegación entre secciones. (hecho, 28/10: componente Nav)
- Unir la rama astro con main, publicar con enlace limpio de producción y probarlo en otros dispositivos. (unida y publicada; la rama animaciones-motion también se unió a main el 18/11; falta probar en otros dispositivos)
- Escribir el README completo. (hecho)
- Probar en distintos tamaños de pantalla y registrar los resultados.
- Completar los [completar] de esta bitácora y del README.
- Preparar la defensa: poder explicar cada componente y hacer un cambio en vivo.
-20. Registro de próximas entradas
-
-Agregar acá, con fecha, cada decisión, alternativa descartada, problema y solución.
-
-[fecha]
-[qué hice]
-[qué problema encontré y cómo lo resolví]
-[qué decidí y por qué]
