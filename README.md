@@ -19,7 +19,7 @@ Soy UX Artist: diseño interfaces, identidades visuales y productos digitales, y
 | Babeblade (sitio de artista emergente) | Lo que pidas — Babeblade |
 | folklore (landing de merch de Taylor Swift) | mirrorball — Taylor Swift |
 
-El recorrido es: presentación (Hero), quién soy (About), la playlist de proyectos (On repeat), los cuatro proyectos y el contacto. Un menú fijo arriba permite saltar entre secciones y marca en cuál estás.
+El recorrido es: presentación (Hero), quién soy (About), la playlist de proyectos (On repeat), los cuatro proyectos y el contacto. La canción que el visitante elige en la playlist sigue sonando mientras recorre el resto, con un mini reproductor fijo abajo. Un menú fijo arriba permite saltar entre secciones y marca en cuál estás.
 
 ## Instalación y uso
 
@@ -49,6 +49,7 @@ src/
     Hero.astro              nombre, rol y foto
     About.astro             texto de presentación
     OnRepeat.astro          playlist de proyectos y canciones (API)
+    MiniPlayer.astro        mini reproductor fijo abajo (la canción elegida sigue sonando)
     ProjectSection.astro    estructura de cada proyecto
     Contact.astro           mail y redes
   data/projects.js          lista de proyectos con su canción
@@ -81,6 +82,7 @@ El portfolio es una canción y el scroll es el tema avanzando. Cada sección es 
 | Las canciones | Proyectos | UMAI TV y folklore: las dos pantallas llegan desde lados opuestos y se encuentran. JukeBox: los celulares aparecen uno tras otro. Babeblade: el sitio crece, "emerge" |
 | Outro | Contact | "CONTACT ME" entra y se asienta como un acorde final; después, el mail y los links |
 | Todo el recorrido | Nav | Una barra de reproducción debajo del menú se llena con el scroll |
+| La música que elegiste | MiniPlayer | Entra deslizándose desde abajo; el vinilo gira mientras suena, el ecualizador se mueve y al cambiar de track la carátula y el título entran |
 
 Todo sube desde abajo con la misma curva, salvo las pantallas de los proyectos 1 y 4, que llegan desde los costados. Cada animación se ejecuta una sola vez, al entrar en pantalla (`inView`); la barra usa `scroll` y los escalonados, `stagger`.
 
@@ -92,16 +94,19 @@ Los elementos arrancan invisibles solo si `<html>` tiene la clase `motion`, que 
 |---|---|---|
 | **OnRepeat** | Muestra la playlist de proyectos, busca la canción elegida en la API, maneja sus estados y reproduce el preview | `title`, `tracks` (la lista de `projects.js`) |
 | **Nav** | Menú para recorrer las secciones; marca la sección actual | Lee `projects.js` |
+| **MiniPlayer** | Mini reproductor fijo abajo: mantiene la canción elegida en la playlist mientras se recorre el sitio, con play/pausa, anterior, siguiente y avance del preview | Nada: usa el audio y el estado que comparte OnRepeat |
 | **ProjectSection** | Estructura común de los cuatro proyectos | `id`, `title`, `class`, `titleStyle`, `bodyStyle` y dos slots |
 | Hero | Presentación: nombre, rol y foto | `firstName`, `lastName`, `role`, `photo`, `photoAlt` |
 | About | Texto de presentación | `title`, `paragraphs` |
 | Contact | Mail y links a redes | `title`, `email`, `links` |
 
-Los tres primeros son los componentes relevantes de la propuesta, porque tienen lógica propia. Hero, About y Contact son componentes de presentación: separan los datos de la estructura, pero no tienen comportamiento.
+Los cuatro primeros son los componentes relevantes de la propuesta, porque tienen lógica propia. Hero, About y Contact son componentes de presentación: separan los datos de la estructura, pero no tienen comportamiento.
 
 **OnRepeat.** Astro arma la playlist en el HTML con `.map()`: un botón por proyecto, con los datos de su canción en atributos `data-`. Al elegir un track, el script muestra enseguida el título, el artista y el botón "See [proyecto] ↓" (salen de la lista, no de la API), y después pide la canción a la API para mostrar la carátula y el botón de play. Solo suena un preview a la vez. Ver el detalle en [API](#api-itunes-search-api).
 
 **Nav.** Una pastilla fija arriba con cuatro links: About, On repeat, Works y Contact. "Works" agrupa los cuatro proyectos. Cada vez que hay scroll, el script busca el último título que pasó el 40 % de la altura de la pantalla y le pone `aria-current="true"` a su link. Usa `requestAnimationFrame` para no calcular más de una vez por cuadro. No usa IntersectionObserver porque las secciones, con `display: contents`, no se pueden observar.
+
+**MiniPlayer.** No tiene audio propio. OnRepeat crea un solo `Audio` para todo el sitio y lo comparte en `window.portfolioPlayer` (con `toggle`, `next`, `prev` y el estado actual); cada cambio lo avisa con el evento `player:update`. MiniPlayer escucha ese evento y usa esas funciones, así la playlist y el mini reproductor siempre muestran lo mismo y nunca suenan dos canciones a la vez. Aparece cuando On repeat sale de la pantalla (si ya se pasó por la playlist o si hay algo sonando) y se esconde cuando On repeat está a la vista, porque ahí ya está el disco grande. Las animaciones (entrada, cambio de track, vinilo y ecualizador) son con Motion.
 
 **ProjectSection.** Arma la sección, el título y el bloque de texto. El material visual de cada proyecto, que es distinto en los cuatro (mockups de navegador y laptop, tres teléfonos, capturas), entra por el slot principal, y la descripción por el slot `body`.
 
@@ -152,7 +157,7 @@ Probado en: [completar: anchos y dispositivos probados, ver PROCESO.md]
 - Cada sección está asociada a su título con `aria-labelledby`, y los links a Behance tienen un `aria-label` que dice a qué proyecto llevan.
 - Los textos de los links dicen adónde llevan ("See UMAI TV", no "See project").
 - `scroll-margin-top` en los títulos, para que al saltar a uno no quede debajo del menú.
-- Se respeta `prefers-reduced-motion` en todas las animaciones: sin scroll suave, nada tiene animación de entrada ni pulsos (todo se ve desde el principio), las imágenes muestran la sombra al pasar el mouse sin moverse y la carátula de On repeat no gira. La barra de reproducción del menú se mantiene porque sigue el scroll del usuario y no se mueve sola. El estado de reproducción no depende del giro: lo indica el botón con `aria-pressed`.
+- Se respeta `prefers-reduced-motion` en todas las animaciones: sin scroll suave, nada tiene animación de entrada ni pulsos (todo se ve desde el principio), las imágenes muestran la sombra al pasar el mouse sin moverse y la carátula de On repeat no gira. La barra de reproducción del menú se mantiene porque sigue el scroll del usuario y no se mueve sola. El mini reproductor aparece y desaparece sin deslizarse, y su vinilo y su ecualizador quedan quietos. El estado de reproducción no depende del giro: lo indica el botón con `aria-pressed`.
 - En celular, los botones de On repeat miden al menos 44 px de alto.
 
 ## Limitaciones conocidas y posibles mejoras

@@ -554,7 +554,7 @@ a:focus-visible {
     background: linear-gradient(180deg, var(--lavender) 0, var(--indigo) 120px);
     align-items: center;
     gap: 28px;
-    padding-bottom: 64px;
+    padding-bottom: 120px; /* lugar para el mini reproductor, que queda fijo abajo */
   }
 
   .t-contact {

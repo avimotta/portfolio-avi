@@ -345,7 +345,43 @@ Accesibilidad. Con prefers-reduced-motion no hay animaciones de entrada ni pulso
 
 Cómo lo verifiqué. Con un navegador automatizado (Playwright) se recorrió la página de arriba abajo en escritorio (1280 px) y en celular (390 px), y se comprobó que al final todos los elementos animados quedan visibles, que la barra llega al 100 % y que no hay errores en la consola. También con prefers-reduced-motion y con el JavaScript desactivado: en los dos casos todo se ve desde el principio. Se probó el cambio de track en On repeat. [completar: cómo lo probé yo en el navegador y en el celular, y qué ajusté]
 
-16. Uso de inteligencia artificial
+16. 18 de noviembre — Mini reproductor: la canción elegida te acompaña
+
+Problema. Con las animaciones nuevas la historia se entendía, pero faltaba algo que la hiciera sentir como escuchar música de verdad. Además, al elegir una canción en On repeat y seguir bajando, la música se escuchaba pero ya no se veía nada que la controlara.
+
+Alternativas que se pensaron:
+
+1. Un mini reproductor que cambia solo de canción según el proyecto que se está mirando (al llegar a UMAI TV suena su canción, en JukeBox la suya, etc.). Contaba la historia de forma automática, pero el usuario no elige, y un compañero ya había hecho algo parecido.
+2. Un mini reproductor que mantiene la canción que eligió el usuario en la playlist, como Spotify, sin importar en qué proyecto esté.
+
+Decisión. La alternativa 2. [completar: por qué la elegí con mis palabras] El usuario elige la canción en On repeat y el mini reproductor la mantiene sonando mientras recorre el portfolio. Así el vinilo grande y el mini reproductor no compiten: son el mismo reproductor, grande en la playlist y chico en el resto de la página.
+
+Cómo funciona.
+
+Aparece abajo, centrado, cuando On repeat sale de la pantalla: si ya se bajó más allá de la playlist, o si hay algo sonando (por ejemplo, si se vuelve a subir al Hero). Se esconde cuando On repeat está a la vista, porque ahí ya está el disco grande.
+Tiene la carátula como un vinilo chico, el título y el artista, un ecualizador, los botones anterior, play/pausa y siguiente, y una barra con el avance del preview de 30 segundos.
+Anterior y siguiente cambian de track en la playlist; si había algo sonando, la canción nueva arranca sola. Tocar la carátula o el título vuelve a la playlist.
+Si se pausa y se vuelve a dar play, la canción sigue desde donde estaba (antes arrancaba de cero).
+Si la canción no tiene preview o la API falló, el botón de play queda desactivado y se lee "no preview" al lado del artista.
+
+Cómo está hecho.
+
+Un solo audio para todo el sitio. Antes el audio estaba adentro del script de OnRepeat. Ahora OnRepeat lo comparte en window.portfolioPlayer (con toggle, next, prev y el estado actual) y avisa cada cambio con un evento player:update. El mini reproductor (MiniPlayer.astro) no tiene audio propio: escucha ese evento y usa esas funciones. Así nunca suenan dos canciones a la vez y la playlist y el mini reproductor siempre muestran lo mismo.
+On repeat es una sección en flujo normal (no tiene display: contents), así que se puede observar con IntersectionObserver para saber si está en pantalla.
+Animaciones con Motion: el reproductor entra deslizándose desde abajo y sale igual; al cambiar de track, la carátula y el título entran; el vinilo gira mientras suena y se frena donde está al pausar; las barras del ecualizador suben y bajan, cada una a su ritmo.
+El reproductor se centra con la propiedad translate y Motion lo mueve con transform, así no se pisan (lo mismo que con la elevación de las imágenes).
+
+Problema que apareció. El ecualizador no se movía: las animaciones de las barras se creaban al cargar, en pausa, y cada vez que el reproductor se actualizaba sin sonar se lanzaba otra animación que bajaba las barras y reemplazaba a la primera. Se resolvió creando las animaciones del ecualizador recién al dar play y frenándolas al pausar.
+
+Detalles.
+
+En celular el reproductor ocupa casi todo el ancho y no muestra el ecualizador, para que entre el título. La sección de contacto tiene más espacio abajo para que el reproductor no tape los links.
+La introducción de On repeat ahora dice "It keeps playing while you scroll", para que se entienda que la música sigue.
+Accesibilidad: el reproductor es una región con aria-label "Music player"; los botones tienen nombre ("Previous track", "Next track", "Play Espresso by Sabrina Carpenter") y el de play indica si suena con aria-pressed. Con prefers-reduced-motion aparece y desaparece sin deslizarse, el vinilo no gira y el ecualizador no se mueve.
+
+Cómo lo verifiqué. Con Playwright, simulando la API y el audio: en escritorio y en celular, el reproductor no se ve arriba ni en On repeat, aparece al bajar con la canción elegida sonando, siguiente cambia de canción en los dos lugares y sigue sonando, pausa funciona, y al volver al Hero con música sigue visible. Sin errores en la consola. [completar: cómo lo probé yo con las canciones reales]
+
+17. Uso de inteligencia artificial
 
 La consigna pide registrar el uso de IA. Lo hago en esta sección y la mantengo actualizada.
 
@@ -376,7 +412,9 @@ Errores o límites detectados: propuso usar la versión en columna hasta 1100 px
 Decisiones que tomé yo: el orden de los pasos, dónde va la sección On repeat (primero después del proyecto 4 y después, al verla, después de About), darle más jerarquía al link al proyecto, achicar On repeat para que sea coherente con About, no aceptar que las alturas quedaran fijas y cambiar la estructura a dos lienzos, una navegación en barra pero sutil para no tapar el hero, qué animaciones sumar, dejar la entrada solo en los textos y que se eleven todas las imágenes, el nuevo concepto de una canción por proyecto, las canciones elegidas (y el cambio de Vogue por Girls Just Want to Have Fun), y resolverlo como playlist entre las tres alternativas que me propuso.
 Claude Code, 18 de noviembre (animaciones con Motion). Le pedí ayuda para entender la consigna del profesor ("contar una historia con las animaciones") y para hacerlo con Motion. Revisó el portfolio y propuso la historia de "el portfolio es una canción", con una animación por sección y la barra de reproducción; la elegí yo y le pedí que hiciera todo. Escribió src/scripts/story.js, los cambios en Hero, About, ProjectSection, Nav, index.astro y style.css, y esta entrada de la bitácora. Probó el sitio con un navegador automatizado. [completar: qué revisé yo, qué cambié o pedí cambiar]
 
-17. Pendiente
+Claude Code, 18 de noviembre (mini reproductor). Le conté la idea de un reproductor de verdad. Me propuso primero que cambiara de canción según el proyecto; le dije que prefería que el usuario elija la canción y que se mantenga, y lo hizo así. Escribió MiniPlayer.astro, los cambios en el script de OnRepeat para compartir el audio y la entrada 16 de esta bitácora, y lo probó con un navegador automatizado. [completar: qué revisé yo]
+
+18. Pendiente
  Migrar el proyecto a Astro. (hecho, 26/10)
  Crear el primer componente (ProjectSection) y usarlo en los cuatro proyectos. (hecho, 26/10)
  Hacer los componentes Hero, About y Contact, hasta tener al menos tres relevantes, con responsabilidad clara. (hecho, 26/10)
@@ -389,7 +427,7 @@ Claude Code, 18 de noviembre (animaciones con Motion). Le pedí ayuda para enten
  Escribir el README completo.
  Probar en distintos tamaños de pantalla y registrar los resultados.
  Preparar la defensa: poder explicar cada componente y hacer un cambio en vivo.
-18. Registro de próximas entradas
+19. Registro de próximas entradas
 
 Agregar acá, con fecha, cada decisión, alternativa descartada, problema y solución.
 

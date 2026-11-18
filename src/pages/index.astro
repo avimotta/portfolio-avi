@@ -5,6 +5,7 @@ import About from "../components/About.astro";
 import Contact from "../components/Contact.astro";
 import OnRepeat from "../components/OnRepeat.astro";
 import Nav from "../components/Nav.astro";
+import MiniPlayer from "../components/MiniPlayer.astro";
 import { projects } from "../data/projects.js";
 ---
 
@@ -236,6 +237,9 @@ import { projects } from "../data/projects.js";
 </div>
 
 </main>
+
+<!-- Mini reproductor: la canción elegida en On repeat sigue sonando en todo el recorrido -->
+<MiniPlayer />
 
 <!-- Astro procesa este script e incluye Motion desde node_modules -->
 <script>

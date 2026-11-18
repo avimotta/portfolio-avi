@@ -4,7 +4,7 @@ const first = tracks[0];
 ---
 <section class="s-repeat" aria-labelledby="repeat-title" data-repeat>
   <h2 class="h-section" id="repeat-title">{title}</h2>
-  <p class="repeat-intro">Every project in this portfolio has its own song. Pick a track to see which one, and press play for a 30-second preview.</p>
+  <p class="repeat-intro">Every project in this portfolio has its own song. Pick a track to see which one, and press play for a 30-second preview. It keeps playing while you scroll.</p>
 
   <div class="repeat-body">
     <ol class="repeat-list" aria-label="Projects and their songs">
@@ -313,8 +313,12 @@ const first = tracks[0];
     var link = root.querySelector(".repeat-link");
     var linkName = root.querySelector(".repeat-link-name");
 
+    // Un solo audio para todo el sitio: lo usan la playlist y el mini reproductor
+    // (MiniPlayer.astro), así nunca suenan dos canciones a la vez.
     var audio = new Audio();
-    var playingBtn = null;
+    var playing = false;
+    var current = 0;       // track elegido
+    var currentItem = null; // resultado de la API del track elegido
     var previewUrl = null; // preview de la canción elegida
     var cache = {};        // resultado de cada track ya pedido (la API limita ~20 pedidos por minuto)
     var token = 0;         // identifica el último pedido, para ignorar respuestas viejas
@@ -322,46 +326,77 @@ const first = tracks[0];
     var PLAY = "▶︎";
     var PAUSE = "❚❚";
 
+    // El mini reproductor lee el estado desde acá y escucha "player:update".
+    var player = (window.portfolioPlayer = {
+      audio: audio,
+      state: null,
+      toggle: toggle,
+      load: function (index) { load(index, playing); },
+      next: function () { load((current + 1) % picks.length, playing); },
+      prev: function () { load((current - 1 + picks.length) % picks.length, playing); }
+    });
+
+    // Avisa a quien escuche (el mini reproductor) que algo cambió.
+    function emit() {
+      var pick = picks[current];
+      player.state = {
+        index: current,
+        name: pick.getAttribute("data-name"),
+        song: pick.getAttribute("data-song"),
+        artist: pick.getAttribute("data-artist"),
+        cover: currentItem && currentItem.artworkUrl100
+          ? currentItem.artworkUrl100.replace("100x100", "400x400")
+          : null,
+        canPlay: !!previewUrl,
+        playing: playing,
+        status: status.textContent,
+        statusState: status.getAttribute("data-state")
+      };
+      document.dispatchEvent(new CustomEvent("player:update", { detail: player.state }));
+    }
+
     function setStatus(text, state) {
       status.textContent = text;
       status.setAttribute("data-state", state);
+      emit();
     }
 
-    function stopAudio() {
+    function setPlaying(on) {
+      playing = on;
+      playBtn.setAttribute("aria-pressed", on ? "true" : "false");
+      playBtn.textContent = on ? PAUSE : PLAY;
+      if (on) coverBox.classList.add("is-spinning", "is-playing"); // el disco gira
+      else coverBox.classList.remove("is-playing");               // se frena donde está
+      emit();
+    }
+
+    function pause() {
       audio.pause();
-      if (playingBtn) {
-        playingBtn.setAttribute("aria-pressed", "false");
-        playingBtn.textContent = PLAY;
-      }
-      playingBtn = null;
-      coverBox.classList.remove("is-playing"); // el disco se frena donde está
+      setPlaying(false);
     }
 
-    function togglePlay(url, btn) {
-      if (playingBtn === btn) {
-        stopAudio();
-        return;
-      }
-      stopAudio();
-      audio.src = url;
-      playingBtn = btn;
-      btn.setAttribute("aria-pressed", "true");
-      btn.textContent = PAUSE;
-      coverBox.classList.add("is-spinning", "is-playing"); // el disco gira
+    // Si se pausa y se vuelve a dar play, sigue desde donde estaba.
+    function play() {
+      if (!previewUrl) return;
+      if (audio.getAttribute("src") !== previewUrl) audio.src = previewUrl;
+      setPlaying(true);
       var p = audio.play();
       if (p && p.catch) {
         p.catch(function () {
-          stopAudio();
+          pause();
           setStatus("Couldn't play this preview. Try again later.", "error");
         });
       }
     }
 
-    audio.addEventListener("ended", stopAudio);
+    function toggle() {
+      if (playing) pause();
+      else play();
+    }
 
-    playBtn.addEventListener("click", function () {
-      if (previewUrl) togglePlay(previewUrl, playBtn);
-    });
+    audio.addEventListener("ended", pause); // el preview terminó: el disco se frena
+
+    playBtn.addEventListener("click", toggle);
 
     // Entre los resultados busca el que sea de ese artista y tenga ese título.
     // La búsqueda también puede devolver covers o canciones de nombre parecido.
@@ -393,10 +428,14 @@ const first = tracks[0];
       cover.removeAttribute("src");
       playBtn.hidden = true;
       previewUrl = null;
+      currentItem = null;
+      audio.removeAttribute("src");
       coverBox.classList.remove("is-spinning"); // la carátula nueva arranca derecha
     }
 
-    function showSong(item) {
+    // autoplay: si ya sonaba algo, la canción nueva arranca sola al estar lista.
+    function showSong(item, autoplay) {
+      currentItem = item;
       if (!item) {
         setStatus("This song isn't available right now.", "empty");
         return;
@@ -414,6 +453,7 @@ const first = tracks[0];
       playBtn.setAttribute("aria-label", "Play preview of " + item.trackName);
       playBtn.hidden = false;
       setStatus("", "ready");
+      if (autoplay) play();
     }
 
     function setActive(index) {
@@ -422,20 +462,21 @@ const first = tracks[0];
       }
     }
 
-    function load(index) {
+    function load(index, autoplay) {
       var pick = picks[index];
       var song = pick.getAttribute("data-song");
       var artist = pick.getAttribute("data-artist");
       var myToken = ++token;
 
-      stopAudio();
+      current = index;
+      pause();
       setActive(index);
       showInfo(pick);
       hideMedia();
 
       // "in" y no cache[index]: si la canción no se encontró, en la cache queda null
       if (index in cache) {
-        showSong(cache[index]);
+        showSong(cache[index], autoplay);
         return;
       }
 
@@ -458,7 +499,7 @@ const first = tracks[0];
           if (myToken !== token) return; // el usuario ya eligió otro track
           var item = findSong(data.results || [], song, artist);
           cache[index] = item;
-          showSong(item);
+          showSong(item, autoplay);
         })
         .catch(function (err) {
           if (myToken !== token) return;
@@ -472,10 +513,10 @@ const first = tracks[0];
 
     for (var i = 0; i < picks.length; i++) {
       picks[i].addEventListener("click", function (e) {
-        load(Number(e.currentTarget.getAttribute("data-index")));
+        load(Number(e.currentTarget.getAttribute("data-index")), false);
       });
     }
 
-    load(0);
+    load(0, false);
   })();
 </script>
