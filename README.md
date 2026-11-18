@@ -118,7 +118,7 @@ On repeat usa la [iTunes Search API](https://performance-partners.apple.com/sear
 
 **Qué se usa de la respuesta.** De cada resultado: `trackName`, `artistName`, `collectionName`, `artworkUrl100` (la carátula, que se pide en 400 × 400) y `previewUrl` (el audio de 30 segundos).
 
-**Cómo se elige el resultado.** La búsqueda puede devolver covers o canciones de nombre parecido. `findSong()` se queda con el primer resultado cuyo artista contenga el artista buscado y cuyo título contenga el título buscado, sin distinguir mayúsculas. Si ninguno coincide, devuelve `null`.
+**Cómo se elige el resultado.** La búsqueda puede devolver covers o canciones de nombre parecido. `findSong()` busca, entre los resultados cuyo artista contenga el artista buscado, primero el que tenga exactamente el título buscado y, si no hay, el primero cuyo título lo contenga, sin distinguir mayúsculas. Hace falta porque con "Espresso" la API devuelve primero "Espresso (On Vacation Version)". Si ninguno coincide, devuelve `null`.
 
 **Estados:**
 

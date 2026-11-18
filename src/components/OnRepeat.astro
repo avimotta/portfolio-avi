@@ -400,18 +400,22 @@ const first = tracks[0];
 
     // Entre los resultados busca el que sea de ese artista y tenga ese título.
     // La búsqueda también puede devolver covers o canciones de nombre parecido.
+    // Primero busca el título exacto: con "Espresso", la API devuelve primero
+    // "Espresso (On Vacation Version)" y la original recién en segundo lugar.
+    // Si no hay título exacto, acepta uno que lo contenga.
     function findSong(results, song, artist) {
       var s = song.toLowerCase();
       var a = artist.toLowerCase();
+      var similar = null;
       for (var i = 0; i < results.length; i++) {
         var item = results[i];
         if (!item.trackName || !item.artistName) continue;
-        if (item.artistName.toLowerCase().indexOf(a) !== -1 &&
-            item.trackName.toLowerCase().indexOf(s) !== -1) {
-          return item;
-        }
+        if (item.artistName.toLowerCase().indexOf(a) === -1) continue;
+        var t = item.trackName.toLowerCase();
+        if (t === s) return item;
+        if (!similar && t.indexOf(s) !== -1) similar = item;
       }
-      return null;
+      return similar;
     }
 
     // Título, artista y link salen de la lista de datos: se ven aunque falle la API.

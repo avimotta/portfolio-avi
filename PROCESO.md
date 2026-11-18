@@ -373,6 +373,8 @@ El reproductor se centra con la propiedad translate y Motion lo mueve con transf
 
 Problema que apareció. El ecualizador no se movía: las animaciones de las barras se creaban al cargar, en pausa, y cada vez que el reproductor se actualizaba sin sonar se lanzaba otra animación que bajaba las barras y reemplazaba a la primera. Se resolvió creando las animaciones del ecualizador recién al dar play y frenándolas al pausar.
 
+Otro problema, probando con la API real. Para "Espresso", la API devuelve primero "Espresso (On Vacation Version)" y la versión original recién en segundo lugar, así que sonaba la versión equivocada. findSong ahora busca primero el título exacto y, si no lo encuentra, acepta uno que lo contenga. Con la API real se probaron las cuatro canciones: todas cargan carátula y preview.
+
 Detalles.
 
 En celular el reproductor ocupa casi todo el ancho y no muestra el ecualizador, para que entre el título. La sección de contacto tiene más espacio abajo para que el reproductor no tape los links.
